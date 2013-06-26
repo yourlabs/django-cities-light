@@ -268,8 +268,9 @@ It is possible to force the import of files which weren't downloaded using the
         except InvalidItems:
             return
 
+        kwargs = {}
         try:
-            country_id = self._get_country_id(items[8])
+            kwargs['country_id'] = self._get_country_id(items[8])
         except Country.DoesNotExist:
             if self.noinsert:
                 return
@@ -277,35 +278,37 @@ It is possible to force the import of files which weren't downloaded using the
                 raise
 
         try:
-            kwargs = dict(name=force_unicode(items[1]),
-                country_id=self._get_country_id(items[8]))
-        except Country.DoesNotExist:
+            kwargs['region_id'] = self._get_region_id(items[8], items[10])
+        except Region.DoesNotExist:
             if self.noinsert:
                 return
-            else:
-                raise
 
+        kwargs['name'] = force_unicode(items[1])
+
+        save = False
         try:
             city = City.objects.get(**kwargs)
         except City.DoesNotExist:
             try:
                 city = City.objects.get(geoname_id=items[0])
-                city.name = force_unicode(items[1])
-                city.country_id = self._get_country_id(items[8])
+                if city.name != kwargs['name']:
+                    city.name = kwargs['name']
+                    save = True
+                if city.country_id != kwargs['country_id']:
+                    city.country_id = kwargs['country_id']
+                    save = True
+                try:
+                    if city.region_id != kwargs['region_id']:
+                        city.region_id = kwargs['region_id']
+                        save = True
+                except KeyError:
+                    # region_id might not be set from _get_region_id above
+                    pass
             except City.DoesNotExist:
                 if self.noinsert:
                     return
 
                 city = City(**kwargs)
-
-        save = False
-        if not city.region_id:
-            try:
-                city.region_id = self._get_region_id(items[8], items[10])
-            except Region.DoesNotExist:
-                pass
-            else:
-                save = True
 
         if not city.name_ascii:
             # useful for cities with chinese names
