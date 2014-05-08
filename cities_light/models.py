@@ -85,7 +85,7 @@ class Base(models.Model):
     name_ascii = models.CharField(max_length=200, blank=True, db_index=True)
     slug = autoslug.AutoSlugField(populate_from='name_ascii')
     geoname_id = models.IntegerField(null=True, blank=True, unique=True)
-    alternate_names = models.TextField(null=True, blank=True, default='')
+    alternate_names = models.TextField(verbose_name=_('alternate_names'), null=True, blank=True, default='')
 
     class Meta:
         abstract = True
@@ -103,17 +103,18 @@ class Country(Base):
     Country model.
     """
 
-    name = models.CharField(max_length=200, unique=True)
+    name = models.CharField(verbose_name=_('name'), max_length=200, unique=True)
 
-    code2 = models.CharField(max_length=2, null=True, blank=True, unique=True)
-    code3 = models.CharField(max_length=3, null=True, blank=True, unique=True)
-    continent = models.CharField(max_length=2, db_index=True,
+    code2 = models.CharField(verbose_name=_('code2'), max_length=2, null=True, blank=True, unique=True)
+    code3 = models.CharField(verbose_name=_('code3'), max_length=3, null=True, blank=True, unique=True)
+    continent = models.CharField(verbose_name=_('continent'), max_length=2, db_index=True,
         choices=CONTINENT_CHOICES)
-    tld = models.CharField(max_length=5, blank=True, db_index=True)
-    phone = models.CharField(max_length=20, null=True)
+    tld = models.CharField(verbose_name=_('tld'), max_length=5, blank=True, db_index=True)
+    phone = models.CharField(verbose_name=_('phone'), max_length=20, null=True)
 
     class Meta(Base.Meta):
         verbose_name_plural = _('countries')
+        verbose_name = _('country')
 signals.pre_save.connect(set_name_ascii, sender=Country)
 
 
@@ -122,12 +123,12 @@ class Region(Base):
     Region/State model.
     """
 
-    name = models.CharField(max_length=200, db_index=True)
-    display_name = models.CharField(max_length=200)
-    geoname_code = models.CharField(max_length=50, null=True, blank=True,
+    name = models.CharField(verbose_name=_('name'), max_length=200, db_index=True)
+    display_name = models.CharField(verbose_name=_('display_name'), max_length=200)
+    geoname_code = models.CharField(verbose_name=_('geoname_code'), max_length=50, null=True, blank=True,
         db_index=True)
 
-    country = models.ForeignKey(Country)
+    country = models.ForeignKey(Country, verbose_name=_('country'))
 
     class Meta(Base.Meta):
         unique_together = (('country', 'name'), ('country', 'slug'))
@@ -168,21 +169,21 @@ class City(Base):
     City model.
     """
 
-    name = models.CharField(max_length=200, db_index=True)
-    display_name = models.CharField(max_length=200)
+    name = models.CharField(verbose_name=_('name'), max_length=200, db_index=True)
+    display_name = models.CharField(verbose_name=_('display_name'), max_length=200)
 
     search_names = ToSearchTextField(max_length=4000,
         db_index=INDEX_SEARCH_NAMES, blank=True, default='')
 
-    latitude = models.DecimalField(max_digits=8, decimal_places=5,
+    latitude = models.DecimalField(verbose_name=_('latitude'), max_digits=8, decimal_places=5,
         null=True, blank=True)
-    longitude = models.DecimalField(max_digits=8, decimal_places=5,
+    longitude = models.DecimalField(verbose_name=_('longitude'), max_digits=8, decimal_places=5,
         null=True, blank=True)
 
-    region = models.ForeignKey(Region, blank=True, null=True)
-    country = models.ForeignKey(Country)
-    population = models.BigIntegerField(null=True, blank=True, db_index=True)
-    feature_code = models.CharField(max_length=10, null=True, blank=True,
+    region = models.ForeignKey(Region, verbose_name=_('region'), blank=True, null=True)
+    country = models.ForeignKey(Country, verbose_name=_('country'))
+    population = models.BigIntegerField(verbose_name=_('population'), null=True, blank=True, db_index=True)
+    feature_code = models.CharField(verbose_name=_('feature_code'), max_length=10, null=True, blank=True,
                                     db_index=True)
 
     class Meta(Base.Meta):
