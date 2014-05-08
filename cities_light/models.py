@@ -189,6 +189,7 @@ class City(Base):
     class Meta(Base.Meta):
         unique_together = (('region', 'name'), ('region', 'slug'))
         verbose_name_plural = _('cities')
+        verbose_name = _('city')
 
     def get_display_name(self):
         if self.region_id:
