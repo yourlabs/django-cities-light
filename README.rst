@@ -26,8 +26,12 @@ Requirements:
 
 - Python 2.7 or 3.3, 
 - Django 1.4 or 1.5 or 1.6, 
-- MySQL or PostgreSQL or SQLite.
+- PostgreSQL or SQLite.
 - django-south is optionnal, but recommended.
+
+MySQL support was dropped on 2.x.x because it stopped working. It is supported
+again in 3.x.x, which uses django.db.transaction.atomic, which requires Django
+>= 1.6.
 
 Upgrade
 -------
