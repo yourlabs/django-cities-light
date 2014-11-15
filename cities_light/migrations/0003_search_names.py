@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='city',
             name='search_names',
-            field=cities_light.models.ToSearchTextField(default=b'', max_length=4000, db_index=True, blank=True),
+            field=cities_light.models.ToSearchTextField(default=b'', max_length=4000, blank=True),
             preserve_default=True,
         ),
     ]
