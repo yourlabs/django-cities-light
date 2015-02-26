@@ -284,7 +284,7 @@ def filter_non_included_countries_region(sender, items, **kwargs):
 
     if items[0].split('.')[0] not in INCLUDE_COUNTRIES:
         raise InvalidItems()
-country_items_pre_import.connect(filter_non_included_countries_region)
+region_items_pre_import.connect(filter_non_included_countries_region)
 
 
 def filter_non_included_countries_city(sender, items, **kwargs):
