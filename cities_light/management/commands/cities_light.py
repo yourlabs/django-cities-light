@@ -183,12 +183,12 @@ It is possible to force the import of files which weren't downloaded using the
                             del self._region_codes
                         self.translation_parse(items)
 
-                    reset_queries()
+                    # reset_queries()
 
-                    i += 1
-                    progress.update(i)
+                    # i += 1
+                    # progress.update(i)
 
-                    self._travis()
+                    # self._travis()
 
                 progress.finish()
 
@@ -418,7 +418,7 @@ It is possible to force the import of files which weren't downloaded using the
                 (City, {}),
             ))
 
-        connection.close()
+        # connection.close()
 
         if len(items) > 5:
             # avoid shortnames, colloquial, and historic
