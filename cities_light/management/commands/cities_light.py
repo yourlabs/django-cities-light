@@ -4,7 +4,6 @@ import collections
 import itertools
 import os
 import datetime
-import time
 import os.path
 import logging
 import optparse
@@ -17,9 +16,8 @@ try:
 except ImportError:
     import pickle
 
-from django.db import transaction, connection
 from django.core.management.base import BaseCommand
-from django.db import transaction, reset_queries, IntegrityError
+from django.db import transaction, IntegrityError
 from django.utils.encoding import force_text
 
 import progressbar
@@ -89,17 +87,6 @@ It is possible to force the import of files which weren't downloaded using the
         ),
     )
 
-    def _travis(self):
-        if not os.environ.get('TRAVIS', False):
-            return
-
-        now = time.time()
-        last_output = getattr(self, '_travis_last_output', None)
-
-        if last_output is None or now - last_output >= 530:
-            print('Do not kill me !')
-            self._travis_last_output = now
-
     def handle(self, *args, **options):
         if not os.path.exists(DATA_DIR):
             self.logger.info('Creating %s' % DATA_DIR)
@@ -163,10 +150,12 @@ It is possible to force the import of files which weren't downloaded using the
                             continue
 
                 i = 0
+                max_value = geonames.num_lines()
                 progress = progressbar.ProgressBar(
-                    max_value=geonames.num_lines(),
+                    max_value=max_value,
                     widgets=self.widgets
                 ).start()
+                update_interval = max(int(max_value / 1000), 1)
 
                 for items in geonames.parse():
                     if url in CITY_SOURCES:
@@ -183,12 +172,9 @@ It is possible to force the import of files which weren't downloaded using the
                             del self._region_codes
                         self.translation_parse(items)
 
-                    reset_queries()
-
+                    if 0 == i % update_interval:
+                        progress.update(i)
                     i += 1
-                    progress.update(i)
-
-                    self._travis()
 
                 progress.finish()
 
@@ -405,11 +391,11 @@ It is possible to force the import of files which weren't downloaded using the
 
     def translation_parse(self, items):
         if not hasattr(self, 'translation_data'):
-            self.country_ids = list(Country.objects.values_list('geoname_id',
+            self.country_ids = set(Country.objects.values_list('geoname_id',
                 flat=True))
-            self.region_ids = list(Region.objects.values_list('geoname_id',
+            self.region_ids = set(Region.objects.values_list('geoname_id',
                 flat=True))
-            self.city_ids = list(City.objects.values_list('geoname_id',
+            self.city_ids = set(City.objects.values_list('geoname_id',
                 flat=True))
 
             self.translation_data = collections.OrderedDict((
@@ -417,8 +403,6 @@ It is possible to force the import of files which weren't downloaded using the
                 (Region, {}),
                 (City, {}),
             ))
-
-        connection.close()
 
         if len(items) > 5:
             # avoid shortnames, colloquial, and historic
