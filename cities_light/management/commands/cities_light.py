@@ -17,9 +17,8 @@ except ImportError:
     import pickle
 
 from django.core.management.base import BaseCommand
-from django.db import transaction, reset_queries, IntegrityError
+from django.db import transaction, IntegrityError
 from django.utils.encoding import force_text
-from django.conf import settings
 
 import progressbar
 
@@ -172,9 +171,6 @@ It is possible to force the import of files which weren't downloaded using the
                         if getattr(self, '_region_codes', False):
                             del self._region_codes
                         self.translation_parse(items)
-
-                    if settings.DEBUG:
-                        reset_queries()
 
                     if 0 == i % update_interval:
                         progress.update(i)
