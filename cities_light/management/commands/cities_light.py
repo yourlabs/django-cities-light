@@ -176,7 +176,7 @@ It is possible to force the import of files which weren't downloaded using the
                     if settings.DEBUG:
                         reset_queries()
 
-                    if i == 0 % update_interval:
+                    if 0 == i % update_interval:
                         progress.update(i)
                     i += 1
 
