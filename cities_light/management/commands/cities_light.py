@@ -156,7 +156,7 @@ It is possible to force the import of files which weren't downloaded using the
                     max_value=max_value,
                     widgets=self.widgets
                 ).start()
-                update_interval = max(int(max_value/1000), 1)
+                update_interval = max(int(max_value / 1000), 1)
 
                 for items in geonames.parse():
                     if url in CITY_SOURCES:
