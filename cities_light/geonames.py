@@ -37,7 +37,6 @@ class Geonames(object):
         #if the file is a zipped file then extract it
         if url.split('.')[-1] == 'zip' and not exists:
             self.extract(self.file_path, destination_file_name)
-        
         self.file_path = os.path.join(
             DATA_DIR, destination_file_name)
 
