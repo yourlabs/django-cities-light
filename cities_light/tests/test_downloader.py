@@ -48,7 +48,8 @@ class TestDownloader(test.TransactionTestCase):
         )
 
         mock_func.return_value = False
-        #Exception handling, checking whether file exist or not, if exist then checking source and destination
+        # Exception handling, checking whether file exist or not, 
+        # if exist then checking source and destination
         source = 'file:///data/a.txt'
         dest = '/data/a.txt'
         with self.assertRaises(SourceFileDoesNotExist):
@@ -152,8 +153,10 @@ class TestDownloader(test.TransactionTestCase):
         downloader = Downloader()
         source = 'file:///a.txt'
         destination = '/a.txt'
-        #The downloader.download will return false as source and destination are same
-        #The downloader.source_matches_destination will return true and downloader.download will return false
+        # The downloader.download will return false 
+        # as source and destination are same
+        # The downloader.source_matches_destination will return 
+        # true and downloader.download will return false
         self.assertFalse(
             downloader.download(
                 source,
@@ -172,8 +175,10 @@ class TestDownloader(test.TransactionTestCase):
         downloader = Downloader()
         source = 'file:///a.txt'
         destination = '/a.txt'
-        #Here dowaloder.needs_downloading() will return flase as the time of modifiaction of dest>= time of source
-        # and the size od source and destination are same and downloader.download will return false
+        # Here dowaloder.needs_downloading() will return false
+        # as the time of modifiaction of dest>= time of source
+        # and the size od source and destination are same 
+        # and downloader.download will return false
         self.assertFalse(
             downloader.download(
                 source,
@@ -202,8 +207,8 @@ class TestDownloader(test.TransactionTestCase):
                         return_value=tmpfile):
             module_name = '{}.b.open'.format(__name__)
             mock_open = mock.mock_open()
-            # The downoader.needs_downloading will return true and the last three lines of 
-            # downloader.download will copy the source to sestination
+            # The downoader.needs_downloading will return true and last three
+            # lines of downloader.download will copy the source to sestination
             with mock.patch(module_name, mock_open):
                 self.assertTrue(downloader.download(
                     source,
@@ -230,8 +235,9 @@ class TestDownloader(test.TransactionTestCase):
                 downloader = Downloader()
                 source = 'file:///b.txt'
                 destination = '/a.txt'
-                # Here a copy of b has been made in above function,now the downloder.needs_downloading() will return 
-                # false an no download will happen.
+                # Here copy of b has been made in above function,the 
+                # downloder.needs_downloading() will return false 
+                # and no download will happen
                 with mock.patch('cities_light.downloader.urlopen') as uo_mock:
                     downloader.download(source, destination)
                     uo_mock.assert_not_called()
