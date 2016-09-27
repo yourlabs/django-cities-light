@@ -38,7 +38,7 @@ class Downloader(object):
         # If the files are diffrent, download/copy happens
         logger.info('Downloading %s into %s', source, destination)
         source_stream = urlopen(source)
-        with open(destination, 'wb') as local_file:     # wb: open as write and binary mode
+        with open(destination, 'wb') as local_file:  # wb: open as write and binary mode
             local_file.write(source_stream.read())
 
         return True
@@ -64,7 +64,7 @@ class Downloader(object):
         #getting last modified timestamp
         src_last_modified = time.strptime(
             src_file.headers['last-modified'],
-            '%a, %d %b %Y %H:%M:%S %Z'              # taking time with second
+            '%a, %d %b %Y %H:%M:%S %Z'  # taking time with second
         )
 
         if os.path.exists(destination) and not force:
