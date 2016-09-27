@@ -34,7 +34,7 @@ class Geonames(object):
 
         destination = os.path.join(DATA_DIR, destination_file_name)
         exists = os.path.exists(destination)
-        #if the file is a zipped file then extract it
+        # if the file is a zipped file then extract it
         if url.split('.')[-1] == 'zip' and not exists:
             self.extract(self.file_path, destination_file_name)
         self.file_path = os.path.join(
@@ -42,7 +42,8 @@ class Geonames(object):
 
     def download(self, url, path, force=False):
         downloader = Downloader()
-        # Returns true or false(either downloded or not based on the condition in downloader.py)
+        # Returns true or false(either downloded or not based on 
+        # the condition in downloader.py)
         return downloader.download(
             source=url,
             destination=path,
