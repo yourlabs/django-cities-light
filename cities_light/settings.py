@@ -102,8 +102,8 @@ __all__ = [
     'FIXTURES_BASE_URL', 'COUNTRY_SOURCES', 'REGION_SOURCES', 'CITY_SOURCES',
     'TRANSLATION_LANGUAGES', 'TRANSLATION_SOURCES', 'SOURCES', 'DATA_DIR',
     'INDEX_SEARCH_NAMES', 'INCLUDE_COUNTRIES', 'INCLUDE_CITY_TYPES',
-    'DEFAULT_APP_NAME', 'CITIES_LIGHT_APP_NAME',
-    'ICountry', 'IRegion', 'ICity', 'IAlternate']
+    'CITIES_LIGHT_ALTERNATE_NAME_SEP', 'DEFAULT_APP_NAME',
+    'CITIES_LIGHT_APP_NAME', 'ICountry', 'IRegion', 'ICity', 'IAlternate']
 
 COUNTRY_SOURCES = getattr(settings, 'CITIES_LIGHT_COUNTRY_SOURCES',
     ['http://download.geonames.org/export/dump/countryInfo.txt'])
@@ -145,6 +145,9 @@ if INDEX_SEARCH_NAMES is None:
 DEFAULT_APP_NAME = 'cities_light'
 CITIES_LIGHT_APP_NAME = getattr(settings, 'CITIES_LIGHT_APP_NAME',
     DEFAULT_APP_NAME)
+CITIES_LIGHT_ALTERNATE_NAME_SEP = getattr(settings,
+                                          'CITIES_LIGHT_ALTERNATE_NAME_SEP',
+                                          u',')
 
 FIXTURES_BASE_URL = getattr(
     settings,
