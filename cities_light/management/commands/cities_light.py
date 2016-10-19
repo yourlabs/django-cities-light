@@ -500,9 +500,7 @@ It is possible to force the import of files which weren't downloaded using the
 
                         alternate_names.add(name)
 
-                alternate_names = CITIES_LIGHT_ALTERNATE_NAME_SEP.join(
-                    sorted(alternate_names)
-                )
+                alternate_names = u';'.join(sorted(alternate_names))
                 if model.alternate_names != alternate_names:
                     model.alternate_names = alternate_names
                     save = True
