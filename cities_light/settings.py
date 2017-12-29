@@ -138,8 +138,8 @@ INCLUDE_CITY_TYPES = getattr(
 INDEX_SEARCH_NAMES = getattr(settings, 'CITIES_LIGHT_INDEX_SEARCH_NAMES', None)
 if INDEX_SEARCH_NAMES is None:
     INDEX_SEARCH_NAMES = True
-    for database in list(settings.DATABASES.values()):
-        if 'mysql' in database['ENGINE'].lower():
+    for db in list(settings.DATABASES.values()):
+        if "ENGINE" in db and 'mysql' in db.get('ENGINE').lower():
             INDEX_SEARCH_NAMES = False
 
 DEFAULT_APP_NAME = 'cities_light'
