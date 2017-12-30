@@ -116,7 +116,7 @@ CITY_SOURCES = getattr(settings, 'CITIES_LIGHT_CITY_SOURCES',
 TRANSLATION_SOURCES = getattr(settings, 'CITIES_LIGHT_TRANSLATION_SOURCES',
     ['http://download.geonames.org/export/dump/alternateNames.zip'])
 TRANSLATION_LANGUAGES = getattr(settings, 'CITIES_LIGHT_TRANSLATION_LANGUAGES',
-    ['es', 'en', 'fr', 'pt', 'de', 'pl', 'abbr'])
+    ['es', 'en', 'pt', 'de', 'pl', 'abbr'])
 
 SOURCES = list(COUNTRY_SOURCES) + list(REGION_SOURCES) + list(SUBREGION_SOURCES) + list(CITY_SOURCES)
 SOURCES += TRANSLATION_SOURCES

@@ -277,7 +277,6 @@ It is possible to force the import of files which weren't downloaded using the
         if subregion_id not in self._subregion_codes[country_id]:
             self._subregion_codes[country_id][subregion_id] = SubRegion.objects.get(
                 country_id=country_id, geoname_code=subregion_id).pk
-        print(self._subregion_codes)
         return self._subregion_codes[country_id][subregion_id]
 
     def country_import(self, items):

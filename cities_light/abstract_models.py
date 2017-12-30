@@ -185,8 +185,6 @@ class AbstractCity(Base):
         null=True,
         blank=True)
 
-    # subregion = models.CharField(max_length=10, null=True, blank=True,
-    #                              db_index=True)
     subregion = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.SubRegion', blank=True,
                                   null=True, on_delete=models.CASCADE)
     region = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Region', blank=True,
