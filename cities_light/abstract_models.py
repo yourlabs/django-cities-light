@@ -19,7 +19,8 @@ from .validators import timezone_validator
 from .settings import INDEX_SEARCH_NAMES, CITIES_LIGHT_APP_NAME
 
 
-__all__ = ['AbstractCountry', 'AbstractRegion', 'AbstractCity',
+__all__ = ['AbstractCountry', 'AbstractRegion',
+           'AbstractSubRegion', 'AbstractCity',
            'CONTINENT_CHOICES']
 
 
@@ -118,6 +119,30 @@ class AbstractRegion(Base):
         return '%s, %s' % (self.name, self.country.name)
 
 
+class AbstractSubRegion(Base):
+    """
+    Base SubRegion model.
+    """
+
+    display_name = models.CharField(max_length=200)
+    geoname_code = models.CharField(max_length=50, null=True, blank=True,
+                                    db_index=True)
+
+    country = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Country',
+                                on_delete=models.CASCADE)
+    region = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Region',
+                               on_delete=models.CASCADE)
+
+    class Meta(Base.Meta):
+        unique_together = (('country', 'name'), ('country', 'slug'))
+        verbose_name = _('SubRegion')
+        verbose_name_plural = _('SubRegions')
+        abstract = True
+
+    def get_display_name(self):
+        return '%s, %s' % (self.name, self.country.name)
+
+
 class ToSearchIContainsLookup(lookups.IContains):
     """IContains lookup for ToSearchTextField."""
 
@@ -160,6 +185,8 @@ class AbstractCity(Base):
         null=True,
         blank=True)
 
+    subregion = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.SubRegion', blank=True,
+                                  null=True, on_delete=models.CASCADE)
     region = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Region', blank=True,
                                null=True, on_delete=models.CASCADE)
     country = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Country',
