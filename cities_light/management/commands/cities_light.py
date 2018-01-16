@@ -35,13 +35,9 @@ Country, Region, City = get_cities_models()
 
 class MemoryUsageWidget(progressbar.widgets.WidgetBase):
     def __call__(self, progress, data):
-        if sys.platform == 'win32':
-            return '?? MB'
-        rusage = resource.getrusage(resource.RUSAGE_SELF)
-        if sys.platform == 'darwin':
-            return '%s MB' % (rusage.ru_maxrss // 1048576)
-        else:
-            return '%s MB' % (rusage.ru_maxrss // 1024)
+        if sys.platform != 'win32':
+            return '%s kB' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        return '?? kB'
 
 
 class Command(BaseCommand):
