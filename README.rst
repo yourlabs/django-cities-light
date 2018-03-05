@@ -1,8 +1,8 @@
 .. image:: https://secure.travis-ci.org/yourlabs/django-cities-light.png?branch=master
     :target: http://travis-ci.org/yourlabs/django-cities-light
-.. image:: https://pypip.in/d/django-cities-light/badge.png
+.. image:: https://img.shields.io/pypi/dm/django-cities-light.svg
     :target: https://crate.io/packages/django-cities-light
-.. image:: https://pypip.in/v/django-cities-light/badge.png
+.. image:: https://img.shields.io/pypi/v/django-cities-light.svg
     :target: https://crate.io/packages/django-cities-light
 .. image:: https://codecov.io/github/yourlabs/django-cities-light/coverage.svg?branch=stable/3.x.x
     :target: https://codecov.io/github/yourlabs/django-cities-light?branch=stable/3.x.x
