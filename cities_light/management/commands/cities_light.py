@@ -313,9 +313,10 @@ It is possible to force the import of files which weren't downloaded using the
         except InvalidItems:
             return
 
+        force_insert = False
+        force_update = False
+
         try:
-            force_insert = False
-            force_update = False
             region = Region.objects.get(geoname_id=items[IRegion.geonameid])
             force_update = True
         except Region.DoesNotExist:
@@ -371,17 +372,6 @@ It is possible to force the import of files which weren't downloaded using the
             return
 
         try:
-            force_insert = False
-            force_update = False
-            city = City.objects.get(geoname_id=items[ICity.geonameid])
-            force_update = True
-        except City.DoesNotExist:
-            if self.noinsert:
-                return
-            city = City(geoname_id=items[ICity.geonameid])
-            force_insert = True
-
-        try:
             country_id = self._get_country_id(items[ICity.countryCode])
         except Country.DoesNotExist:
             if self.noinsert:
@@ -396,6 +386,25 @@ It is possible to force the import of files which weren't downloaded using the
             )
         except Region.DoesNotExist:
             region_id = None
+
+        force_insert = False
+        force_update = False
+
+        try:
+            city = City.objects.get(geoname_id=items[ICity.geonameid])
+            force_update = True
+        except City.DoesNotExist:
+            try:
+                # check on duplicate by unique key
+                city = City.objects.get(name=items[ICity.name],
+                                        region_id=region_id)
+                if city:
+                    return
+            except City.DoesNotExist:
+                if self.noinsert:
+                    return
+                city = City(geoname_id=items[ICity.geonameid])
+                force_insert = True
 
         save = False
         if city.country_id != country_id:
