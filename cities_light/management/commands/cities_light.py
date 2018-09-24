@@ -395,9 +395,11 @@ It is possible to force the import of files which weren't downloaded using the
             force_update = True
         except City.DoesNotExist:
             try:
+                # check on duplicate by unique key
                 city = City.objects.get(name=items[ICity.name],
                                         region_id=region_id)
-                force_update = True
+                if city:
+                    return
             except City.DoesNotExist:
                 if self.noinsert:
                     return
