@@ -71,10 +71,10 @@ def connect_default_signals(model_class):
     """
     if 'Country' in model_class.__name__:
         signals.pre_save.connect(set_name_ascii, sender=model_class)
-    if 'Region' in model_class.__name__:
+    if 'SubRegion' in model_class.__name__:
         signals.pre_save.connect(set_name_ascii, sender=model_class)
         signals.pre_save.connect(set_display_name, sender=model_class)
-    if 'SubRegion' in model_class.__name__:
+    if 'Region' in model_class.__name__:
         signals.pre_save.connect(set_name_ascii, sender=model_class)
         signals.pre_save.connect(set_display_name, sender=model_class)
     if 'City' in model_class.__name__:
