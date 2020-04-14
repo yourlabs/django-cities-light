@@ -11,6 +11,7 @@ from .base import TestImportBase, FixtureDir
 from ..contrib.ajax_selects_lookups import (
     CountryLookup,
     RegionLookup,
+    SubRegionLookup,
     CityLookup
 )
 
@@ -32,6 +33,7 @@ class TestRestFramework(TestImportBase):
             fixture_dir,
             'add_country',
             'add_region',
+            'add_subregion',
             'add_city',
             'add_translations',
         )
@@ -51,9 +53,11 @@ class TestRestFramework(TestImportBase):
     def test_get_countries(self):
         """Test that full list of countries can be retrieved."""
         data = self.json_get('/countries/')
-        self.assertEqual(len(data), 2, msg='Should retrieve 2 countries')
-        self.assertEqual(data[0]['name_ascii'], 'Russia')
-        self.assertEqual(data[1]['name_ascii'], 'USSR')
+        self.assertEqual(len(data), 3, msg='Should retrieve 3 countries')
+        names = [i['name_ascii'] for i in data]
+        self.assertIn('Russia', names)
+        self.assertIn('United Kingdom', names)
+        self.assertIn('USSR', names)
 
     @override_settings(ROOT_URLCONF='cities_light.contrib.restframework3')
     def test_search_countries(self):
@@ -69,9 +73,10 @@ class TestRestFramework(TestImportBase):
     def test_get_regions(self):
         """Test that full list of regions can be retrieved."""
         data = self.json_get('/regions/')
-        self.assertEqual(len(data), 2, msg='Should retrieve 2 regions')
+        self.assertEqual(len(data), 3, msg='Should retrieve 3 regions')
         self.assertEqual(data[0]['name_ascii'], 'Kemerovo')
         self.assertEqual(data[1]['name_ascii'], 'Kuzbass')
+        self.assertEqual(data[2]['name_ascii'], 'Scotland')
 
     @override_settings(ROOT_URLCONF='cities_light.contrib.restframework3')
     def test_search_regions(self):
@@ -87,11 +92,12 @@ class TestRestFramework(TestImportBase):
     def test_get_cities(self):
         """Test that full list of cities can be retrieved."""
         data = self.json_get('/cities/')
-        self.assertEqual(len(data), 4, msg='Should retrieve 4 cities')
+        self.assertEqual(len(data), 5, msg='Should retrieve 5 cities')
         self.assertEqual(data[0]['name_ascii'], 'Belovo')
         self.assertEqual(data[1]['name_ascii'], 'Kemerovo')
         self.assertEqual(data[2]['name_ascii'], 'Kiselevsk')
-        self.assertEqual(data[3]['name_ascii'], 'Novokuznetsk')
+        self.assertEqual(data[3]['name_ascii'], 'Nedd')
+        self.assertEqual(data[4]['name_ascii'], 'Novokuznetsk')
 
     @override_settings(ROOT_URLCONF='cities_light.contrib.restframework3')
     def test_search_cities(self):
@@ -118,6 +124,7 @@ class TestAjaxSelectsLookups(TestImportBase):
             fixture_dir,
             'add_country',
             'add_region',
+            'add_subregion',
             'add_city',
             'add_translations',
         )

@@ -12,7 +12,7 @@ from django.db.models import Q
 
 from ..loading import get_cities_models
 
-Country, Region, City = get_cities_models()
+Country, Region, SubRegion, City = get_cities_models()
 
 
 class StandardLookupChannel(LookupChannel):
@@ -54,6 +54,20 @@ class RegionLookup(StandardLookupChannel):
 
     def get_query(self, q, request):
         return Region.objects.filter(
+            Q(name__icontains=q) |
+            Q(name_ascii__icontains=q)
+        ).distinct()
+
+
+class SubRegionLookup(StandardLookupChannel):
+    """
+    Lookup channel for SubRegion, hits name and name_ascii.
+    """
+
+    model = SubRegion
+
+    def get_query(self, q, request):
+        return SubRegion.objects.filter(
             Q(name__icontains=q) |
             Q(name_ascii__icontains=q)
         ).distinct()

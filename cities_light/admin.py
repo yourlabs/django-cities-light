@@ -10,7 +10,7 @@ from .settings import *
 from .abstract_models import to_search
 from .loading import get_cities_models
 
-Country, Region, City = get_cities_models()
+Country, Region, SubRegion, City = get_cities_models()
 
 
 class CountryAdmin(admin.ModelAdmin):
@@ -68,6 +68,32 @@ class RegionAdmin(admin.ModelAdmin):
 admin.site.register(Region, RegionAdmin)
 
 
+class SubRegionAdmin(admin.ModelAdmin):
+    """
+    ModelAdmin for SubRegion.
+    """
+    list_filter = (
+        'country__continent',
+        'country',
+        'region',
+    )
+    search_fields = (
+        'name',
+        'name_ascii',
+        'geoname_id',
+    )
+    list_display = (
+        'name',
+        'country',
+        'region',
+        'geoname_id',
+    )
+    form = SubRegionForm
+
+
+admin.site.register(SubRegion, SubRegionAdmin)
+
+
 class CityChangeList(ChangeList):
     def get_query_set(self, request):
         if 'q' in list(request.GET.keys()):
@@ -82,6 +108,7 @@ class CityAdmin(admin.ModelAdmin):
     """
     list_display = (
         'name',
+        'subregion',
         'region',
         'country',
         'geoname_id',

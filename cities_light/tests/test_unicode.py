@@ -26,6 +26,7 @@ class TestUnicode(TestImportBase):
             fixture_dir,
             'kemerovo_country',
             'kemerovo_region',
+            'kemerovo_subregion',
             'kemerovo_city',
             'kemerovo_translations'
         )
@@ -52,11 +53,12 @@ class TestUnicode(TestImportBase):
                 FixtureDir('unicode'),
                 'kemerovo_country',
                 'kemerovo_region',
+                'kemerovo_subregion',
                 'kemerovo_city',
                 'kemerovo_translations'
             )
 
-            for w in warns:
+            for w in warns[:]:
                 warn = force_text(w.message)
                 self.assertTrue("not an unicode object" not in warn, warn)
 
