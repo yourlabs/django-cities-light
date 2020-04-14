@@ -55,8 +55,8 @@ class TestRestFramework(TestImportBase):
         data = self.json_get('/countries/')
         self.assertEqual(len(data), 3, msg='Should retrieve 3 countries')
         self.assertEqual(data[0]['name_ascii'], 'Russia')
-        self.assertEqual(data[1]['name_ascii'], 'USSR')
-        self.assertEqual(data[2]['name_ascii'], 'United Kingdom')
+        self.assertEqual(data[1]['name_ascii'], 'United Kingdom')
+        self.assertEqual(data[2]['name_ascii'], 'USSR')
 
     @override_settings(ROOT_URLCONF='cities_light.contrib.restframework3')
     def test_search_countries(self):
