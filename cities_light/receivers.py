@@ -33,18 +33,18 @@ def city_country(sender, instance, **kwargs):
 def city_search_names(sender, instance, **kwargs):
     search_names = set()
 
-    country_names = set((instance.country.name,))
+    country_names = {instance.country.name,}
     if instance.country.alternate_names:
         for n in instance.country.alternate_names.split(';'):
             country_names.add(n)
 
-    city_names = set((instance.name,))
+    city_names = {instance.name, }
     if instance.alternate_names:
         for n in instance.alternate_names.split(';'):
             city_names.add(n)
 
     if instance.region_id:
-        region_names = set((instance.region.name,))
+        region_names = {instance.region.name, }
         if instance.region.alternate_names:
             for n in instance.region.alternate_names.split(';'):
                 region_names.add(n)
