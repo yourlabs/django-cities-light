@@ -14,7 +14,7 @@ class Geonames(object):
     def __init__(self, url, force=False):
         # Creating a directory if not exist
         if not os.path.exists(DATA_DIR):
-            self.logger.info('Creating %s' % DATA_DIR)
+            self.logger.info('Creating %s', DATA_DIR)
             os.mkdir(DATA_DIR)
 
         destination_file_name = url.split('/')[-1]
@@ -52,8 +52,8 @@ class Geonames(object):
     def extract(self, zip_path, file_name):
         destination = os.path.join(DATA_DIR, file_name)
 
-        self.logger.info('Extracting %s from %s into %s' % (
-            file_name, zip_path, destination))
+        self.logger.info('Extracting %s from %s into %s',
+                         file_name, zip_path, destination)
         # Extracting the file in the data directory
         zip_file = zipfile.ZipFile(zip_path)
         if zip_file:
