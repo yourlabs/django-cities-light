@@ -1,6 +1,6 @@
 sudo: false
 language: python
-matrix:
+jobs:
   allow_failures:
   - env: TOXENV=py37-djangodev-sqlite
   - env: TOXENV=py37-djangodev-mysql
