@@ -1,7 +1,8 @@
-2020-08-28 3.7.1
+2020-08-28 3.8.0
     Fix for subregion #229
     Documentation improvement #221 #189
     General improvements on warnings and pylint recomendations
+    Dropped support of Django 1.11
 
 2020-08-06 3.7.0
     Fix for subregion
