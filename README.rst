@@ -82,6 +82,16 @@ By default, update procedure attempts to update all fields, including Country/Re
     ./manage.py cities_light --keep-slugs
 
 
+Get more cities
+---------------
+
+The configuration parameter CITIES_LIGHT_CITY_SOURCES, comes with the default value
+http://download.geonames.org/export/dump/cities15000.zip that has cities with a population
+over 15000, if you need to load cities with less population please use another source. For the list
+of available source please check here: http://download.geonames.org/export/dump/readme.txt
+
+
+
 Using fixtures
 --------------
 
