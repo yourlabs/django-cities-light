@@ -256,7 +256,8 @@ It is possible to force the import of files which weren't downloaded using the
             del self._subregion_codes
         self._country_codes = {}
         self._region_codes = collections.defaultdict(dict)
-        self._subregion_codes = collections.defaultdict(lambda: collections.defaultdict(dict))
+        self._subregion_codes = collections.defaultdict(
+            lambda: collections.defaultdict(dict))
 
     def _get_country_id(self, country_code2):
         """
