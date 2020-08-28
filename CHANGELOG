@@ -1,3 +1,8 @@
+2020-08-28 3.7.1
+    Fix for subregion #229
+    Documentation improvement #221 #189
+    General improvements on warnings and pylint recomendations
+
 2020-08-06 3.7.0
     Fix for subregion
     Drop support for python 2
