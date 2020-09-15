@@ -141,8 +141,8 @@ It is possible to export using natural foreign keys by using the --natural-forei
         call_command('dumpdata',
                      fixture,
                      format="json",
-                     indent=1,
                      natural_foreign=getattr(self, "natural_foreign", False),
+                     indent=1,
                      stdout=out)
         out.seek(0)
         with bz2.BZ2File(fixture_path, mode='w') as fixture_file:
