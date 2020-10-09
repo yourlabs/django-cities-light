@@ -1,4 +1,3 @@
-
 class CitiesLightException(Exception):
     """ Base exception class for this app's exceptions. """
     pass
@@ -14,6 +13,7 @@ class InvalidItems(CitiesLightException):
 
 class SourceFileDoesNotExist(CitiesLightException):
     """ A source file could not be found. """
-    def __init__(self, source):
+
+    def __init__(self, source: str):
         super(SourceFileDoesNotExist, self).__init__(
             '%s does not exist' % source)
