@@ -43,9 +43,9 @@ by specifying --base-url argument (do not forget the trailing slash):
 It is possible to force fixture download by using the --force-fetch option:
 
     ./manage.py cities_light_fixtures load --force-fetch
-    
-It is possible to export using natural foreign keys by using the 
---natural-foreign option (Take in consideration that this option will 
+
+It is possible to export using natural foreign keys by using the
+--natural-foreign option (Take in consideration that this option will
 going to take more time):
 
     ./manage.py cities_light_fixtures load --natural-foreign
