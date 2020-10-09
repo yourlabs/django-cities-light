@@ -18,7 +18,7 @@
 {
     "fields": {
         "alternate_names": "Aquitaine-Limousin-Poitou-Charentes",
-        "country": 3017382,
+        "country": [3017382],
         "display_name": "Nouvelle-Aquitaine, France",
         "geoname_code": "75",
         "geoname_id": 11071620,
@@ -38,7 +38,7 @@
         "geoname_id": 3026646,
         "name": "Charente",
         "name_ascii": "Charente",
-        "region": 11071620,
+        "region": [11071620],
         "slug": "charente"
     },
     "model": "cities_light.subregion",
@@ -56,10 +56,10 @@
         "name": "Angoul\u00eame",
         "name_ascii": "Angouleme",
         "population": 49468,
-        "region": 11071620,
+        "region": [11071620],
         "search_names": "angoulemeaquitainelimousinpoitoucharentesfrance angoulemeaquitainelimousinpoitoucharentesfrantsiia angoulemeaquitainelimousinpoitoucharentesrepubliquefrancaise angoulemefrance angoulemefrantsiia angoulemenouvelleaquitainefrance angoulemenouvelleaquitainefrantsiia angoulemenouvelleaquitainerepubliquefrancaise angoulemerepubliquefrancaise angulemaquitainelimousinpoitoucharentesfrance angulemaquitainelimousinpoitoucharentesfrantsiia angulemaquitainelimousinpoitoucharentesrepubliquefrancaise angulemfrance angulemfrantsiia angulemnouvelleaquitainefrance angulemnouvelleaquitainefrantsiia angulemnouvelleaquitainerepubliquefrancaise angulemrepubliquefrancaise",
         "slug": "angouleme",
-        "subregion": 3026646,
+        "subregion": [3026646],
         "timezone": "Europe/Paris"
     },
     "model": "cities_light.city",
