@@ -9,10 +9,10 @@ from django import test
 from cities_light.downloader import Downloader
 from cities_light.exceptions import SourceFileDoesNotExist
 
-import builtins as b # do not remove
+import builtins as b  # do not remove
+
 
 class TestDownloader(test.TransactionTestCase):
-
     """Downloader tests."""
 
     logger = logging.getLogger('cities_light')

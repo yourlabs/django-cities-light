@@ -44,8 +44,9 @@ It is possible to force fixture download by using the --force-fetch option:
 
     ./manage.py cities_light_fixtures load --force-fetch
     
-It is possible to export using natural foreign keys by using the --natural-foreign option 
-(Take in consideration that this option will going to take more time):
+It is possible to export using natural foreign keys by using the 
+--natural-foreign option (Take in consideration that this option will 
+going to take more time):
 
     ./manage.py cities_light_fixtures load --natural-foreign
     """.strip()
@@ -131,7 +132,8 @@ It is possible to export using natural foreign keys by using the --natural-forei
         elif subcommand == 'dump':
             self.dump_fixtures()
 
-    def dump_fixture(self, fixture, fixture_path, natural_foreign : bool=False):
+    def dump_fixture(self, fixture, fixture_path,
+                     natural_foreign: bool = False):
         """Dump single fixture."""
         self.logger.info('Dumping %s', fixture_path)
 
@@ -139,7 +141,8 @@ It is possible to export using natural foreign keys by using the --natural-forei
         call_command('dumpdata',
                      fixture,
                      format="json",
-                     natural_foreign=getattr(self, "natural_foreign", natural_foreign),
+                     natural_foreign=getattr(self, "natural_foreign",
+                                             natural_foreign),
                      indent=1,
                      stdout=out)
         out.seek(0)
