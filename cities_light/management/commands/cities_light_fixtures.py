@@ -131,7 +131,7 @@ It is possible to export using natural foreign keys by using the --natural-forei
         elif subcommand == 'dump':
             self.dump_fixtures()
 
-    def dump_fixture(self, fixture, fixture_path):
+    def dump_fixture(self, fixture, fixture_path, natural_foreign : bool=False):
         """Dump single fixture."""
         self.logger.info('Dumping %s', fixture_path)
 
@@ -139,7 +139,7 @@ It is possible to export using natural foreign keys by using the --natural-forei
         call_command('dumpdata',
                      fixture,
                      format="json",
-                     natural_foreign=getattr(self, "natural_foreign", False),
+                     natural_foreign=getattr(self, "natural_foreign", natural_foreign),
                      indent=1,
                      stdout=out)
         out.seek(0)
