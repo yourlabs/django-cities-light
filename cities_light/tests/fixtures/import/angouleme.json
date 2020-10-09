@@ -32,7 +32,7 @@
 {
     "fields": {
         "alternate_names": "",
-        "country": 1,
+        "country": [3017382],
         "display_name": "Charente, France",
         "geoname_code": "16",
         "geoname_id": 3026646,
@@ -47,7 +47,7 @@
 {
     "fields": {
         "alternate_names": "\u0410\u043d\u0433\u0443\u043b\u0435\u043c",
-        "country": 1,
+        "country": [3017382],
         "display_name": "Angoul\u00eame, Nouvelle-Aquitaine, France",
         "feature_code": "PPLA2",
         "geoname_id": 3037598,
