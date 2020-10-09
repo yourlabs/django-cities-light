@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import os.path
 import zipfile
 import logging
@@ -8,7 +6,7 @@ from .settings import *
 from .downloader import Downloader
 
 
-class Geonames(object):
+class Geonames:
     logger = logging.getLogger('cities_light')
 
     def __init__(self, url, force=False):

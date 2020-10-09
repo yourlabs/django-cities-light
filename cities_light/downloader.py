@@ -1,7 +1,5 @@
 """Data downloader."""
 
-from __future__ import unicode_literals
-
 import logging
 import time
 import os
@@ -13,7 +11,7 @@ from urllib.parse import urlparse
 from .exceptions import SourceFileDoesNotExist
 
 
-class Downloader(object):
+class Downloader:
 
     """Geonames data downloader class."""
 
