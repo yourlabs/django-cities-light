@@ -1,11 +1,11 @@
-.. image:: https://secure.travis-ci.org/jazzband/django-cities-light.png?branch=master
+.. image:: https://secure.travis-ci.org/jazzband/django-cities-light.svg?branch=master
     :target: http://travis-ci.org/jazzband/django-cities-light
 .. image:: https://pypip.in/d/django-cities-light/badge.png
     :target: https://crate.io/packages/django-cities-light
 .. image:: https://pypip.in/v/django-cities-light/badge.png
     :target: https://crate.io/packages/django-cities-light
-.. image:: https://codecov.io/github/jazzband/django-cities-light/coverage.svg?branch=stable/3.x.x
-    :target: https://codecov.io/github/jazzband/django-cities-light?branch=stable/3.x.x
+.. image:: https://codecov.io/github/jazzband/django-cities-light/coverage.svg
+    :target: https://codecov.io/github/jazzband/django-cities-light
 .. image:: https://jazzband.co/static/img/badge.svg
    :target: https://jazzband.co/
    :alt: Jazzband
@@ -149,7 +149,7 @@ If you want to build the docs, use the following steps::
     cd docs
     make html
 
-If you are ready to send a patch, please read YourLabs guidelines: https://github.com/jazzband/community/blob/master/docs/guidelines.rst
+If you are ready to send a patch, please read the `Jazzband guidelines <https://jazzband.co/about/guidelines>`_.
 
 Resources
 ---------

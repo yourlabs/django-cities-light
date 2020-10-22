@@ -79,12 +79,17 @@ DATABASES = {
         'ENGINE': 'django.db.backends.' + os.environ.get('DB_ENGINE', 'sqlite3'),
         'NAME': os.environ.get('DB_NAME', 'db.sqlite'),
         'USER': os.environ.get('DB_USER', ''),
+        'OPTIONS': {},
     }
 }
 
 if sys.version_info[0] < 3 and 'mysql' in DATABASES['default']['ENGINE']:
-    DATABASES['default']['OPTIONS'] = {
-        'autocommit': True,
+    DATABASES['default']['OPTIONS']['autocommit'] = True
+if 'mysql' in DATABASES['default']['ENGINE']:
+    DATABASES['default']['OPTIONS']['charset'] = 'utf8mb4'
+    DATABASES['default']['TEST'] = {
+        'CHARSET': 'utf8mb4',
+        'COLLATION': 'utf8mb4_unicode_ci',
     }
 
 # Password validation
@@ -165,7 +170,7 @@ if os.environ.get('CI', False):
     CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'ru']
 
     FIXTURE_DIR = os.path.abspath(
-        os.path.join(BASE_DIR, 'cities_light', 'tests', 'fixtures')
+        os.path.join(BASE_DIR, 'src', 'cities_light', 'tests', 'fixtures')
     )
 
     FIXTURE_DIRS = [FIXTURE_DIR]
