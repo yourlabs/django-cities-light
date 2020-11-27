@@ -14,6 +14,5 @@ class InvalidItems(CitiesLightException):
 class SourceFileDoesNotExist(CitiesLightException):
     """ A source file could not be found. """
 
-    def __init__(self, source: str):
-        super(SourceFileDoesNotExist, self).__init__(
-            '%s does not exist' % source)
+    def __init__(self, source):
+        super().__init__('%s does not exist' % source)
