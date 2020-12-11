@@ -25,7 +25,7 @@ SECRET_KEY = 'mzdvd*#0=$g(-!v_vj_7^(=zrh3klia(u&amp;cqd3nr7p^khh^ui#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS: list = []
 
 # Application definition
 
@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cities_light',
+    'rest_framework'
 ]
 
-# Rename to MIDDLEWARE on Django 1.10
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
