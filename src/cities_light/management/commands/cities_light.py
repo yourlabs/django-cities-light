@@ -9,10 +9,7 @@ import sys
 if sys.platform != 'win32':
     import resource
 
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
+import pickle
 
 from django.conf import settings
 from django.db import transaction, connection

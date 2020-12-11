@@ -5,10 +5,7 @@ import bz2
 import logging
 from argparse import RawTextHelpFormatter
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from io import StringIO
+from io import StringIO
 
 from django.db import transaction
 from django.core.management import call_command
