@@ -111,6 +111,13 @@ class RegionModelViewSet(CitiesLightListModelViewSet):
     serializer_class = RegionSerializer
     queryset = Region.objects.all()
 
+    def get_queryset(self):
+        queryset = super(RegionModelViewSet, self).get_queryset()
+
+        if self.request.GET.get('country', None):
+            return queryset.filter(country__pk=self.request.GET['country'])
+        return queryset.none()
+
 
 class SubRegionModelViewSet(CitiesLightListModelViewSet):
     serializer_class = SubRegionSerializer

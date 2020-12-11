@@ -84,6 +84,10 @@ class TestRestFramework(TestImportBase):
         self.assertEqual(len(data), 1, msg='Should find 1 region')
         self.assertEqual(data[0]['name_ascii'], 'Kuzbass')
 
+        data = self.json_get('/regions/?country=1')
+        self.assertEqual(len(data), 1, msg='Should find 1 region')
+        self.assertEqual(data[0]['name_ascii'], 'Kuzbass')
+
     @override_settings(ROOT_URLCONF='cities_light.contrib.restframework3')
     def test_get_cities(self):
         """Test that full list of cities can be retrieved."""
