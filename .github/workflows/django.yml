@@ -16,7 +16,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: cities_light
         ports:
         - 5432:5432
         options: >-
@@ -28,6 +28,8 @@ jobs:
         image: mysql
         ports:
         - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: cities_light
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
@@ -42,7 +44,7 @@ jobs:
       run: tox -v
       env:
         DB_HOST: localhost
-        DB_PASSWORD: postgres
-        PGPASSWORD: postgres
+        DB_PASSWORD: cities_light
+        PGPASSWORD: cities_light
     - name: Codecov
       run: codecov
