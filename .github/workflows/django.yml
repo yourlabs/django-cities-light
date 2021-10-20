@@ -24,7 +24,10 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
+      mysql:
+        image: mysql
+        ports:
+        - 3256:3256
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
@@ -39,5 +42,7 @@ jobs:
       run: tox -v
       env:
         DB_HOST: localhost
+        DB_PASSWORD: postgres
+        PGPASSWORD: postgres
     - name: Codecov
       run: codecov
