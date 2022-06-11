@@ -1,20 +1,21 @@
-.. image:: https://secure.travis-ci.org/yourlabs/django-cities-light.png?branch=master
+.. image:: https://secure.travis-ci.org/yourlabs/django-cities-light.svg?branch=master
     :target: http://travis-ci.org/yourlabs/django-cities-light
 .. image:: https://img.shields.io/pypi/dm/django-cities-light.svg
     :target: https://crate.io/packages/django-cities-light
 .. image:: https://img.shields.io/pypi/v/django-cities-light.svg
     :target: https://crate.io/packages/django-cities-light
-.. image:: https://codecov.io/github/yourlabs/django-cities-light/coverage.svg?branch=stable/3.x.x
-    :target: https://codecov.io/github/yourlabs/django-cities-light?branch=stable/3.x.x
+.. image:: https://codecov.io/github/yourlabs/django-cities-light/coverage.svg
+    :target: https://codecov.io/github/yourlabs/django-cities-light
+
 
 django-cities-light -- *Simple django-cities alternative*
 =========================================================
 
-This add-on provides models and commands to import country, region/state, and
+This add-on provides models and commands to import country, subregion, region/state, and
 city data in your database.
 
 The data is pulled from `GeoNames
-<http://www.geonames.org/>`_ and contains cities, regions/states and countries.
+<http://www.geonames.org/>`_ and contains cities, subregions, regions/states and countries.
 
 Spatial query support is not required by this application.
 
@@ -26,8 +27,8 @@ database, you should use
 
 Requirements:
 
-- Python 2.7 or 3.3,
-- Django >= 1.8
+- Python >= 3.8
+- Django >= 3.0
 - MySQL or PostgreSQL or SQLite.
 
 Yes, for some reason, code that used to work on MySQL (not without pain xD)
@@ -74,9 +75,19 @@ This command is well documented, consult the help with::
 
     ./manage.py help cities_light
 
-By default, update procedure attempts to update all fields, including Country/Region/City slugs. But there is an option to keep them intact::
+By default, update procedure attempts to update all fields, including Country/Region/Subregion/City slugs. But there is an option to keep them intact::
 
     ./manage.py cities_light --keep-slugs
+
+
+Get more cities
+---------------
+
+The configuration parameter CITIES_LIGHT_CITY_SOURCES, comes with the default value
+http://download.geonames.org/export/dump/cities15000.zip that has cities with a population
+over 15000, if you need to load cities with less population please use another source. For the list
+of available source please check here: http://download.geonames.org/export/dump/readme.txt
+
 
 
 Using fixtures
@@ -119,15 +130,15 @@ Running the full test suite::
 
 To run the tests in specific environment use the following command::
 
-    tox -e py27-django18-sqlite
+    tox -e py37-django31-sqlite
 
 And to run one specific test use this one::
 
-    tox -e py27-django18-sqlite -- cities_light/tests/test_form.py::FormTestCase::testCountryFormNameAndContinentAlone
+    tox -e py37-django31-sqlite -- cities_light/tests/test_form.py::FormTestCase::testCountryFormNameAndContinentAlone
 
 To run it even faster, you can switch to specific tox virtualenv::
 
-    source .tox/py27-django18-sqlite/bin/activate
+    source .tox/py37-django18-sqlite/bin/activate
     CI=true test_project/manage.py test cities_light.tests.test_form.FormTestCase.testCountryFormNameAndContinentAlone
 
 If you want to build the docs, use the following steps::
@@ -136,18 +147,12 @@ If you want to build the docs, use the following steps::
     cd docs
     make html
 
-If you are ready to send a patch, please read YourLabs guidelines: https://github.com/yourlabs/community/blob/master/docs/guidelines.rst
-
 Resources
 ---------
 
 You could subscribe to the mailing list ask questions or just be informed of
 package updates.
 
-- `Mailing list graciously hosted
-  <http://groups.google.com/group/yourlabs>`_ by `Google
-  <http://groups.google.com>`_
-- For **Security** issues, please contact yourlabs-security@googlegroups.com
 - `Git graciously hosted
   <https://github.com/yourlabs/django-cities-light/>`_ by `GitHub
   <http://github.com>`_,
@@ -160,5 +165,3 @@ package updates.
 - `Continuous integration graciously hosted
   <http://travis-ci.org/yourlabs/django-cities-light>`_ by `Travis-ci
   <http://travis-ci.org>`_
-- `**Online paid support** provided via HackHands
-  <https://hackhands.com/jpic/>`_,

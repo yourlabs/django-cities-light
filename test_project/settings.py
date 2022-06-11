@@ -16,7 +16,6 @@ import sys
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ SECRET_KEY = 'mzdvd*#0=$g(-!v_vj_7^(=zrh3klia(u&amp;cqd3nr7p^khh^ui#'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -42,15 +40,15 @@ INSTALLED_APPS = [
 ]
 
 # Rename to MIDDLEWARE on Django 1.10
-MIDDLEWARE_CLASSES = [
-    # 'django.middleware.security.SecurityMiddleware',
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'urls'
@@ -73,21 +71,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.' + os.environ.get('DB_ENGINE', 'sqlite3'),
+        'HOST': os.environ.get('DB_HOST', ''),
         'NAME': os.environ.get('DB_NAME', 'db.sqlite'),
         'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'PORT': os.environ.get('DB_PORT', ''),
+        'OPTIONS': {},
     }
 }
 
 if sys.version_info[0] < 3 and 'mysql' in DATABASES['default']['ENGINE']:
-    DATABASES['default']['OPTIONS'] = {
-        'autocommit': True,
+    DATABASES['default']['OPTIONS']['autocommit'] = True
+if 'mysql' in DATABASES['default']['ENGINE']:
+    DATABASES['default']['OPTIONS']['charset'] = 'utf8mb4'
+    DATABASES['default']['TEST'] = {
+        'CHARSET': 'utf8mb4',
+        'COLLATION': 'utf8mb4_unicode_ci',
     }
 
 # Password validation
@@ -108,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -121,7 +125,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
@@ -147,30 +150,30 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
-        'console':{
-            'level':'DEBUG',
-            'class':'logging.StreamHandler',
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
         },
     },
     'loggers': {
         'django.request': {
-            'handlers':['console'],
+            'handlers': ['console'],
             'propagate': True,
-            'level':'DEBUG',
+            'level': 'DEBUG',
         },
         'cities_light': {
-            'handlers':['console'],
+            'handlers': ['console'],
             'propagate': True,
-            'level':'WARNING',
+            'level': 'INFO',
         },
     }
 }
 
 if os.environ.get('CI', False):
-    CITIES_LIGHT_TRANSLATION_LANGUAGES=['fr', 'ru']
+    CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'ru']
 
     FIXTURE_DIR = os.path.abspath(
-        os.path.join(BASE_DIR, 'cities_light', 'tests', 'fixtures')
+        os.path.join(BASE_DIR, 'src', 'cities_light', 'tests', 'fixtures')
     )
 
     FIXTURE_DIRS = [FIXTURE_DIR]

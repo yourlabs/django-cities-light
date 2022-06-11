@@ -1,0 +1,54 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8,3.9,'3.10']
+    services:
+      postgres:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: cities_light
+        ports:
+        - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql
+        ports:
+        - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: cities_light
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox tox-gh-actions codecov
+    - name: Test with tox
+      run: tox -v
+      env:
+        DB_HOST: 127.0.0.1
+        DB_PASSWORD: cities_light
+        PGPASSWORD: cities_light
+    - name: Codecov
+      run: codecov

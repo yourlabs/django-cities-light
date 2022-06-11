@@ -11,6 +11,21 @@
 *.egg-info
 build/
 dist/
+venv/
+*.egg/
+src/cities_light/version.py
 
 # Ignore the downloaded data.
-cities_light/data/
+src/cities_light/data/
+
+# vscode & codespaces
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+pythonenv3.8/
+
+# Local History for Visual Studio Code
+.history/
