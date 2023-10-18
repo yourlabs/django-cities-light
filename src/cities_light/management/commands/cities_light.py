@@ -240,8 +240,8 @@ It is possible to force the import of files which weren't downloaded using the
                     self.translation_data = pickle.load(f)
             else:
                 self.logger.debug(
-                    'The translation file that you are trying to load is empty: %s',
-                    translation_hack_path)
+                    'The translation file that you are trying to'
+                    ' load is empty: %s', translation_hack_path)
 
         self.logger.info('Importing parsed translation in the database')
         self.translation_import()
