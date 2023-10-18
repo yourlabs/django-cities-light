@@ -8,6 +8,7 @@ class BaseType(ObjectType):
     geoname_id = Int(description="Geoname id.")
     alternate_names = String(description="Alternate names.")
 
+
 class Country(BaseType):
     code2 = String(description="Country code 2 letters.")
     code3 = String(description="Country code 3 letters.")
@@ -21,11 +22,13 @@ class Region(BaseType):
     geoname_code = String(description="Geoname code")
     country = Field(Country, description="Country.")
 
+
 class SubRegion(BaseType):
     display_name = String(description="display name.")
     geoname_code = String(description="Geoname code")
     country = Field(Country, description="Country")
     region = Field(Region, description="Region")
+
 
 class City(BaseType):
     display_name = String(description="display name")
