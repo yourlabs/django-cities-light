@@ -7,7 +7,7 @@ from django import test
 from django.core.management import call_command
 from django.core.management.base import CommandError
 
-from dbdiff.fixture import Fixture
+# from dbdiff.fixture import Fixture
 from cities_light.settings import DATA_DIR, FIXTURES_BASE_URL
 from cities_light.management.commands.cities_light_fixtures import Command
 from cities_light.downloader import Downloader

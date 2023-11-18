@@ -1,7 +1,9 @@
 import glob
 import os
 
-from dbdiff.fixture import Fixture
+from django.core import management
+from django.core.management.commands import dumpdata
+
 from .base import TestImportBase, FixtureDir
 from ..settings import DATA_DIR
 
@@ -20,7 +22,8 @@ class TestImport(TestImportBase):
             'angouleme_city',
             'angouleme_translations'
         )
-        Fixture(fixture_dir.get_file_path('angouleme.json')).assertNoDiff()
+
+        self.assertNoDiff(fixture_dir.get_file_path("angouleme.json"))
 
     def test_single_city_zip(self):
         """Load single city."""
@@ -38,7 +41,7 @@ class TestImport(TestImportBase):
             'angouleme_translations',
             file_type="zip"
         )
-        Fixture(FixtureDir('import').get_file_path('angouleme.json')).assertNoDiff()
+        self.assertNoDiff(FixtureDir('import').get_file_path("angouleme.json"))
 
     def test_city_wrong_timezone(self):
         """Load single city with wrong timezone."""
@@ -51,7 +54,8 @@ class TestImport(TestImportBase):
             'angouleme_city_wtz',
             'angouleme_translations'
         )
-        Fixture(fixture_dir.get_file_path('angouleme_wtz.json')).assertNoDiff()
+
+        self.assertNoDiff(FixtureDir('import').get_file_path("angouleme_wtz.json"))
 
         from ..loading import get_cities_model
         city_model = get_cities_model('City')

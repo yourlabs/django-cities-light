@@ -1,7 +1,6 @@
 """Tests for update records."""
 import unittest
 
-from dbdiff.fixture import Fixture
 from .base import TestImportBase, FixtureDir
 
 
@@ -30,9 +29,9 @@ class TestUpdate(TestImportBase):
             'update_translations',
         )
 
-        Fixture(
+        self.assertNoDiff(
             fixture_dir.get_file_path('update_fields.json')
-        ).assertNoDiff()
+        )
 
     def test_update_fields_wrong_timezone(self):
         """Test all fields are updated, but timezone field is wrong."""
@@ -56,9 +55,9 @@ class TestUpdate(TestImportBase):
             'update_translations',
         )
 
-        Fixture(
+        self.assertNoDiff(
             fixture_dir.get_file_path('update_fields_wtz.json')
-        ).assertNoDiff()
+        )
 
     def test_change_country(self):
         """Test change country for region/city."""
@@ -82,9 +81,9 @@ class TestUpdate(TestImportBase):
             'update_translations',
         )
 
-        Fixture(
+        self.assertNoDiff(
             fixture_dir.get_file_path('change_country.json')
-        ).assertNoDiff()
+        )
 
     def test_change_region_and_country(self):
         """Test change region and country."""
@@ -108,9 +107,9 @@ class TestUpdate(TestImportBase):
             'update_translations',
         )
 
-        Fixture(
+        self.assertNoDiff(
             fixture_dir.get_file_path('change_region_and_country.json')
-        ).assertNoDiff()
+        )
 
     def test_keep_slugs(self):
         """Test --keep-slugs option."""
@@ -135,9 +134,9 @@ class TestUpdate(TestImportBase):
             keep_slugs=True
         )
 
-        Fixture(
+        self.assertNoDiff(
             fixture_dir.get_file_path('keep_slugs.json'),
-        ).assertNoDiff()
+        )
 
     def test_add_records(self):
         """Test that new records are added."""
@@ -161,9 +160,9 @@ class TestUpdate(TestImportBase):
             'add_translations'
         )
 
-        Fixture(
+        self.assertNoDiff(
             fixture_dir.get_file_path('add_records.json')
-        ).assertNoDiff()
+        )
 
     def test_noinsert(self):
         """Test --noinsert option."""
@@ -188,9 +187,9 @@ class TestUpdate(TestImportBase):
             noinsert=True
         )
 
-        Fixture(
+        self.assertNoDiff(
             fixture_dir.get_file_path('noinsert.json'),
-        ).assertNoDiff()
+        )
 
     # TODO: make the test pass
     @unittest.skip("Obsolete records are not removed yet.")
