@@ -83,11 +83,11 @@ class TestImportBase(test.TransactionTestCase):
                                     force_import_all=True,
                                     **options)
 
-    def export_data(self) -> bytes:
+    def export_data(self, app_label=None) -> bytes:
         out = StringIO()
         management.call_command(
             "dumpdata",
-            "cities_light",
+            app_label or "cities_light",
             format="sorted_json",
             natural_foreign=True,
             indent=4,
@@ -95,10 +95,10 @@ class TestImportBase(test.TransactionTestCase):
         )
         return out.getvalue()
 
-    def assertNoDiff(self, fixture_path):
+    def assertNoDiff(self, fixture_path, app_label=None):
         """Assert that dumped data matches fixture."""
         
         with open(fixture_path) as f:
             self.assertListEqual(
-                json.loads(f.read()), json.loads(self.export_data())
+                json.loads(f.read()), json.loads(self.export_data(app_label))
             )

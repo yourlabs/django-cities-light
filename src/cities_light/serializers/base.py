@@ -64,6 +64,9 @@ class BaseSerializerMixin(object):
             if value % 1 == 0:
                 data['fields'][key] = int(value)
             else:
+                print(type(value), " => ", type(value.normalize()))
+                print(value, " => ", value.normalize())
+                # data['fields'][key] = value
                 data['fields'][key] = value.normalize()
 
     def get_dump_object(self, obj):
