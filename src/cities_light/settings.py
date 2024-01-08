@@ -154,8 +154,9 @@ INDEX_SEARCH_NAMES = getattr(settings, 'CITIES_LIGHT_INDEX_SEARCH_NAMES', None)
 if INDEX_SEARCH_NAMES is None:
     INDEX_SEARCH_NAMES = True
     for database in list(settings.DATABASES.values()):
-        if "ENGINE" in database and ('mysql' in database.get('ENGINE').lower() 
-                                     or 'postgresql' in database.get('ENGINE').lower()):
+        if "ENGINE" in database and (
+            'mysql' in database.get('ENGINE').lower()
+            or 'postgresql' in database.get('ENGINE').lower()):
             INDEX_SEARCH_NAMES = False
 
 DEFAULT_APP_NAME = 'cities_light'
