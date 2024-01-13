@@ -1,31 +1,27 @@
 import unittest
+from io import StringIO
 
 from django import test
-from django.apps import apps
-from django.db.migrations.autodetector import MigrationAutodetector
-from django.db.migrations.loader import MigrationLoader
-from django.db.migrations.questioner import (
-    InteractiveMigrationQuestioner, )
-from django.db.migrations.state import ProjectState
+from django.core.management import call_command
+from django.test.utils import override_settings
 
 
+@override_settings(
+    MIGRATION_MODULES={
+        "cities_light": "cities_light.migrations",
+    },
+)
 class TestNoMigrationLeft(test.TestCase):
-    @unittest.skip("TODO: make the test pass")
     def test_no_migration_left(self):
-        loader = MigrationLoader(None, ignore_no_migrations=True)
-        conflicts = loader.detect_conflicts()
-        app_labels = ['cities_light']
-
-        autodetector = MigrationAutodetector(
-            loader.project_state(),
-            ProjectState.from_apps(apps),
-            InteractiveMigrationQuestioner(specified_apps=app_labels, dry_run=True),
-        )
-
-        changes = autodetector.changes(
-            graph=loader.graph,
-            trim_to_apps=app_labels or None,
-            convert_apps=app_labels or None,
-        )
-
-        assert 'cities_light' not in changes
+        out = StringIO()
+        try:
+            call_command(
+                "makemigrations",
+                "cities_light",
+                "--dry-run",
+                "--check",
+                stdout=out,
+                stderr=StringIO(),
+            )
+        except SystemExit:  # pragma: no cover
+            raise AssertionError("Pending migrations:\n" + out.getvalue()) from None

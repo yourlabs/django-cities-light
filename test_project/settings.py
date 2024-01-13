@@ -181,4 +181,4 @@ if os.environ.get('CI', False):
 
     LOGGING['loggers']['cities_light']['level'] = 'DEBUG'
 
-    INSTALLED_APPS += ('dbdiff',)
+    # INSTALLED_APPS += ('dbdiff',)

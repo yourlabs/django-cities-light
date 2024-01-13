@@ -31,6 +31,21 @@
 },
 {
     "fields": {
+        "alternate_names": "Юргинский район",
+        "country": [2017370],
+        "display_name": "Yurginskiy Rayon, Russia",
+        "geoname_code": "1485714",
+        "geoname_id": 1485714,
+        "name": "Yurginskiy Rayon",
+        "name_ascii": "Yurginskiy Rayon",
+        "region": [1503900],
+        "slug": "yurginskiy-rayon"
+    },
+    "model": "cities_light.subregion",
+    "pk": 1
+},
+{
+    "fields": {
         "alternate_names": "\u041a\u0435\u043c\u0435\u0440\u043e\u0432\u043e",
         "country": [2017370],
         "display_name": "Kemerovo, Kemerovo, Russia",

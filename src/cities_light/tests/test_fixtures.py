@@ -1,5 +1,6 @@
 """Test for cities_light_fixtures management command."""
 import bz2
+import json
 import os
 from unittest import mock
 
@@ -7,15 +8,14 @@ from django import test
 from django.core.management import call_command
 from django.core.management.base import CommandError
 
-from dbdiff.fixture import Fixture
 from cities_light.settings import DATA_DIR, FIXTURES_BASE_URL
 from cities_light.management.commands.cities_light_fixtures import Command
 from cities_light.downloader import Downloader
 from cities_light.models import City
-from .base import FixtureDir
+from .base import TestImportBase, FixtureDir
 
 
-class TestCitiesLigthFixtures(test.TransactionTestCase):
+class TestCitiesLigthFixtures(TestImportBase):
     """Tests for cities_light_fixtures management command."""
 
     def test_dump_fixtures(self):
@@ -36,6 +36,26 @@ class TestCitiesLigthFixtures(test.TransactionTestCase):
             mock_func.assert_any_call('cities_light.SubRegion', cmd.subregion_path)
             mock_func.assert_any_call('cities_light.City', cmd.city_path)
 
+    # def export_data(self, app_label=None) -> bytes:
+    #     out = StringIO()
+    #     management.call_command(
+    #         "dumpdata",
+    #         app_label or "cities_light",
+    #         format="sorted_json",
+    #         natural_foreign=True,
+    #         indent=4,
+    #         stdout=out
+    #     )
+    #     return out.getvalue()
+
+    def assertNoDiff(self, fixture_path, app_label=None):
+        """Assert that dumped data matches fixture."""
+        
+        with open(fixture_path) as f:
+            self.assertListEqual(
+                json.loads(f.read()), json.loads(self.export_data(app_label))
+            )
+
     def test_dump_fixture(self):
         """
         Test dump_fixture calls dumpdata management command
@@ -43,6 +63,7 @@ class TestCitiesLigthFixtures(test.TransactionTestCase):
         # Load test data
         destination = FixtureDir('import').get_file_path('angouleme.json')
         call_command('loaddata', destination)
+
         # Dump
         try:
             fixture_path = os.path.join(os.path.dirname(__file__), "fixtures", "test_dump_fixture.json")
@@ -52,7 +73,13 @@ class TestCitiesLigthFixtures(test.TransactionTestCase):
                 data = bzfile.read()
             with open(fixture_path, mode='wb') as file:
                 file.write(data)
-            Fixture(fixture_path, models=[City]).assertNoDiff()
+
+            # with open(destination) as f2, open(fixture_path) as f:
+            #     assert f.read() == f2.read()
+                # self.assertListEqual(json.loads(f.read()), json.loads(f2.read()))
+            # assert destination == fixture_path.read()
+            self.assertNoDiff(fixture_path, 'cities_light.City')
+
         finally:
             if os.path.exists(fixture_path):
                 os.remove(fixture_path)
@@ -86,7 +113,7 @@ class TestCitiesLigthFixtures(test.TransactionTestCase):
             mock_func.assert_any_call(
                 cmd.city_url, cmd.city_path, force=True)
 
-    def test_load_fixture(self):
+    def test_load_fixture_result(self):
         """Test loaded fixture matches database content."""
         destination = FixtureDir('import').get_file_path('angouleme.json')
         with mock.patch.object(Downloader, 'download') as mock_func:
@@ -94,7 +121,7 @@ class TestCitiesLigthFixtures(test.TransactionTestCase):
             cmd.load_fixture(source='/abcdefg.json',
                              destination=destination,
                              force=True)
-            Fixture(destination).assertNoDiff()
+            self.assertNoDiff(destination)
             mock_func.assert_called_with(source='/abcdefg.json',
                                          destination=destination,
                                          force=True)
