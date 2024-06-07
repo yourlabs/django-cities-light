@@ -128,7 +128,7 @@ class AbstractRegion(Base):
                                     db_index=True)
 
     country = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Country',
-                                on_delete=models.CASCADE)
+                                on_delete=models.CASCADE, to_field='geoname_id')
 
     class Meta(Base.Meta):
         unique_together = (('country', 'name'), ('country', 'slug'))
@@ -150,10 +150,10 @@ class AbstractSubRegion(Base):
                                     db_index=True)
 
     country = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Country',
-                                on_delete=models.CASCADE)
+                                on_delete=models.CASCADE, to_field='geoname_id')
     region = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Region',
                                null=True, blank=True,
-                               on_delete=models.CASCADE)
+                               on_delete=models.CASCADE, to_field='geoname_id')
 
     class Meta(Base.Meta):
         verbose_name = _('SubRegion')
@@ -191,11 +191,11 @@ class AbstractCity(Base):
 
     subregion = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.SubRegion',
                                   blank=True, null=True,
-                                  on_delete=models.CASCADE)
+                                  on_delete=models.CASCADE, to_field='geoname_id')
     region = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Region', blank=True,
-                               null=True, on_delete=models.CASCADE)
+                               null=True, on_delete=models.CASCADE, to_field='geoname_id')
     country = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Country',
-                                on_delete=models.CASCADE)
+                                on_delete=models.CASCADE, to_field='geoname_id')
     population = models.BigIntegerField(null=True, blank=True, db_index=True)
     feature_code = models.CharField(max_length=10, null=True, blank=True,
                                     db_index=True)
