@@ -1,6 +1,5 @@
 from django.db import models, migrations
 import autoslug.fields
-import cities_light.models
 from cities_light.settings import INDEX_SEARCH_NAMES
 
 

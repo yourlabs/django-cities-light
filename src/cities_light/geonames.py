@@ -2,7 +2,7 @@ import os.path
 import zipfile
 import logging
 
-from .settings import *
+from .settings import DATA_DIR
 from .downloader import Downloader
 
 
