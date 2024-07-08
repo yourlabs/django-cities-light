@@ -85,15 +85,10 @@ from .abstract_models import (AbstractCountry, AbstractRegion,
                               CONTINENT_CHOICES,
                               to_search, to_ascii)
 
-from .signals import *
-from .receivers import *
-from .settings import *
+from .receivers import connect_default_signals
+from .settings import CITIES_LIGHT_APP_NAME, DEFAULT_APP_NAME
 
-__all__ = ['CONTINENT_CHOICES', 'to_search', 'to_ascii', 'filter_non_cities',
-           'filter_non_included_countries_country',
-           'filter_non_included_countries_region',
-           'filter_non_included_countries_subregion',
-           'filter_non_included_countries_city']
+__all__ = ['CONTINENT_CHOICES', 'to_search', 'to_ascii']
 
 if CITIES_LIGHT_APP_NAME == DEFAULT_APP_NAME:
     class Country(AbstractCountry):

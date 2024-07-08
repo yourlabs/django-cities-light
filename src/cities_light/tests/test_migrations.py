@@ -1,5 +1,3 @@
-import unittest
-
 from django import test
 from django.apps import apps
 from django.db.migrations.autodetector import MigrationAutodetector
@@ -7,13 +5,15 @@ from django.db.migrations.loader import MigrationLoader
 from django.db.migrations.questioner import (
     InteractiveMigrationQuestioner, )
 from django.db.migrations.state import ProjectState
+import logging
 
+logger = logging.getLogger(__name__)
 
 class TestNoMigrationLeft(test.TestCase):
-    @unittest.skip("TODO: make the test pass")
     def test_no_migration_left(self):
         loader = MigrationLoader(None, ignore_no_migrations=True)
         conflicts = loader.detect_conflicts()
+        logger.error(conflicts)
         app_labels = ['cities_light']
 
         autodetector = MigrationAutodetector(
