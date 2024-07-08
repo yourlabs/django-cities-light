@@ -145,7 +145,7 @@ class TestDownloader(test.TransactionTestCase):
         m_check.return_value = True
         downloader = Downloader()
         source = 'file:///a.txt'
-        destination = '/a.txt'
+        destination = '/tmp/a.txt'
         # The downloader.download will return false
         # as source and destination are same
         # The downloader.source_matches_destination will return
@@ -167,7 +167,7 @@ class TestDownloader(test.TransactionTestCase):
         m_need.return_value = False
         downloader = Downloader()
         source = 'file:///a.txt'
-        destination = '/a.txt'
+        destination = '/tmp/a.txt'
         # Here dowaloder.needs_downloading() will return false
         # as the time of modifiaction of dest>= time of source
         # and the size od source and destination are same
@@ -190,25 +190,23 @@ class TestDownloader(test.TransactionTestCase):
         m_need.return_value = True
         downloader = Downloader()
         source = 'file:///b.txt'
-        destination = '/a.txt'
+        destination = '/tmp/a.txt'
 
         tmpfile = tempfile.SpooledTemporaryFile(max_size=1024000, mode='wb')
         tmpfile.write(b'source content')
         tmpfile.seek(0)
 
+        mock_open = mock.mock_open()
         with mock.patch('cities_light.downloader.urlopen',
-                        return_value=tmpfile):
-            module_name = '{}.b.open'.format('cities_light.downloader.urlopen')
-            mock_open = mock.mock_open()
-            # The downoader.needs_downloading will return true and last three
-            # lines of downloader.download will copy the source to sestination
-            with mock.patch(module_name, mock_open):
-                self.assertTrue(downloader.download(
-                    source,
-                    destination,
-                    False))
-                handle = mock_open()
-                handle.write.assert_called_once_with(b'source content')
+                        return_value=tmpfile), mock.patch('cities_light.downloader.open', mock_open):
+            # The downloader.needs_downloading will return true and last three
+            # lines of downloader.download will copy the source to destination
+            self.assertTrue(downloader.download(
+                source,
+                destination,
+                False))
+            handle = mock_open()
+            handle.write.assert_called_once_with(b'source content')
 
     def test_not_download(self):
         """Tests actual not download."""
@@ -216,7 +214,7 @@ class TestDownloader(test.TransactionTestCase):
             m.return_value = True
             downloader = Downloader()
             source = 'file:///b.txt'
-            destination = '/a.txt'
+            destination = '/tmp/a.txt'
             with mock.patch('cities_light.downloader.urlopen') as uo_mock:
                 downloader.download(source, destination)
                 uo_mock.assert_not_called()
