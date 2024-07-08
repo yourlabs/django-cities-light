@@ -83,7 +83,7 @@ That's all!
 from .abstract_models import (AbstractCountry, AbstractRegion,
                               AbstractSubRegion, AbstractCity,
                               CONTINENT_CHOICES,
-                              ToSearchTextField, to_search, to_ascii)
+                              to_search, to_ascii)
 
 from .signals import *
 from .receivers import *

@@ -1,4 +1,4 @@
-from django.db import migrations, models
+from django.db import migrations
 import cities_light.abstract_models
 
 from cities_light.settings import INDEX_SEARCH_NAMES
