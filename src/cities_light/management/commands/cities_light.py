@@ -21,9 +21,9 @@ import progressbar
 
 from ...settings import (
     COUNTRY_SOURCES, REGION_SOURCES, SUBREGION_SOURCES, CITY_SOURCES,
-    TRANSLATION_SOURCES, DATA_DIR, TRANSLATION_LANGUAGES
+    TRANSLATION_SOURCES, DATA_DIR, TRANSLATION_LANGUAGES,
+    ICountry, IRegion, ISubRegion, ICity, IAlternate
 )
-from ...models import ICountry, IRegion, ISubRegion, ICity, IAlternate
 from ...signals import (
     country_items_pre_import, region_items_pre_import,
     subregion_items_pre_import, city_items_pre_import,
