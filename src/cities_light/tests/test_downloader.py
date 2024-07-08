@@ -198,7 +198,7 @@ class TestDownloader(test.TransactionTestCase):
 
         with mock.patch('cities_light.downloader.urlopen',
                         return_value=tmpfile):
-            module_name = '{}.b.open'.format(__name__)
+            module_name = '{}.b.open'.format('cities_light.downloader.urlopen')
             mock_open = mock.mock_open()
             # The downoader.needs_downloading will return true and last three
             # lines of downloader.download will copy the source to sestination
