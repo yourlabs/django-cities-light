@@ -8,7 +8,6 @@ from .signals import (
 from .exceptions import InvalidItems
 
 
-
 def set_name_ascii(sender, instance=None, **kwargs):
     """
     Signal reciever that sets instance.name_ascii from instance.name.

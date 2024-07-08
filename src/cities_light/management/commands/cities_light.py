@@ -6,9 +6,7 @@ import logging
 from argparse import RawTextHelpFormatter
 import sys
 
-if sys.platform != 'win32':
-    import resource
-
+import resource
 import pickle
 
 from django.conf import settings
