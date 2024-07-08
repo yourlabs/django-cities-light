@@ -3,8 +3,9 @@ from .abstract_models import to_ascii, to_search
 from .settings import INCLUDE_CITY_TYPES, INCLUDE_COUNTRIES
 from .signals import (
     city_items_pre_import, country_items_pre_import, region_items_pre_import,
-    subregion_items_pre_import, InvalidItems,
+    subregion_items_pre_import
 )
+from .exceptions import InvalidItems
 
 
 
