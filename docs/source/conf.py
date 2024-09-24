@@ -19,7 +19,6 @@ django.setup()
 
 autoclass_content = "both"
 
-import cities_light
 
 
 # -- Project information -----------------------------------------------------
