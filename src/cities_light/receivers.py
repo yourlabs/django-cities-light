@@ -38,19 +38,22 @@ def city_search_names(sender, instance, **kwargs):
 
     country_names = {instance.country.name, }
     if instance.country.alternate_names:
-        for n in instance.country.alternate_names.split(';'):
-            country_names.add(n)
+        country_alternate_names = eval(instance.country.alternate_names)
+        country_names = country_names.union(*country_alternate_names.values())
 
     city_names = {instance.name, }
     if instance.alternate_names:
-        for n in instance.alternate_names.split(';'):
-            city_names.add(n)
+        if isinstance(instance.alternate_names, str):
+            city_alternate_names = eval(instance.alternate_names)
+        else: 
+            city_alternate_names = instance.alternate_names
+        city_names = city_names.union(*city_alternate_names.values())
 
     if instance.region_id:
         region_names = {instance.region.name, }
         if instance.region.alternate_names:
-            for n in instance.region.alternate_names.split(';'):
-                region_names.add(n)
+            region_alternate_names = eval(instance.region.alternate_names)
+            region_names = region_names.union(*region_alternate_names.values())
     else:
         region_names = set()
 
