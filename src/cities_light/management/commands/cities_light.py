@@ -680,20 +680,16 @@ It is possible to force the import of files which weren't downloaded using the
                     continue
 
                 save = False
-                alternate_names = set()
+                alternate_names = dict()
                 for lang, names in geoname_data.items():
-                    if lang == 'post':
+                    if lang == "post":
                         # we might want to save the postal codes somewhere
                         # here's where it will all start ...
                         continue
 
-                    for name in names:
-                        if name == model.name:
-                            continue
-
-                        alternate_names.add(name)
-
-                alternate_names = ';'.join(sorted(alternate_names))
+                    # Append sorted values by length for each language
+                    alternate_names[lang] = sorted(names, key=len)
+                    
                 if model.alternate_names != alternate_names:
                     model.alternate_names = alternate_names
                     save = True
