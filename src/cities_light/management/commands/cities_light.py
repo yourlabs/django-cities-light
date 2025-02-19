@@ -682,7 +682,7 @@ It is possible to force the import of files which weren't downloaded using the
                 save = False
                 alternate_names = dict()
                 for lang, names in geoname_data.items():
-                    if lang == "post":
+                    if lang == 'post':
                         # we might want to save the postal codes somewhere
                         # here's where it will all start ...
                         continue
