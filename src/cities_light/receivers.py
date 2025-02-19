@@ -1,3 +1,6 @@
+import ast # solution 1
+# import json # solution 2
+
 from django.db.models import signals
 from .abstract_models import to_ascii, to_search
 from .settings import INCLUDE_CITY_TYPES, INCLUDE_COUNTRIES
@@ -38,22 +41,30 @@ def city_search_names(sender, instance, **kwargs):
 
     country_names = {instance.country.name, }
     if instance.country.alternate_names:
-        country_alternate_names = eval(instance.country.alternate_names)
+        # solution 1: literal_eval
+        country_alternate_names = ast.literal_eval(instance.country.alternate_names)
         country_names = country_names.union(*country_alternate_names.values())
+        # solution 2: json
 
     city_names = {instance.name, }
     if instance.alternate_names:
+        # for some reasons, city values come as both str and dict.
+        # solution 1: literal_eval
         if isinstance(instance.alternate_names, str):
-            city_alternate_names = eval(instance.alternate_names)
+            city_alternate_names = ast.literal_eval(instance.alternate_names)
         else: 
             city_alternate_names = instance.alternate_names
         city_names = city_names.union(*city_alternate_names.values())
+        # solution 2: json
 
     if instance.region_id:
         region_names = {instance.region.name, }
         if instance.region.alternate_names:
-            region_alternate_names = eval(instance.region.alternate_names)
+            # solution 1: literal_eval
+            region_alternate_names = ast.literal_eval(instance.region.alternate_names)
             region_names = region_names.union(*region_alternate_names.values())
+            # solution 2: json
+    
     else:
         region_names = set()
 
