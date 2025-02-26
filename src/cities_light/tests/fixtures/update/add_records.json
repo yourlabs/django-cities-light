@@ -10,7 +10,8 @@
         "name_ascii": "Russia",
         "phone": "7",
         "slug": "russia",
-        "tld": "ru"
+        "tld": "ru",
+        "translations": {"fr": ["Russie"], "ru": ["Российская Федерация"]}
     },
     "model": "cities_light.country",
     "pk": 1
@@ -26,7 +27,8 @@
         "name_ascii": "USSR",
         "phone": "8",
         "slug": "ussr",
-        "tld": "su"
+        "tld": "su",
+        "translations": {"fr": ["Russie"], "ru": ["СССР"]}
     },
     "model": "cities_light.country",
     "pk": 2
@@ -42,7 +44,8 @@
         "name_ascii": "United Kingdom",
         "phone": "44",
         "slug": "united-kingdom",
-        "tld": "uk"
+        "tld": "uk",
+        "translations": {"fr": ["Royaume-Uni", "Grande-Bretagne"], "ru": ["Великобритания", "Соединенное Королевство"]}
     },
     "model": "cities_light.country",
     "pk": 3
@@ -56,7 +59,9 @@
         "geoname_id": 1503900,
         "name": "Kemerovo",
         "name_ascii": "Kemerovo",
-        "slug": "kemerovo"
+        "slug": "kemerovo",
+        "translations": {"fr": ["Oblast de Kemerovo"],
+        "ru": ["Кемеровская область", "Кемеровская Область"]}
     },
     "model": "cities_light.region",
     "pk": 1
@@ -70,7 +75,8 @@
         "geoname_id": 1503999,
         "name": "Kuzbass",
         "name_ascii": "Kuzbass",
-        "slug": "kuzbass"
+        "slug": "kuzbass",
+        "translations": {"fr": ["Province de Kuzbass"], "ru": ["Кузбасс", "Кузбасс"]}
     },
     "model": "cities_light.region",
     "pk": 2
@@ -84,7 +90,8 @@
         "geoname_id": 2638360,
         "name": "Scotland",
         "name_ascii": "Scotland",
-        "slug": "scotland"
+        "slug": "scotland",
+        "translations": {"fr": ["Ecosse"], "ru": ["Шотландия"]}
     },
     "model": "cities_light.region",
     "pk": 3
@@ -99,7 +106,8 @@
         "name": "Yurginskiy Rayon",
         "name_ascii": "Yurginskiy Rayon",
         "region": [1503900],
-        "slug": "yurginskiy-rayon"
+        "slug": "yurginskiy-rayon",
+        "translations": {"ru": ["Юргинский район"]}
     },
     "model": "cities_light.subregion",
     "pk": 1
@@ -114,7 +122,8 @@
         "name": "Highland",
         "name_ascii": "Highland",
         "region": [2638360],
-        "slug": "highland"
+        "slug": "highland",
+        "translations": {}
     },
     "model": "cities_light.subregion",
     "pk": 2
@@ -135,7 +144,8 @@
         "search_names": "kemerovokemerovorossiiskaiafederatsiia kemerovokemerovorussia kemerovokemerovorussie kemerovokemerovskaiaoblastrossiiskaiafederatsiia kemerovokemerovskaiaoblastrussia kemerovokemerovskaiaoblastrussie kemerovooblastdekemerovorossiiskaiafederatsiia kemerovooblastdekemerovorussia kemerovooblastdekemerovorussie kemerovorossiiskaiafederatsiia kemerovorussia kemerovorussie",
         "slug": "kemerovo",
         "subregion": null,
-        "timezone": "Asia/Novokuznetsk"
+        "timezone": "Asia/Novokuznetsk",
+        "translations":  {"fr": ["Kemerovo"], "ru": ["Кемерово"]}
     },
     "model": "cities_light.city",
     "pk": 1
@@ -156,7 +166,8 @@
         "search_names": "novokouznetskkemerovorossiiskaiafederatsiia novokouznetskkemerovorussia novokouznetskkemerovorussie novokouznetskkemerovskaiaoblastrossiiskaiafederatsiia novokouznetskkemerovskaiaoblastrussia novokouznetskkemerovskaiaoblastrussie novokouznetskoblastdekemerovorossiiskaiafederatsiia novokouznetskoblastdekemerovorussia novokouznetskoblastdekemerovorussie novokouznetskrossiiskaiafederatsiia novokouznetskrussia novokouznetskrussie novokuznetskkemerovorossiiskaiafederatsiia novokuznetskkemerovorussia novokuznetskkemerovorussie novokuznetskkemerovskaiaoblastrossiiskaiafederatsiia novokuznetskkemerovskaiaoblastrussia novokuznetskkemerovskaiaoblastrussie novokuznetskoblastdekemerovorossiiskaiafederatsiia novokuznetskoblastdekemerovorussia novokuznetskoblastdekemerovorussie novokuznetskrossiiskaiafederatsiia novokuznetskrussia novokuznetskrussie stalinskkemerovorossiiskaiafederatsiia stalinskkemerovorussia stalinskkemerovorussie stalinskkemerovskaiaoblastrossiiskaiafederatsiia stalinskkemerovskaiaoblastrussia stalinskkemerovskaiaoblastrussie stalinskoblastdekemerovorossiiskaiafederatsiia stalinskoblastdekemerovorussia stalinskoblastdekemerovorussie stalinskrossiiskaiafederatsiia stalinskrussia stalinskrussie",
         "slug": "novokuznetsk",
         "subregion": null,
-        "timezone": "Asia/Novokuznetsk"
+        "timezone": "Asia/Novokuznetsk",
+        "translations": {"fr": ["Novokouznetsk"], "ru": ["Сталинск", "Новокузнецк"]}
     },
     "model": "cities_light.city",
     "pk": 2
@@ -177,7 +188,8 @@
         "search_names": "kiselevskkuzbassrussie kiselevskkuzbasssssr kiselevskkuzbassussr kiselevskprovincedekuzbassrussie kiselevskprovincedekuzbasssssr kiselevskprovincedekuzbassussr kiselevskrussie kiselevsksssr kiselevskussr kiseliovskkuzbassrussie kiseliovskkuzbasssssr kiseliovskkuzbassussr kiseliovskprovincedekuzbassrussie kiseliovskprovincedekuzbasssssr kiseliovskprovincedekuzbassussr kiseliovskrussie kiseliovsksssr kiseliovskussr",
         "slug": "kiselevsk",
         "subregion": null,
-        "timezone": "Asia/Novokuznetsk"
+        "timezone": "Asia/Novokuznetsk",
+        "translations": {"ru": ["Киселевск", "Киселёвск"]}
     },
     "model": "cities_light.city",
     "pk": 3
@@ -198,7 +210,8 @@
         "search_names": "belovokuzbassrussie belovokuzbasssssr belovokuzbassussr belovoprovincedekuzbassrussie belovoprovincedekuzbasssssr belovoprovincedekuzbassussr belovorussie belovosssr belovoussr",
         "slug": "belovo",
         "subregion": null,
-        "timezone": "Asia/Novokuznetsk"
+        "timezone": "Asia/Novokuznetsk",
+        "translations": {"ru": ["Белово"]}
     },
     "model": "cities_light.city",
     "pk": 4
@@ -219,7 +232,8 @@
         "search_names": "neddscotlandunitedkingdom neddunitedkingdom",
         "slug": "nedd",
         "subregion": [2646944],
-        "timezone": "Europe/London"
+        "timezone": "Europe/London",
+        "translations": {}
     },
     "model": "cities_light.city",
     "pk": 5

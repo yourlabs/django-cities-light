@@ -10,7 +10,8 @@
         "name_ascii": "Russia",
         "phone": "7",
         "slug": "russia",
-        "tld": "ru"
+        "tld": "ru",
+        "translations": {"fr": ["Russie"], "ru": ["Российская Федерация"]}
     },
     "model": "cities_light.country",
     "pk": 1
@@ -24,7 +25,9 @@
         "geoname_id": 1503900,
         "name": "Kemerovo",
         "name_ascii": "Kemerovo",
-        "slug": "kemerovo"
+        "slug": "kemerovo",
+        "translations":{"fr": ["Oblast de Kemerovo"],
+        "ru": ["Кемеровская область", "Кемеровская Область"]}
     },
     "model": "cities_light.region",
     "pk": 1
@@ -45,7 +48,8 @@
         "search_names": "kemerovokemerovorossiiskaiafederatsiia kemerovokemerovorussia kemerovokemerovorussie kemerovokemerovskaiaoblastrossiiskaiafederatsiia kemerovokemerovskaiaoblastrussia kemerovokemerovskaiaoblastrussie kemerovooblastdekemerovorossiiskaiafederatsiia kemerovooblastdekemerovorussia kemerovooblastdekemerovorussie kemerovorossiiskaiafederatsiia kemerovorussia kemerovorussie",
         "slug": "kemerovo",
         "subregion": null,
-        "timezone": "Asia/Novokuznetsk"
+        "timezone": "Asia/Novokuznetsk",
+        "translations": {"fr": ["Kemerovo"], "ru": ["Кемерово"]}
     },
     "model": "cities_light.city",
     "pk": 1
@@ -66,7 +70,8 @@
         "search_names": "novokouznetskkemerovorossiiskaiafederatsiia novokouznetskkemerovorussia novokouznetskkemerovorussie novokouznetskkemerovskaiaoblastrossiiskaiafederatsiia novokouznetskkemerovskaiaoblastrussia novokouznetskkemerovskaiaoblastrussie novokouznetskoblastdekemerovorossiiskaiafederatsiia novokouznetskoblastdekemerovorussia novokouznetskoblastdekemerovorussie novokouznetskrossiiskaiafederatsiia novokouznetskrussia novokouznetskrussie novokuznetskkemerovorossiiskaiafederatsiia novokuznetskkemerovorussia novokuznetskkemerovorussie novokuznetskkemerovskaiaoblastrossiiskaiafederatsiia novokuznetskkemerovskaiaoblastrussia novokuznetskkemerovskaiaoblastrussie novokuznetskoblastdekemerovorossiiskaiafederatsiia novokuznetskoblastdekemerovorussia novokuznetskoblastdekemerovorussie novokuznetskrossiiskaiafederatsiia novokuznetskrussia novokuznetskrussie stalinskkemerovorossiiskaiafederatsiia stalinskkemerovorussia stalinskkemerovorussie stalinskkemerovskaiaoblastrossiiskaiafederatsiia stalinskkemerovskaiaoblastrussia stalinskkemerovskaiaoblastrussie stalinskoblastdekemerovorossiiskaiafederatsiia stalinskoblastdekemerovorussia stalinskoblastdekemerovorussie stalinskrossiiskaiafederatsiia stalinskrussia stalinskrussie",
         "slug": "novokuznetsk",
         "subregion": null,
-        "timezone": "Asia/Novokuznetsk"
+        "timezone": "Asia/Novokuznetsk",
+        "translations": {"fr": ["Novokouznetsk"], "ru": ["Сталинск", "Новокузнецк"]}
     },
     "model": "cities_light.city",
     "pk": 2

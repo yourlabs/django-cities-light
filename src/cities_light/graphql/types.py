@@ -7,6 +7,7 @@ class BaseType(ObjectType):
     slug = String(description="Slug.")
     geoname_id = Int(description="Geoname id.")
     alternate_names = String(description="Alternate names.")
+    # translations = Dict(description="Translations.")
 
 
 class Country(BaseType):
