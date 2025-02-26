@@ -10,7 +10,8 @@
         "name_ascii": "France",
         "phone": "33",
         "slug": "france",
-        "tld": "fr"
+        "tld": "fr",
+        "translations":{"fr": ["République Française", "France"], "ru": ["Франция"]}
     },
     "model": "cities_light.country",
     "pk": 1
@@ -24,7 +25,8 @@
         "geoname_id": 11071620,
         "name": "Nouvelle-Aquitaine",
         "name_ascii": "Nouvelle-Aquitaine",
-        "slug": "nouvelle-aquitaine"
+        "slug": "nouvelle-aquitaine",
+        "translations":{"fr": ["Aquitaine-Limousin-Poitou-Charentes"]}
     },
     "model": "cities_light.region",
     "pk": 1
@@ -39,7 +41,8 @@
         "name": "Charente",
         "name_ascii": "Charente",
         "region": [11071620],
-        "slug": "charente"
+        "slug": "charente",
+        "translations":{"fr": ["Département de la Charente"]}
     },
     "model": "cities_light.subregion",
     "pk": 1
@@ -60,7 +63,8 @@
         "search_names": "angoulemeaquitainelimousinpoitoucharentesfrance angoulemeaquitainelimousinpoitoucharentesfrantsiia angoulemeaquitainelimousinpoitoucharentesrepubliquefrancaise angoulemefrance angoulemefrantsiia angoulemenouvelleaquitainefrance angoulemenouvelleaquitainefrantsiia angoulemenouvelleaquitainerepubliquefrancaise angoulemerepubliquefrancaise angulemaquitainelimousinpoitoucharentesfrance angulemaquitainelimousinpoitoucharentesfrantsiia angulemaquitainelimousinpoitoucharentesrepubliquefrancaise angulemfrance angulemfrantsiia angulemnouvelleaquitainefrance angulemnouvelleaquitainefrantsiia angulemnouvelleaquitainerepubliquefrancaise angulemrepubliquefrancaise",
         "slug": "angouleme",
         "subregion": [3026646],
-        "timezone": "Europe/Paris"
+        "timezone": "Europe/Paris",
+        "translations":{"fr": ["Angoulême"], "ru": ["Ангулем"]}
     },
     "model": "cities_light.city",
     "pk": 1

@@ -151,15 +151,15 @@ Running the full test suite::
 
 To run the tests in specific environment use the following command::
 
-    tox -e py37-django31-sqlite
+    tox -e py312-django42-sqlite
 
 And to run one specific test use this one::
 
-    tox -e py37-django31-sqlite -- cities_light/tests/test_form.py::FormTestCase::testCountryFormNameAndContinentAlone
+    tox -e py312-django42-sqlite -- cities_light/tests/test_form.py::FormTestCase::testCountryFormNameAndContinentAlone
 
 To run it even faster, you can switch to specific tox virtualenv::
 
-    source .tox/py37-django18-sqlite/bin/activate
+    source .tox/py312-django42-sqlite/bin/activate
     CI=true test_project/manage.py test cities_light.tests.test_form.FormTestCase.testCountryFormNameAndContinentAlone
 
 If you want to build the docs, use the following steps::
