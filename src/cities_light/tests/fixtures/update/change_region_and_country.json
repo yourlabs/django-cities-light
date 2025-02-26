@@ -10,7 +10,8 @@
         "name_ascii": "Russia",
         "phone": "7",
         "slug": "russia",
-        "tld": "ru"
+        "tld": "ru",
+        "translations": {"fr": ["Russie"], "ru": ["СССР"]}
     },
     "model": "cities_light.country",
     "pk": 1
@@ -26,7 +27,8 @@
         "name_ascii": "USSR",
         "phone": "8",
         "slug": "ussr",
-        "tld": "su"
+        "tld": "su",
+        "translations": {}
     },
     "model": "cities_light.country",
     "pk": 2
@@ -42,7 +44,8 @@
         "name_ascii": "United Kingdom",
         "phone": "44",
         "slug": "united-kingdom",
-        "tld": "uk"
+        "tld": "uk",
+        "translations": {"fr": ["Royaume-Uni", "Grande-Bretagne"], "ru": ["Великобритания", "Соединенное Королевство"]}
     },
     "model": "cities_light.country",
     "pk": 3
@@ -56,7 +59,8 @@
         "geoname_id": 1503900,
         "name": "Kemerovo",
         "name_ascii": "Kemerovo",
-        "slug": "kemerovo"
+        "slug": "kemerovo",
+        "translations": {"fr": ["Province de Kuzbass"], "ru": ["Кузбасс", "Кузбасс"]}
     },
     "model": "cities_light.region",
     "pk": 1
@@ -70,7 +74,8 @@
         "geoname_id": 1503999,
         "name": "Kuzbass",
         "name_ascii": "Kuzbass",
-        "slug": "kuzbass"
+        "slug": "kuzbass",
+        "translations": {}
     },
     "model": "cities_light.region",
     "pk": 2
@@ -84,7 +89,8 @@
         "geoname_id": 2638360,
         "name": "Scotland",
         "name_ascii": "Scotland",
-        "slug": "scotland"
+        "slug": "scotland",
+        "translations": {"fr": ["Ecosse"], "ru": ["Шотландия"]}
     },
     "model": "cities_light.region",
     "pk": 3
@@ -99,7 +105,8 @@
         "name": "Yurginskiy Rayon",
         "name_ascii": "Yurginskiy Rayon",
         "region": [1503900],
-        "slug": "yurginskiy-rayon"
+        "slug": "yurginskiy-rayon",
+        "translations": {"ru": ["Юргинский район"]}
     },
     "model": "cities_light.subregion",
     "pk": 1
@@ -114,7 +121,8 @@
         "name": "Highland",
         "name_ascii": "Highland",
         "region": [2638360],
-        "slug": "highland"
+        "slug": "highland",
+        "translations": {"ru": ["Хайленд"]}
     },
     "model": "cities_light.subregion",
     "pk": 2
@@ -135,7 +143,8 @@
         "search_names": "forestgladekuzbassussr forestgladeussr lesnaiapolianakuzbassussr lesnaiapolianaussr",
         "slug": "forest-glade",
         "subregion": null,
-        "timezone": "Asia/Novosibirsk"
+        "timezone": "Asia/Novosibirsk",
+        "translations":{"fr": ["Forest Glade"], "ru": ["Лесная поляна"]}
     },
     "model": "cities_light.city",
     "pk": 1
@@ -156,7 +165,8 @@
         "search_names": "gardenkuzbassussr gardenussr gorodsadkuzbassussr gorodsadussr sadstalinakuzbassussr sadstalinaussr",
         "slug": "gorod-sad",
         "subregion": null,
-        "timezone": "Asia/Novosibirsk"
+        "timezone": "Asia/Novosibirsk",
+        "translations": {"fr": ["Garden"], "ru": ["Сад Сталина", "Город Сад"]}
     },
     "model": "cities_light.city",
     "pk": 2
@@ -177,7 +187,8 @@
         "search_names": "neddscotlandunitedkingdom neddunitedkingdom",
         "slug": "nedd",
         "subregion": [2646944],
-        "timezone": "Europe/London"
+        "timezone": "Europe/London",
+        "translations": {}
     },
     "model": "cities_light.city",
     "pk": 3

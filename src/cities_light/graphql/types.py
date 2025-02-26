@@ -1,4 +1,4 @@
-from graphene import ObjectType, String, Int, Field, Float, Dict
+from graphene import ObjectType, String, Int, Field, Float
 
 
 class BaseType(ObjectType):
@@ -7,7 +7,7 @@ class BaseType(ObjectType):
     slug = String(description="Slug.")
     geoname_id = Int(description="Geoname id.")
     alternate_names = String(description="Alternate names.")
-    translations = Dict(description="Translations.")
+    # translations = Dict(description="Translations.")
 
 
 class Country(BaseType):

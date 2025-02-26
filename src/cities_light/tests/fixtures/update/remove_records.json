@@ -10,7 +10,8 @@
         "name_ascii": "Russia",
         "phone": "7",
         "slug": "russia",
-        "tld": "ru"
+        "tld": "ru",
+        "translations": {"fr": ["Russie"], "ru": ["Российская Федерация"]}
     },
     "model": "cities_light.country",
     "pk": 1
@@ -24,7 +25,8 @@
         "geoname_id": 578071,
         "name": "Belgorod",
         "name_ascii": "Belgorod",
-        "slug": "belgorod"
+        "slug": "belgorod",
+        "translations": {"fr": ["Oblast de Belgorod"], "ru": ["Белгородская Область"]}
     },
     "model": "cities_light.region",
     "pk": 1
@@ -43,7 +45,8 @@
         "population": 345289,
         "region": 1,
         "search_names": "belgorodbelgorodrossiiskaiafederatsiia belgorodbelgorodrussia belgorodbelgorodrussie belgorodbelgorodskaiaoblastrossiiskaiafederatsiia belgorodbelgorodskaiaoblastrussia belgorodbelgorodskaiaoblastrussie belgorodoblastdebelgorodrossiiskaiafederatsiia belgorodoblastdebelgorodrussia belgorodoblastdebelgorodrussie belgorodrossiiskaiafederatsiia belgorodrussia belgorodrussie bilhoroddnistrovskyibelgorodrossiiskaiafederatsiia bilhoroddnistrovskyibelgorodrussia bilhoroddnistrovskyibelgorodrussie bilhoroddnistrovskyibelgorodskaiaoblastrossiiskaiafederatsiia bilhoroddnistrovskyibelgorodskaiaoblastrussia bilhoroddnistrovskyibelgorodskaiaoblastrussie bilhoroddnistrovskyioblastdebelgorodrossiiskaiafederatsiia bilhoroddnistrovskyioblastdebelgorodrussia bilhoroddnistrovskyioblastdebelgorodrussie bilhoroddnistrovskyirossiiskaiafederatsiia bilhoroddnistrovskyirussia bilhoroddnistrovskyirussie",
-        "slug": "belgorod"
+        "slug": "belgorod",
+        "translations": {"ru": ["Белгород"]}
     },
     "model": "cities_light.city",
     "pk": 1

@@ -13,21 +13,21 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='city',
             name='translations',
-            field=models.JSONField(default=dict),
+            field=models.JSONField(default=dict, blank=True),
         ),
         migrations.AddField(
             model_name='country',
             name='translations',
-            field=models.JSONField(default=dict),
+            field=models.JSONField(default=dict, blank=True),
         ),
         migrations.AddField(
             model_name='region',
             name='translations',
-            field=models.JSONField(default=dict),
+            field=models.JSONField(default=dict, blank=True),
         ),
         migrations.AddField(
             model_name='subregion',
             name='translations',
-            field=models.JSONField(default=dict),
+            field=models.JSONField(default=dict, blank=True),
         ),
     ]
