@@ -698,6 +698,10 @@ It is possible to force the import of files which weren't downloaded using the
                     model.alternate_names = alternate_names
                     save = True
 
+                if model.translations != geoname_data.items():
+                    model.translations = geoname_data.items()
+                    save = True
+
                 if save:
                     model.save(force_update=True)
 
