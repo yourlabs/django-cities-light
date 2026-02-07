@@ -2,6 +2,7 @@
 import os
 from unittest import mock
 
+import cities_light.management.commands.cities_light  # noqa: F401 - ensure module is loaded for patch resolution
 from django import test
 from django.core import management
 from django.conf import settings
