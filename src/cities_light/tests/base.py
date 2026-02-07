@@ -42,7 +42,7 @@ class TestImportBase(test.TransactionTestCase):
     maxDiff = 100000
     # Disabled: under pytest-django a patched _reset_sequences can have an
     # incompatible signature (missing db_name), causing TypeError in _fixture_setup.
-    reset_sequences = True
+    reset_sequences = False
 
     def import_data(self, srcdir, countries, regions, subregions, cities, trans, file_type="txt", **options):
         """Helper method to import Geonames data.

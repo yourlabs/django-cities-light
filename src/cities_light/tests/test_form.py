@@ -23,8 +23,7 @@ class FormTestCase(test.TransactionTestCase):
 
 class SaveTestCase(test.TransactionTestCase):
     # reset_sequences = True can cause TypeError with pytest-django (see base.py).
-    reset_sequences = True
-
+    reset_sequences = False
     def testCountryAsciiAndSlug(self):
         country = Country(name='áó éú', geoname_id=1)
         country.save()
