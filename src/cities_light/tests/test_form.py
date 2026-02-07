@@ -1,12 +1,10 @@
-from django import test
+from django.test import TestCase
 
 from ..forms import CountryForm, CityForm
 from ..models import Country, City
 
 
-class FormTestCase(test.TransactionTestCase):
-    # reset_sequences = True can cause TypeError with pytest-django (see base.py).
-    reset_sequences = True
+class FormTestCase(TestCase):
 
     def testCountryFormNameAndContinentAlone(self):
         form = CountryForm({'name': 'Spain', 'continent': 'EU'})
@@ -21,9 +19,7 @@ class FormTestCase(test.TransactionTestCase):
         form.save()
 
 
-class SaveTestCase(test.TransactionTestCase):
-    # reset_sequences = True can cause TypeError with pytest-django (see base.py).
-    reset_sequences = False
+class SaveTestCase(TestCase):
     def testCountryAsciiAndSlug(self):
         country = Country(name='áó éú', geoname_id=1)
         country.save()

@@ -3,7 +3,7 @@ import os
 from unittest import mock
 
 import cities_light.management.commands.cities_light  # noqa: F401 - ensure module is loaded for patch resolution
-from django import test
+from django.test import TestCase
 from django.core import management
 from django.conf import settings
 
@@ -32,7 +32,7 @@ class FixtureDir:
         )
 
 
-class TestImportBase(test.TransactionTestCase):
+class TestImportBase(TestCase):
     """Base class for import testcases.
 
     Inherit from this class and use separate
@@ -40,9 +40,7 @@ class TestImportBase(test.TransactionTestCase):
     """
 
     maxDiff = 100000
-    # Disabled: under pytest-django a patched _reset_sequences can have an
-    # incompatible signature (missing db_name), causing TypeError in _fixture_setup.
-    reset_sequences = False
+   
 
     def import_data(self, srcdir, countries, regions, subregions, cities, trans, file_type="txt", **options):
         """Helper method to import Geonames data.
