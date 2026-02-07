@@ -120,7 +120,8 @@ Development
 Create development virtualenv (you need to have tox installed in your base system)::
 
     tox -e dev
-    source .tox/dev/bin/activate
+    source .tox/dev/bin/activate # for linux
+    .\.tox\dev\Scripts\activate # for windows
 
 To run the test project, with the folder of the project as the current directory, run::
     

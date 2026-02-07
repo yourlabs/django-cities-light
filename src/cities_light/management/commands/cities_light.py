@@ -4,9 +4,8 @@ import os
 import datetime
 import logging
 from argparse import RawTextHelpFormatter
-import sys
 
-import resource
+import psutil
 import pickle
 
 from django.conf import settings
@@ -39,13 +38,9 @@ Country, Region, SubRegion, City = get_cities_models()
 
 class MemoryUsageWidget(progressbar.widgets.WidgetBase):
     def __call__(self, progress, data):
-        if sys.platform == 'win32':
-            return '?? MB'
-        rusage = resource.getrusage(resource.RUSAGE_SELF)
-        if sys.platform == 'darwin':
-            return '%s MB' % (rusage.ru_maxrss // 1048576)
-        else:
-            return '%s MB' % (rusage.ru_maxrss // 1024)
+        process = psutil.Process()
+        rss_bytes = process.memory_info().rss
+        return '%s MB' % (rss_bytes // 1048576)
 
 
 class Command(BaseCommand):
