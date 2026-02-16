@@ -140,11 +140,6 @@ It is possible to force the import of files which weren't downloaded using the
         # initialize lazy identity maps
         self._clear_identity_maps()
 
-        # Ensure fresh MySQL connection before import (avoids "MySQL server has
-        # gone away" / OperationalError 2006 during long-running imports)
-        if 'mysql' in settings.DATABASES['default']['ENGINE']:
-            connection.close()
-
         if not os.path.exists(DATA_DIR):
             self.logger.info('Creating %s', DATA_DIR)
             os.mkdir(DATA_DIR)
@@ -199,10 +194,6 @@ It is possible to force the import of files which weren't downloaded using the
 
             if downloaded or force_import:
                 self.logger.info('Importing %s', destination_file_name)
-
-                # Refresh MySQL connection per source to avoid "gone away" errors
-                if 'mysql' in settings.DATABASES['default']['ENGINE']:
-                    connection.close()
 
                 if url in TRANSLATION_SOURCES:
                     if options.get('hack_translations', False):
