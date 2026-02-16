@@ -611,7 +611,10 @@ It is possible to force the import of files which weren't downloaded using the
 
         # https://code.djangoproject.com/ticket/21597#comment:29
         # https://github.com/yourlabs/django-cities-light/commit/e7f69af01760c450b4a72db84fda3d98d6731928
-        if 'mysql' in settings.DATABASES['default']['ENGINE']:
+        # Skip connection.close() when inside atomic block (e.g. TestCase) - it causes
+        # TransactionManagementError on subsequent queries (Django #21239).
+        if ('mysql' in settings.DATABASES['default']['ENGINE'] and
+                not connection.in_atomic_block):
             connection.close()
 
         try:
