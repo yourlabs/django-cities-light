@@ -114,6 +114,9 @@ Consult the help with::
 Common issues
 --------------
 
+Search names index size issue
+------------------------------
+
 If you get the following error::
 
     django.db.utils.OperationalError: index row size 2848 exceeds btree version 4 maximum 2704 for index "cities_light_city_search_names_fb77fed2"
@@ -128,6 +131,27 @@ You can fix it by adding the following to your settings.py, this will disable th
 Another option is limiting the languages for example to only English and abbreviation, this will fix the issue::
     
     CITIES_LIGHT_TRANSLATION_LANGUAGES = [ 'en',  'abbr']
+
+You want to import only the countries you need, for example France, Belgium and Netherlands, you can do it by adding the following to your settings.py::
+    
+    CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR', 'BE', 'NL']
+
+You want to import only the cities you need, for example Paris, Brussels and Amsterdam, you can do it by adding the following to your settings.py::
+    
+    CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',]
+
+You don't want to import the cities and regions and subregions, you can do it by adding the following to your settings.py::
+    
+    CITIES_LIGHT_INCLUDE_CITY_TYPES = []
+    CITIES_LIGHT_INCLUDE_REGION_TYPES = []
+    CITIES_LIGHT_INCLUDE_SUBREGION_TYPES = []
+
+Or you can set the sources to empty list:
+
+    CITIES_LIGHT_REGION_SOURCES = []
+    CITIES_LIGHT_SUBREGION_SOURCES = []
+    CITIES_LIGHT_CITY_SOURCES = []
+
 
 Development
 -----------
