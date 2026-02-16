@@ -89,8 +89,7 @@ because it's probably project specific.
     using several databases for your project.
 
     Notes:
-    - MySQL doesn't support indexing TextFields.
-    - PostgreSQL supports indexing TextFields, but it is not enabled by default
+    - PostgreSQL and MySQL supports indexing TextFields, but it is not enabled by default
       in cities_light because the lenght of the field can be too long for btree
       for more information please visit #273
 
@@ -200,16 +199,9 @@ INCLUDE_CITY_TYPES = getattr(
     ],
 )
 
-# MySQL doesn't support indexing TextFields
-INDEX_SEARCH_NAMES = getattr(settings, "CITIES_LIGHT_INDEX_SEARCH_NAMES", None)
-if INDEX_SEARCH_NAMES is None:
-    INDEX_SEARCH_NAMES = True
-    for database in list(settings.DATABASES.values()):
-        if "ENGINE" in database and (
-            "mysql" in database.get("ENGINE").lower()
-            or "postgresql" in database.get("ENGINE").lower()
-        ):
-            INDEX_SEARCH_NAMES = False
+
+INDEX_SEARCH_NAMES = getattr(settings, "CITIES_LIGHT_INDEX_SEARCH_NAMES", False)
+    
 
 DEFAULT_APP_NAME = "cities_light"
 CITIES_LIGHT_APP_NAME = getattr(settings, "CITIES_LIGHT_APP_NAME", DEFAULT_APP_NAME)
