@@ -330,8 +330,22 @@ It is possible to force the import of files which weren't downloaded using the
         for country in buffer:
             name_ascii = to_ascii(country.name).strip()
             country.name_ascii = name_ascii or ""
-        with transaction.atomic():
-            Country.objects.bulk_create(buffer)
+        seen = set()
+        to_insert = []
+        for country in buffer:
+            if country.geoname_id in seen:
+                continue
+            seen.add(country.geoname_id)
+            to_insert.append(country)
+        existing = set(
+            Country.objects.filter(
+                geoname_id__in=[x.geoname_id for x in to_insert]
+            ).values_list("geoname_id", flat=True)
+        )
+        to_insert = [c for c in to_insert if c.geoname_id not in existing]
+        if to_insert:
+            with transaction.atomic():
+                Country.objects.bulk_create(to_insert)
         for c in Country.objects.filter(
             geoname_id__in=[x.geoname_id for x in buffer]
         ).values_list("code2", "pk"):
@@ -355,8 +369,22 @@ It is possible to force the import of files which weren't downloaded using the
                 region.name,
                 countries.get(region.country_id, ""),
             )
-        with transaction.atomic():
-            Region.objects.bulk_create(buffer)
+        seen = set()
+        to_insert = []
+        for region in buffer:
+            if region.geoname_id in seen:
+                continue
+            seen.add(region.geoname_id)
+            to_insert.append(region)
+        existing = set(
+            Region.objects.filter(
+                geoname_id__in=[x.geoname_id for x in to_insert]
+            ).values_list("geoname_id", flat=True)
+        )
+        to_insert = [r for r in to_insert if r.geoname_id not in existing]
+        if to_insert:
+            with transaction.atomic():
+                Region.objects.bulk_create(to_insert)
         for r in Region.objects.filter(
             geoname_id__in=[x.geoname_id for x in buffer]
         ).values_list("country__code2", "geoname_code", "pk"):
@@ -385,8 +413,22 @@ It is possible to force the import of files which weren't downloaded using the
                 subregion.name,
                 countries.get(subregion.country_id, ""),
             )
-        with transaction.atomic():
-            SubRegion.objects.bulk_create(buffer)
+        seen = set()
+        to_insert = []
+        for subregion in buffer:
+            if subregion.geoname_id in seen:
+                continue
+            seen.add(subregion.geoname_id)
+            to_insert.append(subregion)
+        existing = set(
+            SubRegion.objects.filter(
+                geoname_id__in=[x.geoname_id for x in to_insert]
+            ).values_list("geoname_id", flat=True)
+        )
+        to_insert = [s for s in to_insert if s.geoname_id not in existing]
+        if to_insert:
+            with transaction.atomic():
+                SubRegion.objects.bulk_create(to_insert)
         for s in SubRegion.objects.filter(
             geoname_id__in=[x.geoname_id for x in buffer]
         ).values_list("country__code2", "region__geoname_code", "geoname_code", "pk"):

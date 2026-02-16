@@ -66,6 +66,12 @@ Configure filters to exclude data you don't want, ie.::
     CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR']
     CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',]
 
+To tune import performance, you can set ``CITIES_LIGHT_BULK_BATCH_SIZE`` (default: 500).
+This controls the batch size for bulk inserts of Country, Region, and SubRegion during import.
+Set to 0 to disable batching and use per-row saves::
+
+    CITIES_LIGHT_BULK_BATCH_SIZE = 500  # or 0 to disable
+
 Now, run migrations, it will only create tables for models that are not
 disabled::
 
