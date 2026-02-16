@@ -92,9 +92,12 @@ class TestDownloader(test.TransactionTestCase):
             self.assertFalse(result)
 
             # Destination time < source time, size is equal
-            loc_gmtime.return_value = time.strptime(
-                "02-01-2016 00:04:13 GMT", "%d-%m-%Y %H:%M:%S %Z"
-            )
+            # gmtime is called twice: for source, then destination.
+            # Source must be newer (00:04:14), destination older (00:04:13).
+            loc_gmtime.side_effect = [
+                time.strptime("02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"),
+                time.strptime("02-01-2016 00:04:13 GMT", "%d-%m-%Y %H:%M:%S %Z"),
+            ]
             loc_getsize.return_value = 13469
             params = {
                 "source": "file:///a.txt",
@@ -106,10 +109,12 @@ class TestDownloader(test.TransactionTestCase):
 
             # Source and destination time is equal,
             # source and destination size is not equal
+            # getsize is called twice: for source, then destination.
+            loc_gmtime.side_effect = None  # Reset after using side_effect
             loc_gmtime.return_value = time.strptime(
                 "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
             )
-            loc_getsize.return_value = 13470
+            loc_getsize.side_effect = [13469, 13470]  # source, destination
             params = {
                 "source": "file:///a.txt",
                 "destination": destination,
@@ -120,6 +125,8 @@ class TestDownloader(test.TransactionTestCase):
 
             # Source and destination have the same time and size
             # force = True
+            loc_getsize.side_effect = None  # Reset after using side_effect
+            loc_getsize.return_value = 13469
             loc_gmtime.return_value = time.strptime(
                 "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
             )
@@ -133,7 +140,9 @@ class TestDownloader(test.TransactionTestCase):
             self.assertTrue(result)
 
             # Destination file does not exist
-            loc_exists.return_value = False
+            # exists is called for source first, then destination.
+            # Source must exist, destination must not.
+            loc_exists.side_effect = [True, False]
             loc_gmtime.return_value = time.strptime(
                 "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
             )
