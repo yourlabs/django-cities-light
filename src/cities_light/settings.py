@@ -95,6 +95,12 @@ because it's probably project specific.
       for more information please visit #273
 
 
+.. py:data:: BULK_BATCH_SIZE
+
+    Batch size for bulk_create during import. Set to 0 to disable batching
+    and use per-row saves. Default is 500. Applies to Country, Region, and
+    SubRegion inserts only; City and updates use per-row save.
+
 .. py:data:: CITIES_LIGHT_APP_NAME
 
     Modify it only if you want to define your custom cities models, that
@@ -111,6 +117,7 @@ import os.path
 from django.conf import settings
 
 __all__ = [
+    "BULK_BATCH_SIZE",
     "FIXTURES_BASE_URL",
     "COUNTRY_SOURCES",
     "REGION_SOURCES",
@@ -219,6 +226,9 @@ FIXTURES_BASE_URL = getattr(
     "CITIES_LIGHT_FIXTURES_BASE_URL",
     "file://{0}".format(os.path.join(DATA_DIR, "fixtures/")),
 )
+
+# Batch size for bulk_create during import. Set to 0 to disable batching.
+BULK_BATCH_SIZE = getattr(settings, "CITIES_LIGHT_BULK_BATCH_SIZE", 500)
 
 
 class ICountry:

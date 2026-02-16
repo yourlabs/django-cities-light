@@ -17,6 +17,7 @@ from django.core.exceptions import ValidationError
 import progressbar
 
 from ...settings import (
+    BULK_BATCH_SIZE,
     COUNTRY_SOURCES,
     REGION_SOURCES,
     SUBREGION_SOURCES,
@@ -43,6 +44,7 @@ from ...signals import (
 )
 from ...exceptions import InvalidItems
 from ...geonames import Geonames
+from ...abstract_models import to_ascii
 from ...loading import get_cities_models
 from ...validators import timezone_validator
 
@@ -181,6 +183,9 @@ It is possible to force the import of files which weren't downloaded using the
     def handle(self, *args, **options):
         # initialize lazy identity maps
         self._clear_identity_maps()
+        self._country_insert_buffer = []
+        self._region_insert_buffer = []
+        self._subregion_insert_buffer = []
 
         if not os.path.exists(DATA_DIR):
             self.logger.info("Creating %s", DATA_DIR)
@@ -209,6 +214,11 @@ It is possible to force the import of files which weren't downloaded using the
             if url in TRANSLATION_SOURCES:
                 # free some memory
                 self._clear_identity_maps()
+
+            # Flush insert buffers before switching to next source type
+            self._flush_country_buffer()
+            self._flush_region_buffer()
+            self._flush_subregion_buffer()
 
             destination_file_name = url.split("/")[-1]
 
@@ -311,6 +321,87 @@ It is possible to force the import of files which weren't downloaded using the
             lambda: collections.defaultdict(dict)
         )
 
+    def _flush_country_buffer(self):
+        """Flush country insert buffer with bulk_create."""
+        buffer = getattr(self, "_country_insert_buffer", [])
+        if not buffer:
+            return
+        self._country_insert_buffer = []
+        for country in buffer:
+            name_ascii = to_ascii(country.name).strip()
+            country.name_ascii = name_ascii or ""
+        with transaction.atomic():
+            Country.objects.bulk_create(buffer)
+        for c in Country.objects.filter(
+            geoname_id__in=[x.geoname_id for x in buffer]
+        ).values_list("code2", "pk"):
+            self._country_codes[c[0]] = c[1]
+
+    def _flush_region_buffer(self):
+        """Flush region insert buffer with bulk_create."""
+        buffer = getattr(self, "_region_insert_buffer", [])
+        if not buffer:
+            return
+        self._region_insert_buffer = []
+        country_ids = {r.country_id for r in buffer}
+        countries = {
+            c["pk"]: c["name"]
+            for c in Country.objects.filter(pk__in=country_ids).values("pk", "name")
+        }
+        for region in buffer:
+            name_ascii = to_ascii(region.name).strip()
+            region.name_ascii = name_ascii or ""
+            region.display_name = "%s, %s" % (
+                region.name,
+                countries.get(region.country_id, ""),
+            )
+        with transaction.atomic():
+            Region.objects.bulk_create(buffer)
+        for r in Region.objects.filter(
+            geoname_id__in=[x.geoname_id for x in buffer]
+        ).values_list("country__code2", "geoname_code", "pk"):
+            if r[0] in self._country_codes:
+                self._region_codes[self._country_codes[r[0]]][r[1]] = r[2]
+
+    def _flush_subregion_buffer(self):
+        """Flush subregion insert buffer with bulk_create."""
+        buffer = getattr(self, "_subregion_insert_buffer", [])
+        if not buffer:
+            return
+        self._subregion_insert_buffer = []
+        country_ids = {s.country_id for s in buffer if s.country_id}
+        countries = (
+            {
+                c["pk"]: c["name"]
+                for c in Country.objects.filter(pk__in=country_ids).values("pk", "name")
+            }
+            if country_ids
+            else {}
+        )
+        for subregion in buffer:
+            name_ascii = to_ascii(subregion.name).strip()
+            subregion.name_ascii = name_ascii or ""
+            subregion.display_name = "%s, %s" % (
+                subregion.name,
+                countries.get(subregion.country_id, ""),
+            )
+        with transaction.atomic():
+            SubRegion.objects.bulk_create(buffer)
+        for s in SubRegion.objects.filter(
+            geoname_id__in=[x.geoname_id for x in buffer]
+        ).values_list("country__code2", "region__geoname_code", "geoname_code", "pk"):
+            country_id = self._country_codes.get(s[0])
+            if country_id is not None:
+                if s[1] not in self._region_codes[country_id]:
+                    region_pk = (
+                        Region.objects.filter(country_id=country_id, geoname_code=s[1])
+                        .values_list("pk", flat=True)
+                        .first()
+                    )
+                    if region_pk:
+                        self._region_codes[country_id][s[1]] = region_pk
+                self._subregion_codes[country_id][s[1]][s[2]] = s[3]
+
     def _get_country_id(self, country_code2):
         """
         Simple lazy identity map for code2->country
@@ -388,7 +479,12 @@ It is possible to force the import of files which weren't downloaded using the
 
         country_items_post_import.send(sender=self, instance=country, items=items)
 
-        self.save(country, force_insert=force_insert, force_update=force_update)
+        if force_insert and BULK_BATCH_SIZE > 0:
+            self._country_insert_buffer.append(country)
+            if len(self._country_insert_buffer) >= BULK_BATCH_SIZE:
+                self._flush_country_buffer()
+        else:
+            self.save(country, force_insert=force_insert, force_update=force_update)
 
     def region_import(self, items):
         try:
@@ -437,7 +533,12 @@ It is possible to force the import of files which weren't downloaded using the
         region_items_post_import.send(sender=self, instance=region, items=items)
 
         if save:
-            self.save(region, force_insert=force_insert, force_update=force_update)
+            if force_insert and BULK_BATCH_SIZE > 0:
+                self._region_insert_buffer.append(region)
+                if len(self._region_insert_buffer) >= BULK_BATCH_SIZE:
+                    self._flush_region_buffer()
+            else:
+                self.save(region, force_insert=force_insert, force_update=force_update)
 
     def subregion_import(self, items):
 
@@ -499,7 +600,14 @@ It is possible to force the import of files which weren't downloaded using the
         subregion_items_post_import.send(sender=self, instance=subregion, items=items)
 
         if save:
-            self.save(subregion, force_insert=force_insert, force_update=force_update)
+            if force_insert and BULK_BATCH_SIZE > 0:
+                self._subregion_insert_buffer.append(subregion)
+                if len(self._subregion_insert_buffer) >= BULK_BATCH_SIZE:
+                    self._flush_subregion_buffer()
+            else:
+                self.save(
+                    subregion, force_insert=force_insert, force_update=force_update
+                )
 
     def city_import(self, items):
         try:
