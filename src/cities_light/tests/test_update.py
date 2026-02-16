@@ -31,7 +31,8 @@ class TestUpdate(TestImportBase):
         )
 
         Fixture(
-            fixture_dir.get_file_path('update_fields.json')
+            fixture_dir.get_file_path('update_fields.json'),
+            ignore_pk=True
         ).assertNoDiff()
 
     def test_update_fields_wrong_timezone(self):
@@ -57,7 +58,8 @@ class TestUpdate(TestImportBase):
         )
 
         Fixture(
-            fixture_dir.get_file_path('update_fields_wtz.json')
+            fixture_dir.get_file_path('update_fields_wtz.json'),
+            ignore_pk=True
         ).assertNoDiff()
 
     def test_change_country(self):
@@ -83,7 +85,8 @@ class TestUpdate(TestImportBase):
         )
 
         Fixture(
-            fixture_dir.get_file_path('change_country.json')
+            fixture_dir.get_file_path('change_country.json'),
+            ignore_pk=True
         ).assertNoDiff()
 
     def test_change_region_and_country(self):
@@ -109,7 +112,8 @@ class TestUpdate(TestImportBase):
         )
 
         Fixture(
-            fixture_dir.get_file_path('change_region_and_country.json')
+            fixture_dir.get_file_path('change_region_and_country.json'),
+            ignore_pk=True
         ).assertNoDiff()
 
     def test_keep_slugs(self):
@@ -137,6 +141,7 @@ class TestUpdate(TestImportBase):
 
         Fixture(
             fixture_dir.get_file_path('keep_slugs.json'),
+            ignore_pk=True
         ).assertNoDiff()
 
     def test_add_records(self):
@@ -162,7 +167,8 @@ class TestUpdate(TestImportBase):
         )
 
         Fixture(
-            fixture_dir.get_file_path('add_records.json')
+            fixture_dir.get_file_path('add_records.json'),
+            ignore_pk=True
         ).assertNoDiff()
 
     def test_noinsert(self):
@@ -190,6 +196,7 @@ class TestUpdate(TestImportBase):
 
         Fixture(
             fixture_dir.get_file_path('noinsert.json'),
+            ignore_pk=True
         ).assertNoDiff()
 
     # TODO: make the test pass
@@ -217,5 +224,6 @@ class TestUpdate(TestImportBase):
         )
 
         Fixture(
-            fixture_dir.get_file_path('remove_records.json')
+            fixture_dir.get_file_path('remove_records.json'),
+            ignore_pk=True
         ).assertNoDiff()

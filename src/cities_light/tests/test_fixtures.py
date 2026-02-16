@@ -52,7 +52,7 @@ class TestCitiesLigthFixtures(test.TransactionTestCase):
                 data = bzfile.read()
             with open(fixture_path, mode='wb') as file:
                 file.write(data)
-            Fixture(fixture_path, models=[City]).assertNoDiff()
+            Fixture(fixture_path, models=[City], ignore_pk=True).assertNoDiff()
         finally:
             if os.path.exists(fixture_path):
                 os.remove(fixture_path)
@@ -94,7 +94,7 @@ class TestCitiesLigthFixtures(test.TransactionTestCase):
             cmd.load_fixture(source='/abcdefg.json',
                              destination=destination,
                              force=True)
-            Fixture(destination).assertNoDiff()
+            Fixture(destination, ignore_pk=True).assertNoDiff()
             mock_func.assert_called_with(source='/abcdefg.json',
                                          destination=destination,
                                          force=True)
