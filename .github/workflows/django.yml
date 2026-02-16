@@ -14,14 +14,14 @@ jobs:
     strategy:
       matrix:
         python-version:
-        - '3.8'
-        - '3.9'
         - '3.10'
         - '3.11'
         - '3.12'
+        - '3.13'
+        - '3.14'
     services:
       postgres:
-        image: postgres:14-alpine
+        image: postgres:alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
@@ -39,6 +39,11 @@ jobs:
         - 3306:3306
         env:
           MYSQL_ROOT_PASSWORD: cities_light
+        options: >-
+          --health-cmd "mysqladmin ping -h localhost"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}

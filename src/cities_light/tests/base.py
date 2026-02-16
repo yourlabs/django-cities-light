@@ -2,7 +2,8 @@
 import os
 from unittest import mock
 
-from django import test
+import cities_light.management.commands.cities_light  # noqa: F401 - ensure module is loaded for patch resolution
+from django.test import TestCase
 from django.core import management
 from django.conf import settings
 
@@ -10,14 +11,13 @@ from django.conf import settings
 class FixtureDir:
     """Helper class to construct fixture paths."""
 
-    def __init__(self, rel_path='', base_dir=None):
+    def __init__(self, rel_path=''):
         """Class constructor.
 
         params:
         rel_path - subdir relative to base dir, e.g. 'aaaa/bbbb/'
-        base_dir - base fixture directory (settings.FIXTURE_DIR by default)
         """
-        self.base_dir = base_dir or settings.FIXTURE_DIR
+        self.base_dir = settings.FIXTURE_DIR
         self.rel_path = rel_path
 
     def get_file_path(self, file_name):
@@ -31,7 +31,7 @@ class FixtureDir:
         )
 
 
-class TestImportBase(test.TransactionTestCase):
+class TestImportBase(TestCase):
     """Base class for import testcases.
 
     Inherit from this class and use separate
@@ -39,7 +39,7 @@ class TestImportBase(test.TransactionTestCase):
     """
 
     maxDiff = 100000
-    reset_sequences = True
+   
 
     def import_data(self, srcdir, countries, regions, subregions, cities, trans, file_type="txt", **options):
         """Helper method to import Geonames data.

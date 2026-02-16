@@ -23,6 +23,7 @@ class AdminTestCase(TestCase):
             cl_admin.CityAdmin.list_display_links, cl_admin.CityAdmin.list_filter,
             cl_admin.CityAdmin.date_hierarchy, cl_admin.CityAdmin.search_fields,
             cl_admin.CityAdmin.list_select_related, cl_admin.CityAdmin.list_per_page,
-            cl_admin.CityAdmin.list_max_show_all, cl_admin.CityAdmin.list_editable, city_admin, "id")
+            cl_admin.CityAdmin.list_max_show_all, cl_admin.CityAdmin.list_editable,
+            city_admin, "id", getattr(city_admin, 'search_help_text', None))
 
         self.assertIsInstance(changelist.get_queryset(request), query.QuerySet)

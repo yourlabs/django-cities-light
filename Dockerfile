@@ -4,7 +4,7 @@ FROM python:3.12-alpine
 # Install MySQL and PostgreSQL client libraries
 RUN apk update && apk add --no-cache \
     mariadb-connector-c-dev \
-    postgresql-dev python3-dev musl-dev git
+    postgresql-dev python3-dev musl-dev git mysql-client
 
 # Install Tox
 RUN pip install tox

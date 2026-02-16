@@ -120,7 +120,8 @@ Development
 Create development virtualenv (you need to have tox installed in your base system)::
 
     tox -e dev
-    source .tox/dev/bin/activate
+    source .tox/dev/bin/activate # for linux
+    .\.tox\dev\Scripts\activate # for windows
 
 To run the test project, with the folder of the project as the current directory, run::
     
@@ -158,8 +159,14 @@ And to run one specific test use this one::
     tox -e py312-django42-sqlite -- cities_light/tests/test_form.py::FormTestCase::testCountryFormNameAndContinentAlone
 
 To run it even faster, you can switch to specific tox virtualenv::
+    
+    export DB_HOST=mysql
+    export DB_USER=root
+    export DB_PASSWORD=example
+    export DB_PORT=3306
 
     source .tox/py312-django42-sqlite/bin/activate
+    CI=True py.test -v --cov cities_light --create-db --strict -r fEsxXw cities_light/tests/test_form.py::FormTestCase::testCountryFormNameAndContinentAlone
     CI=true test_project/manage.py test cities_light.tests.test_form.FormTestCase.testCountryFormNameAndContinentAlone
 
 If you want to build the docs, use the following steps::

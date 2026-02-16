@@ -8,7 +8,7 @@
 .tox/
 .idea/
 *.sqlite
-
+*.sqlite-journal
 *.egg-info
 build/
 dist/

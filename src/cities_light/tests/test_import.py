@@ -20,7 +20,7 @@ class TestImport(TestImportBase):
             'angouleme_city',
             'angouleme_translations'
         )
-        Fixture(fixture_dir.get_file_path('angouleme.json')).assertNoDiff()
+        Fixture(fixture_dir.get_file_path('angouleme.json'), ignore_pk=True).assertNoDiff()
 
     def test_single_city_zip(self):
         """Load single city."""
@@ -38,7 +38,7 @@ class TestImport(TestImportBase):
             'angouleme_translations',
             file_type="zip"
         )
-        Fixture(FixtureDir('import').get_file_path('angouleme.json')).assertNoDiff()
+        Fixture(FixtureDir('import').get_file_path('angouleme.json'), ignore_pk=True).assertNoDiff()
 
     def test_city_wrong_timezone(self):
         """Load single city with wrong timezone."""
@@ -51,7 +51,7 @@ class TestImport(TestImportBase):
             'angouleme_city_wtz',
             'angouleme_translations'
         )
-        Fixture(fixture_dir.get_file_path('angouleme_wtz.json')).assertNoDiff()
+        Fixture(fixture_dir.get_file_path('angouleme_wtz.json'), ignore_pk=True).assertNoDiff()
 
         from ..loading import get_cities_model
         city_model = get_cities_model('City')
