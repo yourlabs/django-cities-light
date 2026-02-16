@@ -4,7 +4,7 @@ import logging
 import time
 import os
 
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 from urllib.parse import urlparse
 
 from .exceptions import SourceFileDoesNotExist
@@ -30,10 +30,9 @@ class Downloader:
             return False
         # If the files are different, download/copy happens
         logger.info("Downloading %s into %s", source, destination)
-        source_stream = urlopen(source)
-        # wb: open as write and binary mode
-        with open(destination, "wb") as local_file:
-            local_file.write(source_stream.read())
+        with urlopen(source) as source_stream:
+            with open(destination, "wb") as local_file:
+                local_file.write(source_stream.read())
 
         return True
 
@@ -56,20 +55,37 @@ class Downloader:
     @staticmethod
     def needs_downloading(source: str, destination: str, force: bool):
         """Return True if source should be downloaded to destination."""
-        src_file = urlopen(source)
-        src_size = int(src_file.headers["content-length"])
-        # Getting last modified timestamp
-        src_last_modified = time.strptime(
-            src_file.headers["last-modified"],
-            "%a, %d %b %Y %H:%M:%S %Z",  # taking time with second
-        )
+        parsed = urlparse(source)
+
+        if parsed.scheme == "file":
+            source_path = os.path.abspath(os.path.join(parsed.netloc, parsed.path))
+            if not os.path.exists(source_path):
+                raise SourceFileDoesNotExist(source_path)
+            src_size = os.path.getsize(source_path)
+            src_mtime = os.path.getmtime(source_path)
+            src_last_modified = time.gmtime(src_mtime)
+        else:
+            # Use HEAD for http/https to avoid fetching the body
+            if parsed.scheme in ("http", "https"):
+                req = Request(source, method="HEAD")
+                src_file = urlopen(req)
+            else:
+                src_file = urlopen(source)
+
+            try:
+                src_size = int(src_file.headers["content-length"])
+                src_last_modified = time.strptime(
+                    src_file.headers["last-modified"],
+                    "%a, %d %b %Y %H:%M:%S %Z",
+                )
+            except (KeyError, TypeError, ValueError):
+                return True
+            finally:
+                src_file.close()
 
         if os.path.exists(destination) and not force:
             local_time = time.gmtime(os.path.getmtime(destination))
             local_size = os.path.getsize(destination)
-            # Checking the timestamp of creation and the file size,
-            # if destination timestamp is equal or greater and the size
-            # is also equal then return falase as no need to download
             if local_time >= src_last_modified and local_size == src_size:
                 return False
         return True

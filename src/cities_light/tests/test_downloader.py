@@ -4,6 +4,7 @@ import tempfile
 import time
 from unittest import mock
 import logging
+from urllib.error import HTTPError, URLError
 
 from django import test
 
@@ -92,9 +93,12 @@ class TestDownloader(test.TransactionTestCase):
             self.assertFalse(result)
 
             # Destination time < source time, size is equal
-            loc_gmtime.return_value = time.strptime(
-                "02-01-2016 00:04:13 GMT", "%d-%m-%Y %H:%M:%S %Z"
-            )
+            # gmtime is called twice: for source, then destination.
+            # Source must be newer (00:04:14), destination older (00:04:13).
+            loc_gmtime.side_effect = [
+                time.strptime("02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"),
+                time.strptime("02-01-2016 00:04:13 GMT", "%d-%m-%Y %H:%M:%S %Z"),
+            ]
             loc_getsize.return_value = 13469
             params = {
                 "source": "file:///a.txt",
@@ -106,10 +110,12 @@ class TestDownloader(test.TransactionTestCase):
 
             # Source and destination time is equal,
             # source and destination size is not equal
+            # getsize is called twice: for source, then destination.
+            loc_gmtime.side_effect = None  # Reset after using side_effect
             loc_gmtime.return_value = time.strptime(
                 "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
             )
-            loc_getsize.return_value = 13470
+            loc_getsize.side_effect = [13469, 13470]  # source, destination
             params = {
                 "source": "file:///a.txt",
                 "destination": destination,
@@ -120,6 +126,8 @@ class TestDownloader(test.TransactionTestCase):
 
             # Source and destination have the same time and size
             # force = True
+            loc_getsize.side_effect = None  # Reset after using side_effect
+            loc_getsize.return_value = 13469
             loc_gmtime.return_value = time.strptime(
                 "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
             )
@@ -133,7 +141,9 @@ class TestDownloader(test.TransactionTestCase):
             self.assertTrue(result)
 
             # Destination file does not exist
-            loc_exists.return_value = False
+            # exists is called for source first, then destination.
+            # Source must exist, destination must not.
+            loc_exists.side_effect = [True, False]
             loc_gmtime.return_value = time.strptime(
                 "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
             )
@@ -226,3 +236,260 @@ class TestDownloader(test.TransactionTestCase):
                 with mock.patch("cities_light.downloader.urlopen") as uo_mock:
                     downloader.download(source, destination)
                     uo_mock.assert_not_called()
+
+
+class TestNeedsDownloadingHttpHttps(test.TransactionTestCase):
+    """Tests for needs_downloading HTTP/HTTPS branch."""
+
+    def test_head_used_for_http(self):
+        """Verify HTTP sources use HEAD request."""
+        m_response = mock.Mock(
+            headers={
+                "last-modified": "Sat, 02 Jan 2016 00:04:14 GMT",
+                "content-length": "13469",
+            }
+        )
+        destination = "/data/abc"
+        with (
+            mock.patch("cities_light.downloader.urlopen", return_value=m_response),
+            mock.patch("cities_light.downloader.Request") as m_request,
+            mock.patch("cities_light.downloader.os.path.exists", return_value=True),
+            mock.patch("cities_light.downloader.os.path.getsize", return_value=13469),
+            mock.patch("cities_light.downloader.os.path.getmtime", return_value=1),
+            mock.patch(
+                "cities_light.downloader.time.gmtime",
+                return_value=time.strptime(
+                    "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
+                ),
+            ),
+        ):
+            m_request.return_value = "request_obj"
+            result = Downloader.needs_downloading(
+                "http://example.com/file.zip", destination, False
+            )
+            m_request.assert_called_once_with(
+                "http://example.com/file.zip", method="HEAD"
+            )
+            self.assertFalse(result)
+
+    def test_head_used_for_https(self):
+        """Verify HTTPS sources use HEAD request."""
+        m_response = mock.Mock(
+            headers={
+                "last-modified": "Sat, 02 Jan 2016 00:04:14 GMT",
+                "content-length": "13469",
+            }
+        )
+        destination = "/data/abc"
+        with (
+            mock.patch("cities_light.downloader.urlopen", return_value=m_response),
+            mock.patch("cities_light.downloader.Request") as m_request,
+            mock.patch("cities_light.downloader.os.path.exists", return_value=True),
+            mock.patch("cities_light.downloader.os.path.getsize", return_value=13469),
+            mock.patch("cities_light.downloader.os.path.getmtime", return_value=1),
+            mock.patch(
+                "cities_light.downloader.time.gmtime",
+                return_value=time.strptime(
+                    "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
+                ),
+            ),
+        ):
+            m_request.return_value = "request_obj"
+            result = Downloader.needs_downloading(
+                "https://example.com/data.zip", destination, False
+            )
+            m_request.assert_called_once_with(
+                "https://example.com/data.zip", method="HEAD"
+            )
+            self.assertFalse(result)
+
+    @mock.patch("cities_light.downloader.time.gmtime")
+    @mock.patch("cities_light.downloader.os.path.getmtime")
+    @mock.patch("cities_light.downloader.os.path.getsize")
+    @mock.patch("cities_light.downloader.os.path.exists")
+    def test_http_valid_headers_no_download_needed(
+        self, loc_exists, loc_getsize, loc_getmtime, loc_gmtime
+    ):
+        """Destination exists with same time and size - no download needed."""
+        m_response = mock.Mock(
+            headers={
+                "last-modified": "Sat, 02 Jan 2016 00:04:14 GMT",
+                "content-length": "13469",
+            }
+        )
+        loc_exists.return_value = True
+        loc_getsize.return_value = 13469
+        loc_getmtime.return_value = 1
+        loc_gmtime.return_value = time.strptime(
+            "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
+        )
+        with mock.patch("cities_light.downloader.urlopen", return_value=m_response):
+            result = Downloader.needs_downloading(
+                "http://example.com/data.zip", "/data/abc", False
+            )
+        self.assertFalse(result)
+
+    @mock.patch("cities_light.downloader.time.gmtime")
+    @mock.patch("cities_light.downloader.os.path.getmtime")
+    @mock.patch("cities_light.downloader.os.path.getsize")
+    @mock.patch("cities_light.downloader.os.path.exists")
+    def test_http_valid_headers_download_needed_dest_older(
+        self, loc_exists, loc_getsize, loc_getmtime, loc_gmtime
+    ):
+        """Destination older than source - download needed."""
+        m_response = mock.Mock(
+            headers={
+                "last-modified": "Sat, 02 Jan 2016 00:04:14 GMT",
+                "content-length": "13469",
+            }
+        )
+        loc_exists.return_value = True
+        loc_getsize.return_value = 13469
+        loc_getmtime.return_value = 1
+        # Local destination older (00:04:13) than source (00:04:14)
+        loc_gmtime.return_value = time.strptime(
+            "02-01-2016 00:04:13 GMT", "%d-%m-%Y %H:%M:%S %Z"
+        )
+        with mock.patch("cities_light.downloader.urlopen", return_value=m_response):
+            result = Downloader.needs_downloading(
+                "http://example.com/data.zip", "/data/abc", False
+            )
+        self.assertTrue(result)
+
+    @mock.patch("cities_light.downloader.time.gmtime")
+    @mock.patch("cities_light.downloader.os.path.getmtime")
+    @mock.patch("cities_light.downloader.os.path.getsize")
+    @mock.patch("cities_light.downloader.os.path.exists")
+    def test_http_valid_headers_download_needed_size_differs(
+        self, loc_exists, loc_getsize, loc_getmtime, loc_gmtime
+    ):
+        """Destination size differs from source - download needed."""
+        m_response = mock.Mock(
+            headers={
+                "last-modified": "Sat, 02 Jan 2016 00:04:14 GMT",
+                "content-length": "13469",
+            }
+        )
+        loc_exists.return_value = True
+        loc_getsize.return_value = 13470  # Different from 13469
+        loc_getmtime.return_value = 1
+        loc_gmtime.return_value = time.strptime(
+            "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
+        )
+        with mock.patch("cities_light.downloader.urlopen", return_value=m_response):
+            result = Downloader.needs_downloading(
+                "http://example.com/data.zip", "/data/abc", False
+            )
+        self.assertTrue(result)
+
+    def test_http_missing_last_modified_header(self):
+        """Missing last-modified header returns True (download needed)."""
+        m_response = mock.Mock(headers={"content-length": "13469"})
+        with mock.patch("cities_light.downloader.urlopen", return_value=m_response):
+            result = Downloader.needs_downloading(
+                "http://example.com/data.zip", "/data/abc", False
+            )
+        self.assertTrue(result)
+
+    def test_http_missing_content_length_header(self):
+        """Missing content-length header returns True (download needed)."""
+        m_response = mock.Mock(
+            headers={"last-modified": "Sat, 02 Jan 2016 00:04:14 GMT"}
+        )
+        with mock.patch("cities_light.downloader.urlopen", return_value=m_response):
+            result = Downloader.needs_downloading(
+                "http://example.com/data.zip", "/data/abc", False
+            )
+        self.assertTrue(result)
+
+    def test_http_both_headers_missing(self):
+        """Both headers missing returns True (download needed)."""
+        m_response = mock.Mock(headers={})
+        with mock.patch("cities_light.downloader.urlopen", return_value=m_response):
+            result = Downloader.needs_downloading(
+                "http://example.com/data.zip", "/data/abc", False
+            )
+        self.assertTrue(result)
+
+    def test_http_malformed_content_length(self):
+        """Malformed content-length (non-integer) returns True."""
+        m_response = mock.Mock(
+            headers={
+                "last-modified": "Sat, 02 Jan 2016 00:04:14 GMT",
+                "content-length": "abc",
+            }
+        )
+        with mock.patch("cities_light.downloader.urlopen", return_value=m_response):
+            result = Downloader.needs_downloading(
+                "http://example.com/data.zip", "/data/abc", False
+            )
+        self.assertTrue(result)
+
+    def test_http_malformed_last_modified(self):
+        """Malformed last-modified format returns True."""
+        m_response = mock.Mock(
+            headers={
+                "last-modified": "invalid-date-format",
+                "content-length": "13469",
+            }
+        )
+        with mock.patch("cities_light.downloader.urlopen", return_value=m_response):
+            result = Downloader.needs_downloading(
+                "http://example.com/data.zip", "/data/abc", False
+            )
+        self.assertTrue(result)
+
+    def test_http_head_request_fails_http_error(self):
+        """HEAD request raising HTTPError propagates exception."""
+        with mock.patch(
+            "cities_light.downloader.urlopen",
+            side_effect=HTTPError(
+                "http://example.com/file.zip", 405, "Method Not Allowed", {}, None
+            ),
+        ):
+            with self.assertRaises(HTTPError):
+                Downloader.needs_downloading(
+                    "http://example.com/file.zip", "/data/abc", False
+                )
+
+    def test_http_head_request_fails_url_error(self):
+        """HEAD request raising URLError propagates exception."""
+        with mock.patch(
+            "cities_light.downloader.urlopen",
+            side_effect=URLError("connection refused"),
+        ):
+            with self.assertRaises(URLError):
+                Downloader.needs_downloading(
+                    "http://example.com/file.zip", "/data/abc", False
+                )
+
+    def test_non_http_scheme_uses_get(self):
+        """Non-HTTP(S) scheme uses GET (urlopen with URL, not HEAD Request)."""
+        m_response = mock.Mock(
+            headers={
+                "last-modified": "Sat, 02 Jan 2016 00:04:14 GMT",
+                "content-length": "13469",
+            }
+        )
+        destination = "/data/abc"
+        with (
+            mock.patch(
+                "cities_light.downloader.urlopen", return_value=m_response
+            ) as m_uo,
+            mock.patch("cities_light.downloader.Request") as m_request,
+            mock.patch("cities_light.downloader.os.path.exists", return_value=True),
+            mock.patch("cities_light.downloader.os.path.getsize", return_value=13469),
+            mock.patch("cities_light.downloader.os.path.getmtime", return_value=1),
+            mock.patch(
+                "cities_light.downloader.time.gmtime",
+                return_value=time.strptime(
+                    "02-01-2016 00:04:14 GMT", "%d-%m-%Y %H:%M:%S %Z"
+                ),
+            ),
+        ):
+            result = Downloader.needs_downloading(
+                "ftp://example.com/data.zip", destination, False
+            )
+            m_request.assert_not_called()
+            m_uo.assert_called_once_with("ftp://example.com/data.zip")
+            self.assertFalse(result)
