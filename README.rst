@@ -27,13 +27,9 @@ database, you should use
 
 Requirements:
 
-- Python >= 3.8
-- Django >= 3.2
+- Python >= 3.10
+- Django >= 4.2
 - MySQL or PostgreSQL or SQLite.
-
-Yes, for some reason, code that used to work on MySQL (not without pain xD)
-does not work anymore. So we're now using django.db.transaction.atomic which
-comes from Django 1.6 just to support MySQL quacks.
 
 Features
 --------
@@ -168,6 +164,14 @@ To run it even faster, you can switch to specific tox virtualenv::
     source .tox/py312-django42-sqlite/bin/activate
     CI=True py.test -v --cov cities_light --create-db --strict -r fEsxXw cities_light/tests/test_form.py::FormTestCase::testCountryFormNameAndContinentAlone
     CI=true test_project/manage.py test cities_light.tests.test_form.FormTestCase.testCountryFormNameAndContinentAlone
+
+
+If you want to generate the translations, use the following steps::
+    
+    source .tox/dev/bin/activate
+    cd src/cities_light
+    python manage.py makemessages -l fr
+    python manage.py compilemessages
 
 If you want to build the docs, use the following steps::
 
