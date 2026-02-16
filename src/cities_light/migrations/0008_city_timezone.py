@@ -4,15 +4,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('cities_light', '0007_make_country_name_not_unique'),
+        ("cities_light", "0007_make_country_name_not_unique"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='city',
-            name='timezone',
-            field=models.CharField(blank=True, db_index=True, max_length=40, null=True, validators=[cities_light.validators.timezone_validator]),
+            model_name="city",
+            name="timezone",
+            field=models.CharField(
+                blank=True,
+                db_index=True,
+                max_length=40,
+                null=True,
+                validators=[cities_light.validators.timezone_validator],
+            ),
         ),
     ]

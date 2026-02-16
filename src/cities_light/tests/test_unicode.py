@@ -17,14 +17,14 @@ class TestUnicode(TestImportBase):
 
         See issue https://github.com/yourlabs/django-cities-light/issues/61
         """
-        fixture_dir = FixtureDir('unicode')
+        fixture_dir = FixtureDir("unicode")
         self.import_data(
             fixture_dir,
-            'kemerovo_country',
-            'kemerovo_region',
-            'kemerovo_subregion',
-            'kemerovo_city',
-            'kemerovo_translations'
+            "kemerovo_country",
+            "kemerovo_region",
+            "kemerovo_subregion",
+            "kemerovo_city",
+            "kemerovo_translations",
         )
 
     def test_unidecode_warning(self):
@@ -38,20 +38,20 @@ class TestUnicode(TestImportBase):
         """
         # Reset warning registry to trigger the test if the warning was already issued
         # See http://bugs.python.org/issue21724
-        registry = getattr(unidecode, '__warningregistry__', None)
+        registry = getattr(unidecode, "__warningregistry__", None)
         if registry:
             registry.clear()
 
         with warnings.catch_warnings(record=True) as warns:
-            warnings.simplefilter('always')
+            warnings.simplefilter("always")
 
             self.import_data(
-                FixtureDir('unicode'),
-                'kemerovo_country',
-                'kemerovo_region',
-                'kemerovo_subregion',
-                'kemerovo_city',
-                'kemerovo_translations'
+                FixtureDir("unicode"),
+                "kemerovo_country",
+                "kemerovo_region",
+                "kemerovo_subregion",
+                "kemerovo_city",
+                "kemerovo_translations",
             )
 
             for w in warns[:]:
@@ -60,6 +60,6 @@ class TestUnicode(TestImportBase):
 
     def test_to_ascii(self):
         """Test to_ascii behavior."""
-        self.assertEqual(to_ascii('République Françaisen'), 'Republique Francaisen')
-        self.assertEqual(to_ascii('Кемерово'), 'Kemerovo')
-        self.assertTrue(isinstance(to_ascii('Кемерово'), str))
+        self.assertEqual(to_ascii("République Françaisen"), "Republique Francaisen")
+        self.assertEqual(to_ascii("Кемерово"), "Kemerovo")
+        self.assertTrue(isinstance(to_ascii("Кемерово"), str))

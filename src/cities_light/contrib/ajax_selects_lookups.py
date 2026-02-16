@@ -21,7 +21,7 @@ class StandardLookupChannel(LookupChannel):
     """
 
     def format_match(self, obj):
-        """ (HTML) formatted item for displaying item in the dropdown """
+        """(HTML) formatted item for displaying item in the dropdown"""
         return self.get_result(obj)
 
     def format_item_display(self, obj):
@@ -74,8 +74,12 @@ class CityLookup(StandardLookupChannel):
     """
     Lookup channel for City, hits name and search_names.
     """
+
     model = City
 
     def get_query(self, q, request):
-        return City.objects.filter(search_names__icontains=q
-            ).select_related('country').distinct()
+        return (
+            City.objects.filter(search_names__icontains=q)
+            .select_related("country")
+            .distinct()
+        )

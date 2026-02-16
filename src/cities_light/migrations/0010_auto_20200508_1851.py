@@ -5,20 +5,26 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('cities_light', '0009_add_subregion'),
+        ("cities_light", "0009_add_subregion"),
     ]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='city',
-            unique_together={('region', 'subregion', 'slug'), ('region', 'subregion', 'name')},
+            name="city",
+            unique_together={
+                ("region", "subregion", "slug"),
+                ("region", "subregion", "name"),
+            },
         ),
         migrations.AlterField(
-            model_name='subregion',
-            name='region',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
-                                    to='cities_light.Region'),
+            model_name="subregion",
+            name="region",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="cities_light.Region",
+            ),
         ),
     ]

@@ -8,6 +8,7 @@ from cities_light.graphql.types import SubRegion as SubRegionType
 
 from ..models import Person as PersonModel
 
+
 class Person(graphene_django.DjangoObjectType):
     country = graphene.Field(CountryType)
     region = graphene.Field(RegionType)

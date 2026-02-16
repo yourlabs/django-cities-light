@@ -105,68 +105,119 @@ because it's probably project specific.
     Note: you can't define one custom model, you have to define all of
     cities_light models, even if you want to modify only one.
 """
+
 import os.path
 
 from django.conf import settings
 
 __all__ = [
-    'FIXTURES_BASE_URL', 'COUNTRY_SOURCES', 'REGION_SOURCES',
-    'SUBREGION_SOURCES', 'CITY_SOURCES', 'TRANSLATION_LANGUAGES',
-    'TRANSLATION_SOURCES', 'SOURCES', 'DATA_DIR', 'INDEX_SEARCH_NAMES',
-    'INCLUDE_COUNTRIES', 'INCLUDE_CITY_TYPES', 'DEFAULT_APP_NAME',
-    'CITIES_LIGHT_APP_NAME', 'ICountry', 'IRegion', 'ISubRegion', 'ICity',
-    'IAlternate']
+    "FIXTURES_BASE_URL",
+    "COUNTRY_SOURCES",
+    "REGION_SOURCES",
+    "SUBREGION_SOURCES",
+    "CITY_SOURCES",
+    "TRANSLATION_LANGUAGES",
+    "TRANSLATION_SOURCES",
+    "SOURCES",
+    "DATA_DIR",
+    "INDEX_SEARCH_NAMES",
+    "INCLUDE_COUNTRIES",
+    "INCLUDE_CITY_TYPES",
+    "DEFAULT_APP_NAME",
+    "CITIES_LIGHT_APP_NAME",
+    "ICountry",
+    "IRegion",
+    "ISubRegion",
+    "ICity",
+    "IAlternate",
+]
 
-COUNTRY_SOURCES = getattr(settings, 'CITIES_LIGHT_COUNTRY_SOURCES',
-    ['http://download.geonames.org/export/dump/countryInfo.txt'])
-REGION_SOURCES = getattr(settings, 'CITIES_LIGHT_REGION_SOURCES',
-    ['http://download.geonames.org/export/dump/admin1CodesASCII.txt'])
-SUBREGION_SOURCES = getattr(settings, 'CITIES_LIGHT_SUBREGION_SOURCES',
-    ['http://download.geonames.org/export/dump/admin2Codes.txt'])
-CITY_SOURCES = getattr(settings, 'CITIES_LIGHT_CITY_SOURCES',
-    ['http://download.geonames.org/export/dump/cities15000.zip'])
-TRANSLATION_SOURCES = getattr(settings, 'CITIES_LIGHT_TRANSLATION_SOURCES',
-    ['http://download.geonames.org/export/dump/alternateNames.zip'])
-TRANSLATION_LANGUAGES = getattr(settings, 'CITIES_LIGHT_TRANSLATION_LANGUAGES',
-    ['es', 'en', 'pt', 'de', 'pl', 'abbr'])
+COUNTRY_SOURCES = getattr(
+    settings,
+    "CITIES_LIGHT_COUNTRY_SOURCES",
+    ["http://download.geonames.org/export/dump/countryInfo.txt"],
+)
+REGION_SOURCES = getattr(
+    settings,
+    "CITIES_LIGHT_REGION_SOURCES",
+    ["http://download.geonames.org/export/dump/admin1CodesASCII.txt"],
+)
+SUBREGION_SOURCES = getattr(
+    settings,
+    "CITIES_LIGHT_SUBREGION_SOURCES",
+    ["http://download.geonames.org/export/dump/admin2Codes.txt"],
+)
+CITY_SOURCES = getattr(
+    settings,
+    "CITIES_LIGHT_CITY_SOURCES",
+    ["http://download.geonames.org/export/dump/cities15000.zip"],
+)
+TRANSLATION_SOURCES = getattr(
+    settings,
+    "CITIES_LIGHT_TRANSLATION_SOURCES",
+    ["http://download.geonames.org/export/dump/alternateNames.zip"],
+)
+TRANSLATION_LANGUAGES = getattr(
+    settings,
+    "CITIES_LIGHT_TRANSLATION_LANGUAGES",
+    ["es", "en", "pt", "de", "pl", "abbr"],
+)
 
-SOURCES = list(COUNTRY_SOURCES) + list(REGION_SOURCES) + \
-    list(SUBREGION_SOURCES) + list(CITY_SOURCES)
+SOURCES = (
+    list(COUNTRY_SOURCES)
+    + list(REGION_SOURCES)
+    + list(SUBREGION_SOURCES)
+    + list(CITY_SOURCES)
+)
 SOURCES += TRANSLATION_SOURCES
 
-DATA_DIR = getattr(settings, 'CITIES_LIGHT_DATA_DIR',
-    os.path.normpath(os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), 'data')))
+DATA_DIR = getattr(
+    settings,
+    "CITIES_LIGHT_DATA_DIR",
+    os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")),
+)
 
-INCLUDE_COUNTRIES = getattr(settings, 'CITIES_LIGHT_INCLUDE_COUNTRIES', None)
+INCLUDE_COUNTRIES = getattr(settings, "CITIES_LIGHT_INCLUDE_COUNTRIES", None)
 
 # Feature codes are described in the "P city, village" section at
 # http://www.geonames.org/export/codes.html
 INCLUDE_CITY_TYPES = getattr(
     settings,
-    'CITIES_LIGHT_INCLUDE_CITY_TYPES',
-    ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC',
-     'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT']
+    "CITIES_LIGHT_INCLUDE_CITY_TYPES",
+    [
+        "PPL",
+        "PPLA",
+        "PPLA2",
+        "PPLA3",
+        "PPLA4",
+        "PPLC",
+        "PPLF",
+        "PPLG",
+        "PPLL",
+        "PPLR",
+        "PPLS",
+        "STLMT",
+    ],
 )
 
 # MySQL doesn't support indexing TextFields
-INDEX_SEARCH_NAMES = getattr(settings, 'CITIES_LIGHT_INDEX_SEARCH_NAMES', None)
+INDEX_SEARCH_NAMES = getattr(settings, "CITIES_LIGHT_INDEX_SEARCH_NAMES", None)
 if INDEX_SEARCH_NAMES is None:
     INDEX_SEARCH_NAMES = True
     for database in list(settings.DATABASES.values()):
         if "ENGINE" in database and (
-                'mysql' in database.get('ENGINE').lower() or
-                'postgresql' in database.get('ENGINE').lower()):
+            "mysql" in database.get("ENGINE").lower()
+            or "postgresql" in database.get("ENGINE").lower()
+        ):
             INDEX_SEARCH_NAMES = False
 
-DEFAULT_APP_NAME = 'cities_light'
-CITIES_LIGHT_APP_NAME = getattr(settings, 'CITIES_LIGHT_APP_NAME',
-                                DEFAULT_APP_NAME)
+DEFAULT_APP_NAME = "cities_light"
+CITIES_LIGHT_APP_NAME = getattr(settings, "CITIES_LIGHT_APP_NAME", DEFAULT_APP_NAME)
 
 FIXTURES_BASE_URL = getattr(
     settings,
-    'CITIES_LIGHT_FIXTURES_BASE_URL',
-    'file://{0}'.format(os.path.join(DATA_DIR, 'fixtures/'))
+    "CITIES_LIGHT_FIXTURES_BASE_URL",
+    "file://{0}".format(os.path.join(DATA_DIR, "fixtures/")),
 )
 
 
@@ -174,6 +225,7 @@ class ICountry:
     """
     Country field indexes in geonames.
     """
+
     code2 = 0
     code3 = 1
     codeNum = 2
@@ -199,6 +251,7 @@ class IRegion:
     """
     Region field indexes in geonames.
     """
+
     code = 0
     name = 1
     asciiName = 2
@@ -209,6 +262,7 @@ class ISubRegion:
     """
     Subregion field indexes in geonames.
     """
+
     code = 0
     name = 1
     asciiName = 2
@@ -220,6 +274,7 @@ class ICity:
     City field indexes in geonames.
     Description of fields: http://download.geonames.org/export/dump/readme.txt
     """
+
     geonameid = 0
     name = 1
     asciiName = 2
@@ -246,6 +301,7 @@ class IAlternate:
     Alternate names field indexes in geonames.
     Description of fields: http://download.geonames.org/export/dump/readme.txt
     """
+
     nameid = 0
     geonameid = 1
     language = 2

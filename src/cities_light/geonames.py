@@ -1,73 +1,60 @@
 import os.path
 import zipfile
 import logging
+from urllib.parse import urlparse
 
 from .settings import DATA_DIR
 from .downloader import Downloader
 
 
 class Geonames:
-    logger = logging.getLogger('cities_light')
+    logger = logging.getLogger("cities_light")
 
     def __init__(self, url: str, force: bool = False):
         # Creating a directory if not exist
         if not os.path.exists(DATA_DIR):
-            self.logger.info('Creating %s', DATA_DIR)
+            self.logger.info("Creating %s", DATA_DIR)
             os.mkdir(DATA_DIR)
 
-        destination_file_name = url.split('/')[-1]
+        destination_file_name = url.split("/")[-1]
         self.file_path = os.path.join(DATA_DIR, destination_file_name)
 
-        self.downloaded = self.download(
-            url=url,
-            path=self.file_path,
-            force=force
-        )
+        self.downloaded = self.download(url=url, path=self.file_path, force=force)
 
         # Extract the destination file, use the extracted file as new
         # destination
-        destination_file_name = destination_file_name.replace(
-            'zip', 'txt')
+        destination_file_name = destination_file_name.replace("zip", "txt")
 
         destination = os.path.join(DATA_DIR, destination_file_name)
         exists = os.path.exists(destination)
         # If the file is a zipped file then extract it
-        if url.split('.')[-1] == 'zip' and not exists:
+        url_path = urlparse(url).path
+        if url_path.lower().endswith(".zip") and not exists:
             self.extract(self.file_path, destination_file_name)
-        self.file_path = os.path.join(
-            DATA_DIR, destination_file_name)
+        self.file_path = os.path.join(DATA_DIR, destination_file_name)
 
     @staticmethod
     def download(url, path, force=False):
         downloader = Downloader()
         # Returns true or false(either downloaded or not based on
         # the condition in downloader.py
-        return downloader.download(
-            source=url,
-            destination=path,
-            force=force
-        )
+        return downloader.download(source=url, destination=path, force=force)
 
     def extract(self, zip_path, file_name):
-        destination = os.path.join(DATA_DIR, file_name)
-
-        self.logger.info('Extracting %s from %s into %s',
-                         file_name, zip_path, destination)
-        # Extracting the file in the data directory
-        zip_file = zipfile.ZipFile(zip_path)
-        if zip_file:
+        self.logger.info("Extracting %s from %s into %s", file_name, zip_path, DATA_DIR)
+        with zipfile.ZipFile(zip_path) as zip_file:
             zip_file.extract(file_name, DATA_DIR)
 
     def parse(self):
-        file = open(self.file_path, encoding='utf-8', mode='r')
-
-        for line in file:
-            line = line.strip()
-            # If the line is blank/empty or a comment, skip it and continue
-            if len(line) < 1 or line[0] == '#':
-                continue
-            # Split on tab character and strip the new line character
-            yield [e.strip() for e in line.split('\t')]
+        with open(self.file_path, encoding="utf-8", mode="r") as file:
+            for line in file:
+                line = line.strip()
+                # If the line is blank/empty or a comment, skip it and continue
+                if len(line) < 1 or line[0] == "#":
+                    continue
+                # Split on tab character and strip the new line character
+                yield [e.strip() for e in line.split("\t")]
 
     def num_lines(self):
-        return sum(1 for line in open(self.file_path, encoding='utf-8'))
+        with open(self.file_path, encoding="utf-8") as file:
+            return sum(1 for _ in file)

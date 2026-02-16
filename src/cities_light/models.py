@@ -80,37 +80,47 @@ That's all!
 """
 
 # some imports are present for backwards compatibility and migration process
-from .abstract_models import (AbstractCountry, AbstractRegion,
-                              AbstractSubRegion, AbstractCity,
-                              CONTINENT_CHOICES,
-                              to_search, to_ascii)
+from .abstract_models import (
+    AbstractCountry,
+    AbstractRegion,
+    AbstractSubRegion,
+    AbstractCity,
+    CONTINENT_CHOICES,
+    to_search,
+    to_ascii,
+)
 
 from .receivers import connect_default_signals
 from .settings import CITIES_LIGHT_APP_NAME, DEFAULT_APP_NAME
 
-__all__ = ['CONTINENT_CHOICES', 'to_search', 'to_ascii']
+__all__ = ["CONTINENT_CHOICES", "to_search", "to_ascii"]
 
 if CITIES_LIGHT_APP_NAME == DEFAULT_APP_NAME:
+
     class Country(AbstractCountry):
         pass
+
     connect_default_signals(Country)
 
-    __all__.append('Country')
+    __all__.append("Country")
 
     class Region(AbstractRegion):
         pass
+
     connect_default_signals(Region)
 
-    __all__.append('Region')
+    __all__.append("Region")
 
     class SubRegion(AbstractSubRegion):
         pass
+
     connect_default_signals(SubRegion)
 
-    __all__.append('SubRegion')
+    __all__.append("SubRegion")
 
     class City(AbstractCity):
         pass
+
     connect_default_signals(City)
 
-    __all__.append('City')
+    __all__.append("City")

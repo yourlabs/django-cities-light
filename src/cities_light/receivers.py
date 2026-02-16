@@ -2,8 +2,10 @@ from django.db.models import signals
 from .abstract_models import to_ascii, to_search
 from .settings import INCLUDE_CITY_TYPES, INCLUDE_COUNTRIES
 from .signals import (
-    city_items_pre_import, country_items_pre_import, region_items_pre_import,
-    subregion_items_pre_import
+    city_items_pre_import,
+    country_items_pre_import,
+    region_items_pre_import,
+    subregion_items_pre_import,
 )
 from .exceptions import InvalidItems
 
@@ -36,20 +38,26 @@ def city_country(sender, instance, **kwargs):
 def city_search_names(sender, instance, **kwargs):
     search_names = set()
 
-    country_names = {instance.country.name, }
+    country_names = {
+        instance.country.name,
+    }
     if instance.country.alternate_names:
-        for n in instance.country.alternate_names.split(';'):
+        for n in instance.country.alternate_names.split(";"):
             country_names.add(n)
 
-    city_names = {instance.name, }
+    city_names = {
+        instance.name,
+    }
     if instance.alternate_names:
-        for n in instance.alternate_names.split(';'):
+        for n in instance.alternate_names.split(";"):
             city_names.add(n)
 
     if instance.region_id:
-        region_names = {instance.region.name, }
+        region_names = {
+            instance.region.name,
+        }
         if instance.region.alternate_names:
-            for n in instance.region.alternate_names.split(';'):
+            for n in instance.region.alternate_names.split(";"):
                 region_names.add(n)
     else:
         region_names = set()
@@ -63,7 +71,7 @@ def city_search_names(sender, instance, **kwargs):
                 name = to_search(city_name + region_name + country_name)
                 search_names.add(name)
 
-    instance.search_names = ' '.join(sorted(search_names))
+    instance.search_names = " ".join(sorted(search_names))
 
 
 def connect_default_signals(model_class):
@@ -72,15 +80,15 @@ def connect_default_signals(model_class):
     It is called automatically, if default cities_light models are used,
     i.e. settings `CITIES_LIGHT_APP_NAME` is not changed.
     """
-    if 'Country' in model_class.__name__:
+    if "Country" in model_class.__name__:
         signals.pre_save.connect(set_name_ascii, sender=model_class)
-    elif 'SubRegion' in model_class.__name__:
-        signals.pre_save.connect(set_name_ascii, sender=model_class)
-        signals.pre_save.connect(set_display_name, sender=model_class)
-    elif 'Region' in model_class.__name__:
+    elif "SubRegion" in model_class.__name__:
         signals.pre_save.connect(set_name_ascii, sender=model_class)
         signals.pre_save.connect(set_display_name, sender=model_class)
-    elif 'City' in model_class.__name__:
+    elif "Region" in model_class.__name__:
+        signals.pre_save.connect(set_name_ascii, sender=model_class)
+        signals.pre_save.connect(set_display_name, sender=model_class)
+    elif "City" in model_class.__name__:
         signals.pre_save.connect(set_name_ascii, sender=model_class)
         signals.pre_save.connect(set_display_name, sender=model_class)
         signals.pre_save.connect(city_country, sender=model_class)
@@ -113,7 +121,7 @@ def filter_non_included_countries_country(sender, items, **kwargs):
     if INCLUDE_COUNTRIES is None:
         return
 
-    if items[0].split('.')[0] not in INCLUDE_COUNTRIES:
+    if items[0].split(".")[0] not in INCLUDE_COUNTRIES:
         raise InvalidItems()
 
 
@@ -131,7 +139,7 @@ def filter_non_included_countries_region(sender, items, **kwargs):
     if INCLUDE_COUNTRIES is None:
         return
 
-    if items[0].split('.')[0] not in INCLUDE_COUNTRIES:
+    if items[0].split(".")[0] not in INCLUDE_COUNTRIES:
         raise InvalidItems()
 
 
@@ -149,7 +157,7 @@ def filter_non_included_countries_subregion(sender, items, **kwargs):
     if INCLUDE_COUNTRIES is None:
         return
 
-    if items[0].split('.')[0] not in INCLUDE_COUNTRIES:
+    if items[0].split(".")[0] not in INCLUDE_COUNTRIES:
         raise InvalidItems()
 
 
@@ -167,7 +175,7 @@ def filter_non_included_countries_city(sender, items, **kwargs):
     if INCLUDE_COUNTRIES is None:
         return
 
-    if items[8].split('.')[0] not in INCLUDE_COUNTRIES:
+    if items[8].split(".")[0] not in INCLUDE_COUNTRIES:
         raise InvalidItems()
 
 
