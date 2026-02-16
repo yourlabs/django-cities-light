@@ -267,7 +267,9 @@ class TestNeedsDownloadingHttpHttps(test.TransactionTestCase):
             result = Downloader.needs_downloading(
                 "http://example.com/file.zip", destination, False
             )
-            m_request.assert_called_once_with("http://example.com/file.zip", method="HEAD")
+            m_request.assert_called_once_with(
+                "http://example.com/file.zip", method="HEAD"
+            )
             self.assertFalse(result)
 
     def test_head_used_for_https(self):
@@ -471,7 +473,9 @@ class TestNeedsDownloadingHttpHttps(test.TransactionTestCase):
         )
         destination = "/data/abc"
         with (
-            mock.patch("cities_light.downloader.urlopen", return_value=m_response) as m_uo,
+            mock.patch(
+                "cities_light.downloader.urlopen", return_value=m_response
+            ) as m_uo,
             mock.patch("cities_light.downloader.Request") as m_request,
             mock.patch("cities_light.downloader.os.path.exists", return_value=True),
             mock.patch("cities_light.downloader.os.path.getsize", return_value=13469),
