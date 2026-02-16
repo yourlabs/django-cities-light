@@ -9,7 +9,7 @@ def timezone_validator(value):
         return pytz.timezone(value)
     except (pytz.UnknownTimeZoneError, AttributeError):
         raise ValidationError(
-            _('Timezone validation error: %(value)s'),
-            code='timezone_error',
-            params={'value': value}
+            _("Timezone validation error: %(value)s"),
+            code="timezone_error",
+            params={"value": value},
         )

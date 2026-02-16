@@ -1,11 +1,11 @@
-.. image:: https://secure.travis-ci.org/yourlabs/django-cities-light.svg?branch=master
-    :target: http://travis-ci.org/yourlabs/django-cities-light
+.. image:: https://github.com/yourlabs/django-cities-light/actions/workflows/django.yml/badge.svg?branch=master
+    :target: https://github.com/yourlabs/django-cities-light/actions/workflows/django.yml
 .. image:: https://img.shields.io/pypi/dm/django-cities-light.svg
-    :target: https://crate.io/packages/django-cities-light
+    :target: https://pypi.org/project/django-cities-light/
 .. image:: https://img.shields.io/pypi/v/django-cities-light.svg
-    :target: https://crate.io/packages/django-cities-light
-.. image:: https://codecov.io/github/yourlabs/django-cities-light/coverage.svg
-    :target: https://codecov.io/github/yourlabs/django-cities-light
+    :target: https://pypi.org/project/django-cities-light/
+.. image:: https://codecov.io/gh/yourlabs/django-cities-light/graph/badge.svg
+    :target: https://codecov.io/gh/yourlabs/django-cities-light
 
 
 django-cities-light -- *Simple django-cities alternative*
@@ -56,7 +56,7 @@ Install django-cities-light::
 
 Or the development version::
 
-    pip install -e git+git@github.com:yourlabs/django-cities-light.git#egg=cities_light
+    pip install -e git+https://github.com/yourlabs/django-cities-light.git#egg=django-cities-light
 
 Add `cities_light` to your `INSTALLED_APPS`.
 
@@ -178,7 +178,6 @@ If you want to build the docs, use the following steps::
 TODOS
 -----
 
-- Add ruff for formatting
 - Improve the performance of the import command
 - Improve the local development environment with https://tox.wiki/en/legacy/example/devenv.html
 
@@ -195,8 +194,8 @@ package updates.
   <http://django-cities-light.rtfd.org>`_ by `RTFD
   <http://rtfd.org>`_,
 - `Package graciously hosted
-  <http://pypi.python.org/pypi/django-cities-light/>`_ by `PyPi
-  <http://pypi.python.org/pypi>`_,
+  <https://pypi.org/project/django-cities-light/>`_ by `PyPI
+  <https://pypi.org>`_,
 - `Continuous integration graciously hosted
-  <http://travis-ci.org/yourlabs/django-cities-light>`_ by `Travis-ci
-  <http://travis-ci.org>`_
+  <https://github.com/yourlabs/django-cities-light/actions>`_ by `GitHub Actions
+  <https://github.com/features/actions>`_

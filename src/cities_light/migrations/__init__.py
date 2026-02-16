@@ -7,4 +7,5 @@ try:
     from django.db import migrations  # noqa
 except ImportError:
     from django.core.exceptions import ImproperlyConfigured
-    raise ImproperlyConfigured('Django < 1.7 not supported')
+
+    raise ImproperlyConfigured("Django < 1.7 not supported")

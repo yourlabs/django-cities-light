@@ -13,21 +13,25 @@ from unidecode import unidecode
 from .validators import timezone_validator
 from .settings import INDEX_SEARCH_NAMES, CITIES_LIGHT_APP_NAME
 
-__all__ = ['AbstractCountry', 'AbstractRegion',
-           'AbstractSubRegion', 'AbstractCity',
-           'CONTINENT_CHOICES']
+__all__ = [
+    "AbstractCountry",
+    "AbstractRegion",
+    "AbstractSubRegion",
+    "AbstractCity",
+    "CONTINENT_CHOICES",
+]
 
 CONTINENT_CHOICES = (
-    ('OC', _('Oceania')),
-    ('EU', _('Europe')),
-    ('AF', _('Africa')),
-    ('NA', _('North America')),
-    ('AN', _('Antarctica')),
-    ('SA', _('South America')),
-    ('AS', _('Asia')),
+    ("OC", _("Oceania")),
+    ("EU", _("Europe")),
+    ("AF", _("Africa")),
+    ("NA", _("North America")),
+    ("AN", _("Antarctica")),
+    ("SA", _("South America")),
+    ("AS", _("Asia")),
 )
 
-ALPHA_REGEXP = re.compile(r'[\W_]+', re.UNICODE)
+ALPHA_REGEXP = re.compile(r"[\W_]+", re.UNICODE)
 
 
 def to_ascii(value):
@@ -47,7 +51,7 @@ def to_search(value):
     For example, 'Paris Texas' would become 'paristexas'.
     """
 
-    return ALPHA_REGEXP.sub('', to_ascii(value)).lower()
+    return ALPHA_REGEXP.sub("", to_ascii(value)).lower()
 
 
 class ToSearchIContainsLookup(lookups.IContains):
@@ -81,22 +85,22 @@ class Base(models.Model):
 
     name = models.CharField(max_length=200, db_index=True)
     name_ascii = models.CharField(max_length=200, blank=True, db_index=True)
-    slug = autoslug.AutoSlugField(populate_from='name_ascii')
+    slug = autoslug.AutoSlugField(populate_from="name_ascii")
     geoname_id = models.IntegerField(null=True, blank=True, unique=True)
-    alternate_names = models.TextField(null=True, blank=True, default='')
+    alternate_names = models.TextField(null=True, blank=True, default="")
     translations = models.JSONField(default=dict, blank=True)
 
     objects = BaseManager()
 
     class Meta:
         abstract = True
-        ordering = ['name']
+        ordering = ["name"]
 
     def natural_key(self):
-        return (self.geoname_id, )
+        return (self.geoname_id,)
 
     def __str__(self):
-        display_name = getattr(self, 'display_name', None)
+        display_name = getattr(self, "display_name", None)
         if display_name:
             return display_name
         return self.name
@@ -109,13 +113,12 @@ class AbstractCountry(Base):
 
     code2 = models.CharField(max_length=2, null=True, blank=True, unique=True)
     code3 = models.CharField(max_length=3, null=True, blank=True, unique=True)
-    continent = models.CharField(max_length=2, db_index=True,
-                                 choices=CONTINENT_CHOICES)
+    continent = models.CharField(max_length=2, db_index=True, choices=CONTINENT_CHOICES)
     tld = models.CharField(max_length=5, blank=True, db_index=True)
     phone = models.CharField(max_length=20, null=True, blank=True)
 
     class Meta(Base.Meta):
-        verbose_name_plural = _('countries')
+        verbose_name_plural = _("countries")
         abstract = True
 
 
@@ -125,20 +128,20 @@ class AbstractRegion(Base):
     """
 
     display_name = models.CharField(max_length=200)
-    geoname_code = models.CharField(max_length=50, null=True, blank=True,
-                                    db_index=True)
+    geoname_code = models.CharField(max_length=50, null=True, blank=True, db_index=True)
 
-    country = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Country',
-                                on_delete=models.CASCADE)
+    country = models.ForeignKey(
+        CITIES_LIGHT_APP_NAME + ".Country", on_delete=models.CASCADE
+    )
 
     class Meta(Base.Meta):
-        unique_together = (('country', 'name'), ('country', 'slug'))
-        verbose_name = _('region/state')
-        verbose_name_plural = _('regions/states')
+        unique_together = (("country", "name"), ("country", "slug"))
+        verbose_name = _("region/state")
+        verbose_name_plural = _("regions/states")
         abstract = True
 
     def get_display_name(self):
-        return '%s, %s' % (self.name, self.country.name)
+        return "%s, %s" % (self.name, self.country.name)
 
 
 class AbstractSubRegion(Base):
@@ -147,22 +150,25 @@ class AbstractSubRegion(Base):
     """
 
     display_name = models.CharField(max_length=200)
-    geoname_code = models.CharField(max_length=50, null=True, blank=True,
-                                    db_index=True)
+    geoname_code = models.CharField(max_length=50, null=True, blank=True, db_index=True)
 
-    country = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Country',
-                                on_delete=models.CASCADE)
-    region = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Region',
-                               null=True, blank=True,
-                               on_delete=models.CASCADE)
+    country = models.ForeignKey(
+        CITIES_LIGHT_APP_NAME + ".Country", on_delete=models.CASCADE
+    )
+    region = models.ForeignKey(
+        CITIES_LIGHT_APP_NAME + ".Region",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
 
     class Meta(Base.Meta):
-        verbose_name = _('SubRegion')
-        verbose_name_plural = _('SubRegions')
+        verbose_name = _("SubRegion")
+        verbose_name_plural = _("SubRegions")
         abstract = True
 
     def get_display_name(self):
-        return '%s, %s' % (self.name, self.country.name)
+        return "%s, %s" % (self.name, self.country.name)
 
 
 class AbstractCity(Base):
@@ -173,48 +179,55 @@ class AbstractCity(Base):
     display_name = models.CharField(max_length=200)
 
     search_names = ToSearchTextField(
-        max_length=4000,
-        db_index=INDEX_SEARCH_NAMES,
-        blank=True,
-        default='')
+        max_length=4000, db_index=INDEX_SEARCH_NAMES, blank=True, default=""
+    )
 
     latitude = models.DecimalField(
-        max_digits=8,
-        decimal_places=5,
-        null=True,
-        blank=True)
+        max_digits=8, decimal_places=5, null=True, blank=True
+    )
 
     longitude = models.DecimalField(
-        max_digits=8,
-        decimal_places=5,
-        null=True,
-        blank=True)
+        max_digits=8, decimal_places=5, null=True, blank=True
+    )
 
-    subregion = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.SubRegion',
-                                  blank=True, null=True,
-                                  on_delete=models.CASCADE)
-    region = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Region', blank=True,
-                               null=True, on_delete=models.CASCADE)
-    country = models.ForeignKey(CITIES_LIGHT_APP_NAME + '.Country',
-                                on_delete=models.CASCADE)
+    subregion = models.ForeignKey(
+        CITIES_LIGHT_APP_NAME + ".SubRegion",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    region = models.ForeignKey(
+        CITIES_LIGHT_APP_NAME + ".Region",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    country = models.ForeignKey(
+        CITIES_LIGHT_APP_NAME + ".Country", on_delete=models.CASCADE
+    )
     population = models.BigIntegerField(null=True, blank=True, db_index=True)
-    feature_code = models.CharField(max_length=10, null=True, blank=True,
-                                    db_index=True)
-    timezone = models.CharField(max_length=40, blank=True, null=True,
-                                db_index=True, validators=[timezone_validator])
+    feature_code = models.CharField(max_length=10, null=True, blank=True, db_index=True)
+    timezone = models.CharField(
+        max_length=40,
+        blank=True,
+        null=True,
+        db_index=True,
+        validators=[timezone_validator],
+    )
 
     class Meta(Base.Meta):
-        unique_together = (('region', 'subregion', 'name'),
-                           ('region', 'subregion', 'slug'))
-        verbose_name_plural = _('cities')
+        unique_together = (
+            ("region", "subregion", "name"),
+            ("region", "subregion", "slug"),
+        )
+        verbose_name_plural = _("cities")
         abstract = True
 
     def get_display_name(self):
         if self.region_id:
-            return '%s, %s, %s' % (self.name, self.region.name,
-                                   self.country.name)
+            return "%s, %s, %s" % (self.name, self.region.name, self.country.name)
         else:
-            return '%s, %s' % (self.name, self.country.name)
+            return "%s, %s" % (self.name, self.country.name)
 
     def get_timezone_info(self):
         """Return timezone info for self.timezone.

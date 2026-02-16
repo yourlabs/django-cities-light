@@ -62,14 +62,20 @@ Signals for this application.
     Same as :py:data:`~cities_light.signals.region_items_post_import` and
     :py:data:`cities_light.signals.city_items_post_import`.
 """
+
 import django.dispatch
 
 __all__ = [
-    'country_items_pre_import', 'country_items_post_import',
-    'region_items_pre_import', 'region_items_post_import',
-    'subregion_items_pre_import', 'subregion_items_post_import',
-    'city_items_pre_import', 'city_items_post_import',
-    'translation_items_pre_import']
+    "country_items_pre_import",
+    "country_items_post_import",
+    "region_items_pre_import",
+    "region_items_post_import",
+    "subregion_items_pre_import",
+    "subregion_items_post_import",
+    "city_items_pre_import",
+    "city_items_post_import",
+    "translation_items_pre_import",
+]
 
 # providing_args=['items'] for signals below
 city_items_pre_import = django.dispatch.Signal()

@@ -4,11 +4,13 @@ from django.apps import apps
 from django.db.migrations.autodetector import MigrationAutodetector
 from django.db.migrations.loader import MigrationLoader
 from django.db.migrations.questioner import (
-    InteractiveMigrationQuestioner, )
+    InteractiveMigrationQuestioner,
+)
 from django.db.migrations.state import ProjectState
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 class TestNoMigrationLeft(test.TestCase):
     @unittest.skip("TODO: make the test pass")
@@ -16,7 +18,7 @@ class TestNoMigrationLeft(test.TestCase):
         loader = MigrationLoader(None, ignore_no_migrations=True)
         conflicts = loader.detect_conflicts()
         logger.error(conflicts)
-        app_labels = ['cities_light']
+        app_labels = ["cities_light"]
 
         autodetector = MigrationAutodetector(
             loader.project_state(),
@@ -30,4 +32,4 @@ class TestNoMigrationLeft(test.TestCase):
             convert_apps=app_labels or None,
         )
 
-        assert 'cities_light' not in changes
+        assert "cities_light" not in changes

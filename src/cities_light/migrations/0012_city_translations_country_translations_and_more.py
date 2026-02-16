@@ -4,30 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('cities_light', '0011_alter_city_country_alter_city_region_and_more'),
+        ("cities_light", "0011_alter_city_country_alter_city_region_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='city',
-            name='translations',
+            model_name="city",
+            name="translations",
             field=models.JSONField(default=dict, blank=True),
         ),
         migrations.AddField(
-            model_name='country',
-            name='translations',
+            model_name="country",
+            name="translations",
             field=models.JSONField(default=dict, blank=True),
         ),
         migrations.AddField(
-            model_name='region',
-            name='translations',
+            model_name="region",
+            name="translations",
             field=models.JSONField(default=dict, blank=True),
         ),
         migrations.AddField(
-            model_name='subregion',
-            name='translations',
+            model_name="subregion",
+            name="translations",
             field=models.JSONField(default=dict, blank=True),
         ),
     ]
