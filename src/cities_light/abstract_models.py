@@ -83,12 +83,20 @@ class Base(models.Model):
     Base model with boilerplate for all models.
     """
 
-    name = models.CharField(max_length=200, db_index=True)
-    name_ascii = models.CharField(max_length=200, blank=True, db_index=True)
-    slug = autoslug.AutoSlugField(populate_from="name_ascii")
-    geoname_id = models.IntegerField(null=True, blank=True, unique=True)
-    alternate_names = models.TextField(null=True, blank=True, default="")
-    translations = models.JSONField(default=dict, blank=True)
+    name = models.CharField(max_length=200, db_index=True, verbose_name=_("name"))
+    name_ascii = models.CharField(
+        max_length=200, blank=True, db_index=True, verbose_name=_("ASCII name")
+    )
+    slug = autoslug.AutoSlugField(populate_from="name_ascii", verbose_name=_("slug"))
+    geoname_id = models.IntegerField(
+        null=True, blank=True, unique=True, verbose_name=_("Geonames ID")
+    )
+    alternate_names = models.TextField(
+        null=True, blank=True, default="", verbose_name=_("alternate names")
+    )
+    translations = models.JSONField(
+        default=dict, blank=True, verbose_name=_("translations")
+    )
 
     objects = BaseManager()
 
@@ -111,11 +119,32 @@ class AbstractCountry(Base):
     Base Country model.
     """
 
-    code2 = models.CharField(max_length=2, null=True, blank=True, unique=True)
-    code3 = models.CharField(max_length=3, null=True, blank=True, unique=True)
-    continent = models.CharField(max_length=2, db_index=True, choices=CONTINENT_CHOICES)
-    tld = models.CharField(max_length=5, blank=True, db_index=True)
-    phone = models.CharField(max_length=20, null=True, blank=True)
+    code2 = models.CharField(
+        max_length=2,
+        null=True,
+        blank=True,
+        unique=True,
+        verbose_name=_("ISO 3166-1 alpha-2"),
+    )
+    code3 = models.CharField(
+        max_length=3,
+        null=True,
+        blank=True,
+        unique=True,
+        verbose_name=_("ISO 3166-1 alpha-3"),
+    )
+    continent = models.CharField(
+        max_length=2,
+        db_index=True,
+        choices=CONTINENT_CHOICES,
+        verbose_name=_("continent"),
+    )
+    tld = models.CharField(
+        max_length=5, blank=True, db_index=True, verbose_name=_("top-level domain")
+    )
+    phone = models.CharField(
+        max_length=20, null=True, blank=True, verbose_name=_("phone code")
+    )
 
     class Meta(Base.Meta):
         verbose_name_plural = _("countries")
@@ -127,11 +156,19 @@ class AbstractRegion(Base):
     Base Region/State model.
     """
 
-    display_name = models.CharField(max_length=200)
-    geoname_code = models.CharField(max_length=50, null=True, blank=True, db_index=True)
+    display_name = models.CharField(max_length=200, verbose_name=_("display name"))
+    geoname_code = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+        db_index=True,
+        verbose_name=_("Geonames code"),
+    )
 
     country = models.ForeignKey(
-        CITIES_LIGHT_APP_NAME + ".Country", on_delete=models.CASCADE
+        CITIES_LIGHT_APP_NAME + ".Country",
+        on_delete=models.CASCADE,
+        verbose_name=_("country"),
     )
 
     class Meta(Base.Meta):
@@ -149,17 +186,26 @@ class AbstractSubRegion(Base):
     Base SubRegion model.
     """
 
-    display_name = models.CharField(max_length=200)
-    geoname_code = models.CharField(max_length=50, null=True, blank=True, db_index=True)
+    display_name = models.CharField(max_length=200, verbose_name=_("display name"))
+    geoname_code = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+        db_index=True,
+        verbose_name=_("Geonames code"),
+    )
 
     country = models.ForeignKey(
-        CITIES_LIGHT_APP_NAME + ".Country", on_delete=models.CASCADE
+        CITIES_LIGHT_APP_NAME + ".Country",
+        on_delete=models.CASCADE,
+        verbose_name=_("country"),
     )
     region = models.ForeignKey(
         CITIES_LIGHT_APP_NAME + ".Region",
         null=True,
         blank=True,
         on_delete=models.CASCADE,
+        verbose_name=_("region"),
     )
 
     class Meta(Base.Meta):
@@ -176,18 +222,30 @@ class AbstractCity(Base):
     Base City model.
     """
 
-    display_name = models.CharField(max_length=200)
+    display_name = models.CharField(max_length=200, verbose_name=_("display name"))
 
     search_names = ToSearchTextField(
-        max_length=4000, db_index=INDEX_SEARCH_NAMES, blank=True, default=""
+        max_length=4000,
+        db_index=INDEX_SEARCH_NAMES,
+        blank=True,
+        default="",
+        verbose_name=_("search names"),
     )
 
     latitude = models.DecimalField(
-        max_digits=8, decimal_places=5, null=True, blank=True
+        max_digits=8,
+        decimal_places=5,
+        null=True,
+        blank=True,
+        verbose_name=_("latitude"),
     )
 
     longitude = models.DecimalField(
-        max_digits=8, decimal_places=5, null=True, blank=True
+        max_digits=8,
+        decimal_places=5,
+        null=True,
+        blank=True,
+        verbose_name=_("longitude"),
     )
 
     subregion = models.ForeignKey(
@@ -195,24 +253,37 @@ class AbstractCity(Base):
         blank=True,
         null=True,
         on_delete=models.CASCADE,
+        verbose_name=_("subregion"),
     )
     region = models.ForeignKey(
         CITIES_LIGHT_APP_NAME + ".Region",
         blank=True,
         null=True,
         on_delete=models.CASCADE,
+        verbose_name=_("region"),
     )
     country = models.ForeignKey(
-        CITIES_LIGHT_APP_NAME + ".Country", on_delete=models.CASCADE
+        CITIES_LIGHT_APP_NAME + ".Country",
+        on_delete=models.CASCADE,
+        verbose_name=_("country"),
     )
-    population = models.BigIntegerField(null=True, blank=True, db_index=True)
-    feature_code = models.CharField(max_length=10, null=True, blank=True, db_index=True)
+    population = models.BigIntegerField(
+        null=True, blank=True, db_index=True, verbose_name=_("population")
+    )
+    feature_code = models.CharField(
+        max_length=10,
+        null=True,
+        blank=True,
+        db_index=True,
+        verbose_name=_("feature code"),
+    )
     timezone = models.CharField(
         max_length=40,
         blank=True,
         null=True,
         db_index=True,
         validators=[timezone_validator],
+        verbose_name=_("timezone"),
     )
 
     class Meta(Base.Meta):
