@@ -110,6 +110,25 @@ Consult the help with::
 
     ./manage.py help cities_light_fixtures
 
+
+Common issues
+--------------
+
+If you get the following error::
+
+    django.db.utils.OperationalError: index row size 2848 exceeds btree version 4 maximum 2704 for index "cities_light_city_search_names_fb77fed2"
+    DETAIL:  Index row references tuple (1314,1) in relation "cities_light_city".
+    HINT:  Values larger than 1/3 of a buffer page cannot be indexed.
+    Consider a function index of an MD5 hash of the value, or use full text indexing.
+
+You can fix it by adding the following to your settings.py, this will disable the indexing of the search_names field::
+    
+    CITIES_LIGHT_INDEX_SEARCH_NAMES = False
+
+Another option is limiting the languages for example to only English and abbreviation, this will fix the issue::
+    
+    CITIES_LIGHT_TRANSLATION_LANGUAGES = [ 'en',  'abbr']
+
 Development
 -----------
 
@@ -165,13 +184,6 @@ To run it even faster, you can switch to specific tox virtualenv::
     CI=True py.test -v --cov cities_light --create-db --strict -r fEsxXw cities_light/tests/test_form.py::FormTestCase::testCountryFormNameAndContinentAlone
     CI=true test_project/manage.py test cities_light.tests.test_form.FormTestCase.testCountryFormNameAndContinentAlone
 
-
-If you want to generate the translations, use the following steps::
-    
-    source .tox/dev/bin/activate
-    cd src/cities_light
-    python manage.py makemessages -l fr
-    python manage.py compilemessages
 
 If you want to build the docs, use the following steps::
 
