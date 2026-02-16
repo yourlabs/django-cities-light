@@ -161,6 +161,7 @@ And to run one specific test use this one::
 To run it even faster, you can switch to specific tox virtualenv::
 
     source .tox/py312-django42-sqlite/bin/activate
+    CI=True py.test -v --cov cities_light --create-db --strict -r fEsxXw cities_light/tests/test_form.py::FormTestCase::testCountryFormNameAndContinentAlone
     CI=true test_project/manage.py test cities_light.tests.test_form.FormTestCase.testCountryFormNameAndContinentAlone
 
 If you want to build the docs, use the following steps::
