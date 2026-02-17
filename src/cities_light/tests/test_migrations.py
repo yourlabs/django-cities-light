@@ -54,7 +54,7 @@ class TestNoMigrationLeft(test.TestCase):
         db_engine = settings.DATABASES['default']['ENGINE']
         
         # Log the test context
-        logger.info(f"Testing with DATABASE_ENGINE={db_engine}, INDEX_SEARCH_NAMES={INDEX_SEARCH_NAMES}")
+        logger.info(f"Testing with db_engine={db_engine}, INDEX_SEARCH_NAMES={INDEX_SEARCH_NAMES}")
         
         # For databases where INDEX_SEARCH_NAMES defaults to True (e.g., SQLite),
         # migration 0014 will create a pending migration since it sets db_index=False.
@@ -88,10 +88,10 @@ class TestNoMigrationLeft(test.TestCase):
             # Log the changes to help debug if test fails
             migrations = changes.get("cities_light", [])
             for migration in migrations:
-                logger.error(f"Unexpected pending migration: {migration}")
+                logger.warning(f"Unexpected pending migration: {migration}")
                 if hasattr(migration, 'operations'):
                     for op in migration.operations:
-                        logger.error(f"  Operation: {op}")
+                        logger.warning(f"  Operation: {op}")
         
         self.assertNotIn(
             "cities_light", 
