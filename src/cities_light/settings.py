@@ -201,13 +201,15 @@ INCLUDE_CITY_TYPES = getattr(
 )
 
 # MySQL doesn't support indexing TextFields
-INDEX_SEARCH_NAMES: bool = getattr(settings, "CITIES_LIGHT_INDEX_SEARCH_NAMES", None)
-if INDEX_SEARCH_NAMES is None:
-    INDEX_SEARCH_NAMES = True
+_index_search_names_setting = getattr(settings, "CITIES_LIGHT_INDEX_SEARCH_NAMES", None)
+if _index_search_names_setting is None:
+    INDEX_SEARCH_NAMES: bool = True
     for database in list(settings.DATABASES.values()):
         engine = (database.get("ENGINE") or "").lower()
         if "mysql" in engine or "postgresql" in engine:
             INDEX_SEARCH_NAMES = False
+else:
+    INDEX_SEARCH_NAMES = bool(_index_search_names_setting)
 
 DEFAULT_APP_NAME = "cities_light"
 CITIES_LIGHT_APP_NAME = getattr(settings, "CITIES_LIGHT_APP_NAME", DEFAULT_APP_NAME)
