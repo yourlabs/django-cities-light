@@ -36,13 +36,13 @@ class CitySerializer(HyperlinkedModelSerializer):
     """
 
     url = relations.HyperlinkedIdentityField(view_name="cities-light-api-city-detail")
-    country = relations.HyperlinkedRelatedField(
+    country: relations.HyperlinkedRelatedField = relations.HyperlinkedRelatedField(
         view_name="cities-light-api-country-detail", read_only=True
     )
-    region = relations.HyperlinkedRelatedField(
+    region: relations.HyperlinkedRelatedField = relations.HyperlinkedRelatedField(
         view_name="cities-light-api-region-detail", read_only=True
     )
-    subregion = relations.HyperlinkedRelatedField(
+    subregion: relations.HyperlinkedRelatedField = relations.HyperlinkedRelatedField(
         view_name="cities-light-api-subregion-detail", read_only=True
     )
 
@@ -59,10 +59,10 @@ class SubRegionSerializer(HyperlinkedModelSerializer):
     url = relations.HyperlinkedIdentityField(
         view_name="cities-light-api-subregion-detail"
     )
-    country = relations.HyperlinkedRelatedField(
+    country: relations.HyperlinkedRelatedField = relations.HyperlinkedRelatedField(
         view_name="cities-light-api-country-detail", read_only=True
     )
-    region = relations.HyperlinkedRelatedField(
+    region: relations.HyperlinkedRelatedField = relations.HyperlinkedRelatedField(
         view_name="cities-light-api-region-detail", read_only=True
     )
 
@@ -77,7 +77,7 @@ class RegionSerializer(HyperlinkedModelSerializer):
     """
 
     url = relations.HyperlinkedIdentityField(view_name="cities-light-api-region-detail")
-    country = relations.HyperlinkedRelatedField(
+    country: relations.HyperlinkedRelatedField = relations.HyperlinkedRelatedField(
         view_name="cities-light-api-country-detail", read_only=True
     )
 
