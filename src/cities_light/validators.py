@@ -8,7 +8,7 @@ def timezone_validator(value):
     """Timezone validator."""
     try:
         return ZoneInfo(value)
-    except (ZoneInfoNotFoundError, AttributeError):
+    except (ZoneInfoNotFoundError, AttributeError, TypeError):
         raise ValidationError(
             _("Timezone validation error: %(value)s"),
             code="timezone_error",

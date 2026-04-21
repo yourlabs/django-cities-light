@@ -313,5 +313,5 @@ class AbstractCity(Base):
         """
         try:
             return ZoneInfo(self.timezone)
-        except (ZoneInfoNotFoundError, AttributeError):
+        except (ZoneInfoNotFoundError, AttributeError, TypeError):
             return ZoneInfo(settings.TIME_ZONE)

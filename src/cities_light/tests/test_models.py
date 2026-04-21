@@ -18,16 +18,16 @@ class TestModels(test.TransactionTestCase):
         city_model = get_cities_model("City")
 
         city = city_model(geoname_id="123456", name="city", timezone="Asia/Novosibirsk")
-        self.assertEqual(city.get_timezone_info().zone, "Asia/Novosibirsk")
+        self.assertEqual(city.get_timezone_info().key, "Asia/Novosibirsk")
 
         city = city_model(geoname_id="123457", name="city", timezone="Mars/Cidonia")
-        self.assertEqual(city.get_timezone_info().zone, settings.TIME_ZONE)
+        self.assertEqual(city.get_timezone_info().key, settings.TIME_ZONE)
 
         city = city_model(geoname_id="123457", name="city", timezone=None)
-        self.assertEqual(city.get_timezone_info().zone, settings.TIME_ZONE)
+        self.assertEqual(city.get_timezone_info().key, settings.TIME_ZONE)
 
         city = city_model(geoname_id="123457", name="city", timezone="")
-        self.assertEqual(city.get_timezone_info().zone, settings.TIME_ZONE)
+        self.assertEqual(city.get_timezone_info().key, settings.TIME_ZONE)
 
     def test_timezone_validator(self):
         """Test timezone_validator."""
