@@ -8,6 +8,7 @@
     Drop EOL Python 3.8, 3.9 and Django 3.2, 4.0, 4.1, 5.0, 5.1 from classifiers
     Add pyproject.toml (PEP 517/518)
     Re-enable mypy in tox envlist
+    Update GitHub Actions: codecov-action@v4, pypi-publish@release/v1
 
 2023-10-30
     Add support for Python 3.12
