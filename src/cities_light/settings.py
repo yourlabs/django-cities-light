@@ -205,7 +205,7 @@ _index_search_names_setting = getattr(settings, "CITIES_LIGHT_INDEX_SEARCH_NAMES
 if _index_search_names_setting is None:
     INDEX_SEARCH_NAMES: bool = True
     for database in list(settings.DATABASES.values()):
-        engine = (database.get("ENGINE") or "").lower()
+        engine = str(database.get("ENGINE") or "").lower()
         if "mysql" in engine or "postgresql" in engine:
             INDEX_SEARCH_NAMES = False
 else:
