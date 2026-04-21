@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=64", "setuptools_scm>=8"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-cities-light"
