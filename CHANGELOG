@@ -1,3 +1,14 @@
+2026-04-21 3.11.1
+    Fix migration 0013 hardcoded db_index=True breaking MySQL/PostgreSQL (add
+    migration 0014 with dynamic db_index=INDEX_SEARCH_NAMES)
+    Fix OOM kill on alternateNames.zip download by streaming in chunks
+    Fix MultipleObjectsReturned in _get_subregion_id(), log warning and use first
+    Fix duplicate city slug collision by adding unique_with=("region","subregion")
+    Replace pytz with stdlib zoneinfo (Python 3.9+)
+    Drop EOL Python 3.8, 3.9 and Django 3.2, 4.0, 4.1, 5.0, 5.1 from classifiers
+    Add pyproject.toml (PEP 517/518)
+    Re-enable mypy in tox envlist
+
 2023-10-30
     Add support for Python 3.12
     Add support for Django 5.0

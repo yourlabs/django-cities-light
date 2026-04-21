@@ -346,12 +346,23 @@ It is possible to force the import of files which weren't downloaded using the
             ).pk
 
         if subregion_id not in self._subregion_codes[country_id][region_id]:
-            self._subregion_codes[country_id][region_id][subregion_id] = (
-                SubRegion.objects.get(
-                    region_id=self._region_codes[country_id][region_id],
-                    geoname_code=subregion_id,
-                ).pk
+            qs = SubRegion.objects.filter(
+                region_id=self._region_codes[country_id][region_id],
+                geoname_code=subregion_id,
             )
+            if qs.count() > 1:
+                self.logger.warning(
+                    "Multiple SubRegion objects for region_id=%s geoname_code=%s, using first",
+                    self._region_codes[country_id][region_id],
+                    subregion_id,
+                )
+            obj = qs.first()
+            if obj is None:
+                raise SubRegion.DoesNotExist(
+                    f"SubRegion with region_id={self._region_codes[country_id][region_id]}"
+                    f" geoname_code={subregion_id} does not exist"
+                )
+            self._subregion_codes[country_id][region_id][subregion_id] = obj.pk
         return self._subregion_codes[country_id][region_id][subregion_id]
 
     def country_import(self, items):

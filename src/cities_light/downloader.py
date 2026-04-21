@@ -32,7 +32,8 @@ class Downloader:
         logger.info("Downloading %s into %s", source, destination)
         with urlopen(source) as source_stream:
             with open(destination, "wb") as local_file:
-                local_file.write(source_stream.read())
+                while chunk := source_stream.read(8192):
+                    local_file.write(chunk)
 
         return True
 

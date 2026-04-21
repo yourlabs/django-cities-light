@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "django-cities-light"
+dynamic = ["version", "readme"]
+description = "Simple alternative to django-cities"
+license = { text = "MIT" }
+authors = [
+    { name = "James Pic", email = "jamespic@gmail.com" },
+    { name = "Dominick Rivard", email = "dominick.rivard@gmail.com" },
+    { name = "Alexey Evseev", email = "myhappydo@gmail.com" },
+]
+keywords = ["django", "cities", "countries", "postal", "codes"]
+requires-python = ">=3.10"
+dependencies = [
+    "psutil",
+    "unidecode>=0.04.13",
+    "django-autoslug>=1.9.8",
+    "progressbar2>=3.51.4",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourlabs/django-cities-light"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+write_to = "src/cities_light/version.py"
+
+[tool.setuptools.dynamic]
+readme = { file = "README.rst" }

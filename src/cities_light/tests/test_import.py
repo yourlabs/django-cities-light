@@ -64,4 +64,4 @@ class TestImport(TestImportBase):
         city_model = get_cities_model("City")
         cities = city_model.objects.all()
         for city in cities:
-            print(city.get_timezone_info().zone)
+            print(city.get_timezone_info().key)

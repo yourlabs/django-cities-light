@@ -1,6 +1,6 @@
 import re
 import autoslug
-import pytz
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from django.db import models
 from django.db.models import lookups
@@ -222,6 +222,11 @@ class AbstractCity(Base):
     Base City model.
     """
 
+    slug = autoslug.AutoSlugField(
+        populate_from="name_ascii",
+        unique_with=("region", "subregion"),
+        verbose_name=_("slug"),
+    )
     display_name = models.CharField(max_length=200, verbose_name=_("display name"))
 
     search_names = ToSearchTextField(
@@ -307,6 +312,6 @@ class AbstractCity(Base):
         for value specified in settings.TIME_ZONE.
         """
         try:
-            return pytz.timezone(self.timezone)
-        except (pytz.UnknownTimeZoneError, AttributeError):
-            return pytz.timezone(settings.TIME_ZONE)
+            return ZoneInfo(self.timezone)
+        except (ZoneInfoNotFoundError, AttributeError):
+            return ZoneInfo(settings.TIME_ZONE)
