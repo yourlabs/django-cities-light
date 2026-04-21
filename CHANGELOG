@@ -9,6 +9,8 @@
     Add pyproject.toml (PEP 517/518)
     Re-enable mypy in tox envlist
     Update GitHub Actions: codecov-action@v4, pypi-publish@release/v1
+    Fix zoneinfo edge cases: catch TypeError/ValueError for None/empty timezone
+    Fix mypy: type INDEX_SEARCH_NAMES as bool, add stubs for third-party packages
 
 2023-10-30
     Add support for Python 3.12
